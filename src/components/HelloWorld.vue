@@ -13,7 +13,7 @@ defineProps<{
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>. What's next?
     </h3>
 
-    <Button>dfsodfsd</Button>
+    <Button size="large">dfsodfsd</Button>
   </div>
 </template>
 

@@ -1,35 +1,47 @@
-@import './base.css';
+@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+@import "./fonts";
 
+:root {
+  --width-base: 1920;
+  --width-current: 1680px;
+  --width-multiplier: var(--width-current) / var(--width-base);
+
+  @media (max-width: 1920px) {
+    --width-current: 100vw;
+  }
+
+  @media (max-width: 1024px) {
+    --width-base: 375;
+    --width-current: 100vmin;
+  }
+}
+
+@theme {
+  --spacing: var(--width-multiplier);
+  --default-font-family: "Montserrat", "Arial", "sans-serif";
+  --text-base: calc(16 * var(--width-multiplier));
+}
+
+html {
+  @apply h-full;
+}
+body {
+  @apply h-full;
+}
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  @apply h-full;
+}
+main {
+  @apply h-full;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
+.container {
+  width: 100%;
+  max-width: calc(1400 * var(--width-multiplier));
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+  @media (max-width: 1024px) {
+    padding: 0 calc(15 * var(--width-multiplier));
   }
 }

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
+  <main class="relative grid">
+    <section>
+      <div class="container m-auto">
+        <p>Главная</p>
+      </div>
+    </section>
   </main>
 </template>
