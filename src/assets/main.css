@@ -1,8 +1,11 @@
-@import "./fonts";
+@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+@import 'primeicons/primeicons.css';
+@import './fonts';
 
 :root {
   --width-base: 1920;
-  --width-current: 1680px;
+  --width-current: 1920px;
   --width-multiplier: var(--width-current) / var(--width-base);
 
   @media (max-width: 1920px) {
@@ -13,6 +16,28 @@
     --width-base: 375;
     --width-current: 100vmin;
   }
+}
+
+@theme {
+  --spacing: var(--width-multiplier);
+  --default-font-family: "Montserrat", "Arial", "sans-serif";
+  --text-xl: calc(18 * var(--width-multiplier));
+  --text-base: calc(14 * var(--width-multiplier));
+  --text-sm: calc(12 * var(--width-multiplier));
+  --text-xs: calc(8 * var(--width-multiplier));
+}
+
+html {
+  @apply h-full;
+}
+body {
+  @apply h-full;
+}
+#app {
+  @apply h-full;
+}
+main {
+  @apply h-full;
 }
 
 
