@@ -29,6 +29,11 @@ const MyPreset = definePreset(Aura, {
       900: '#331E02',
       950: '#180E01'
     }
+  },
+  pt: {
+    badge: {
+      root: 'w-10',
+    }
   }
 });
 

@@ -25,6 +25,7 @@
   --text-base: calc(14 * var(--width-multiplier));
   --text-sm: calc(12 * var(--width-multiplier));
   --text-xs: calc(8 * var(--width-multiplier));
+  --color-zinc-850: oklch(0.2646 0.0057 271.2);
 }
 
 html {
@@ -40,6 +41,10 @@ main {
   @apply h-full;
 }
 
+html {
+  font-size: 14px;
+}
+
 
 .container {
   width: 100%;
@@ -48,4 +53,8 @@ main {
   @media (max-width: 1024px) {
     padding: 0 calc(15 * var(--width-multiplier));
   }
+}
+
+.p-inputnumber input, .p-inputtext {
+  width: 100%;
 }

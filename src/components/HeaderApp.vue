@@ -29,24 +29,24 @@ import IconLogo from '@/components/icons/IconLogo.vue'
       </div>
     </div>
     <div class="py-25 bg-white">
-      <div class="container m-auto flex justify-between">
-        <IconLogo class="w-200 h-44" />
+      <div class="container m-auto flex justify-between items-center gap-40">
+        <IconLogo class="w-200 h-44 shrink-0" />
         <div class="flex gap-20 items-center">
-          <FloatLabel variant="on">
+          <FloatLabel variant="on" class="w-1/4">
             <InputText id="on_label" />
             <label for="on_label">Бренд</label>
           </FloatLabel>
-          <FloatLabel variant="on">
+          <FloatLabel variant="on" class="w-1/4">
             <InputText id="on_label" />
             <label for="on_label">Номер запчасти</label>
           </FloatLabel>
-          <FloatLabel variant="on">
+          <FloatLabel variant="on" class="w-1/7">
             <InputNumber  id="on_label" />
             <label for="on_label">Количество</label>
           </FloatLabel>
-          <Button label="Запросить цену" />
+          <Button label="Запросить" class="w-1/4"/>
         </div>
-        <div class="flex gap-10">
+        <div class="flex gap-10 shrink-0">
           <div class="flex flex-col gap-10">
             <div class="flex gap-10 items-center">
               <i class="pi pi-user color-primary-500" />
@@ -58,7 +58,7 @@ import IconLogo from '@/components/icons/IconLogo.vue'
         </div>
       </div>
     </div>
-    <div class="bg-gray-900">
+    <div class="bg-zinc-850">
       <div class="container m-auto flex justify-between">
         <div
           class="flex"
