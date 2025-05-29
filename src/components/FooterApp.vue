@@ -4,13 +4,15 @@ import IconSocialVk from '@/components/icons/IconSocialVk.vue'
 import IconSocialTelegram from '@/components/icons/IconSocialTelegram.vue'
 import IconSocialYoutube from '@/components/icons/IconSocialYoutube.vue'
 import IconSocialRutube from '@/components/icons/IconSocialRutube.vue'
+import IconBank from '@/components/icons/IconBank.vue'
+import IconCreditCard from '@/components/icons/IconCreditCard.vue'
 </script>
 
 <template>
   <footer>
     <div class="bg-zinc-850 py-30">
-      <div class="container m-auto grid grid-cols-5 gap-60">
-        <div class="grid gap-16">
+      <div class="container m-auto grid grid-cols-5 gap-45 max-lg:grid-cols-2 max-lg:gap-30">
+        <div class="grid gap-16 max-lg:order-5 max-lg:col-span-2 max-lg:justify-items-center">
           <IconLogo class="w-205 h-50 shrink-0 text-white" />
           <div class="flex gap-10">
             <a href="https://t.me/loaderpro" target="_blank" class="text-white w-24 h-24"
@@ -32,7 +34,61 @@ import IconSocialRutube from '@/components/icons/IconSocialRutube.vue'
               ><IconSocialRutube
             /></a>
           </div>
-          <iframe src="https://yandex.ru/sprav/widget/rating-badge/64792251897?type=rating&amp;theme=dark" width="150" height="50"></iframe>
+          <iframe
+            src="https://yandex.ru/sprav/widget/rating-badge/64792251897?type=rating&amp;theme=dark"
+            width="150"
+            height="50"
+          ></iframe>
+        </div>
+        <div class="grid gap-16 text-white">
+          <p class="font-semibold text-xl">Обслуживание клиентов</p>
+          <RouterLink to="/about">О компании</RouterLink>
+          <RouterLink to="/">Оплата и доставка</RouterLink>
+          <RouterLink to="/">Условия возврата</RouterLink>
+          <RouterLink to="/">Реквизиты</RouterLink>
+        </div>
+        <div class="grid gap-16 text-white">
+          <p class="font-semibold text-xl">Мой аккаунт</p>
+          <RouterLink to="/about">Запросы</RouterLink>
+          <RouterLink to="/">Заказы</RouterLink>
+          <RouterLink to="/">Настройки</RouterLink>
+          <RouterLink to="/">Конфиденциальность</RouterLink>
+        </div>
+        <div class="flex flex-col gap-16 text-white">
+          <p class="font-semibold text-xl">Способы оплаты</p>
+          <div class="grid grid-cols-2 gap-20">
+            <div class="flex gap-10">
+              <IconBank class="w-26 h-26 text-primary-500" />
+              <p class="text-md">
+                Безнал <br />
+                с&nbsp;НДС
+              </p>
+            </div>
+            <div class="flex gap-10">
+              <IconCreditCard class="w-26 h-26 text-primary-500" />
+              <p class="text-md">
+                Оплата <br />
+                картой
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-16 text-white">
+          <p class="font-semibold text-xl">Варианты доставки</p>
+          <div class="flex gap-20">
+            <a href="https://www.cdek.ru/" target="_blank" class="w-65 h-20">
+              <picture>
+                <source srcset="@/assets/images/logo-cdek.png" />
+                <img src="@/assets/images/logo-cdek.png" alt="" decoding="async" />
+              </picture>
+            </a>
+            <a href="https://www.dellin.ru/" target="_blank" class="w-65 h-20">
+              <picture>
+                <source srcset="@/assets/images/logo-del.png" />
+                <img src="@/assets/images/logo-del.png" alt="" decoding="async" />
+              </picture>
+            </a>
+          </div>
         </div>
       </div>
     </div>

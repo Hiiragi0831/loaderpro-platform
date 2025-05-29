@@ -3,7 +3,7 @@ import IconLogo from '@/components/icons/IconLogo.vue'
 </script>
 
 <template>
-  <header>
+  <header class="max-lg:hidden">
     <div class="py-18 bg-gray-100">
       <div class="container m-auto flex justify-between">
         <div class="flex gap-40">
@@ -40,11 +40,27 @@ import IconLogo from '@/components/icons/IconLogo.vue'
             <InputText id="on_label" />
             <label for="on_label">Номер запчасти</label>
           </FloatLabel>
-          <FloatLabel variant="on" class="w-1/7">
-            <InputNumber  id="on_label" />
+
+          <FloatLabel variant="on" class="w-1/4">
+            <InputNumber
+              inputId="on_label"
+              buttonLayout="horizontal"
+              showButtons
+              suffix=" шт."
+              :min="0"
+              :max="40"
+              :modelValue="1"
+            >
+              <template #incrementbuttonicon>
+                <span class="pi pi-plus" />
+              </template>
+              <template #decrementbuttonicon>
+                <span class="pi pi-minus" />
+              </template>
+            </InputNumber>
             <label for="on_label">Количество</label>
           </FloatLabel>
-          <Button label="Запросить" class="w-1/4"/>
+          <Button label="Запросить" class="w-1/4" />
         </div>
         <div class="flex gap-10 shrink-0">
           <div class="flex flex-col gap-10">

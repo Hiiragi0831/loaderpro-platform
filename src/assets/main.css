@@ -24,6 +24,7 @@
   --text-xl: calc(18 * var(--width-multiplier));
   --text-base: calc(14 * var(--width-multiplier));
   --text-sm: calc(12 * var(--width-multiplier));
+  --text-md: calc(10 * var(--width-multiplier));
   --text-xs: calc(8 * var(--width-multiplier));
   --color-zinc-850: oklch(0.2646 0.0057 271.2);
 }
