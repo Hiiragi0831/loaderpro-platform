@@ -1,39 +1,90 @@
-# /
+# Документация
 
-This template should help get you started developing with Vue 3 in Vite.
+## Заказы
 
-## Recommended IDE Setup
+```
+const status = [
+    {
+        name: "В обработке",
+        id: 1
+    }, {
+        name: "Счет отправлен",
+        id: 2
+    }, {
+        name: "Счет оплачен",
+        id: 3
+    }, {
+        name: "В пути",
+        id: 4
+    }, {
+        name: "Готов к отгрузке",
+        id: 5
+    }, {
+        name: "Отгружен",
+        id: 6
+    }, {
+        name: "Отменен",
+        id: 7
+    }
+]
+```
+Пути
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+/orders/status - возвращает список заказов в запрошенном статусе
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```
+code: 200
+{
+    page: 0,
+    results: [
+        {
+            id: 1,
+            num_order: Z17479110881,
+            status: 1,
+            date_create: 2022-09-20 10:27:21.240752,
+            date_pay: 2022-09-20 10:27:21.240752,
+            date_delivery: 2022-09-20 10:27:21.240752,
+            date_shipment: 2022-09-20 10:27:21.240752,
+        }
+        ...
+    ]
+}
 ```
 
-### Compile and Hot-Reload for Development
+/orders/search
 
-```sh
-npm run dev
+```
+code: 200
+{
+    page: 0,
+    results: [
+        {
+            id: 1,
+            num_order: Z17479110881,
+            status: 1,
+            date_create: 2022-09-20 10:27:21.240752,
+            date_pay: 2022-09-20 10:27:21.240752,
+            date_delivery: 2022-09-20 10:27:21.240752,
+            date_shipment: 2022-09-20 10:27:21.240752,
+        }
+        ...
+    ]
+}
 ```
 
-### Type-Check, Compile and Minify for Production
+/orders/users
 
-```sh
-npm run build
 ```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+code: 200
+{
+    "user_id": 2,
+    "ukey": "A",
+    "users": [
+        {
+            "id": 1,
+            "username": "Алексей Привалов"
+        },
+        ...
+    ]
+}
 ```
