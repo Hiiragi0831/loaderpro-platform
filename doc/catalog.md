@@ -21,7 +21,7 @@ code: 200
             "id": 1,
             "title": "Шплинт LINDE (400) 9395003220",
             "status": 1,
-            "price": "256",
+            "price": 2564,
             "quality": 2,
             "image": "/image/134324.jpg",
         }
@@ -61,7 +61,7 @@ code: 200
             "id": 1,
             "title": "Шплинт LINDE (400) 9395003220",
             "status": 1,
-            "price": "256",
+            "price": 256,
             "quality": 2,
             "image": "/image/134324.jpg",
         }
