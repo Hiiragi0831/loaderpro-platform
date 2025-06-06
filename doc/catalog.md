@@ -1,4 +1,34 @@
 # Каталог
+## Загрузка каталога
+### Запрос
+```
+await fetch("/catalog/", {
+  method: "GET",
+  headers: { 
+    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+})
+```
+### Ответ
+```
+code: 200
+{
+    "status": "success",
+    "page": 0,
+    "total_results": 105,
+    "results": [
+        {
+            "id": 1,
+            "title": "Шплинт LINDE (400) 9395003220",
+            "status": 1,
+            "price": "256",
+            "quality": 2,
+            "image": "/image/134324.jpg",
+        }
+        ...
+    ]
+}
+```
 ## Поиск
 ```
 await fetch("/catalog/search?request=72642683", {
@@ -8,9 +38,40 @@ await fetch("/catalog/search?request=72642683", {
   }
 })
 ```
+### Ничего не найдено
+```
+code: 200
+
+{
+    "status": "success",
+    "results": [],
+    "total_results": 0,
+    "message": "По вашему запросу, ничего не найдено"
+}
+```
+### Найдены результаты
+```
+code: 200
+{
+    "status": "success",
+    "page": 0,
+    "total_results": 105,
+    "results": [
+        {
+            "id": 1,
+            "title": "Шплинт LINDE (400) 9395003220",
+            "status": 1,
+            "price": "256",
+            "quality": 2,
+            "image": "/image/134324.jpg",
+        }
+        ...
+    ]
+}
+```
 ## Добавить товар
 ```
-await fetch("/garage/request", {
+await fetch("/catalog/add", {
     method: "POST",
     headers: { 
         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -32,7 +93,7 @@ await fetch("/garage/request", {
 ```
 ## Импортировать товары
 ```
-await fetch("/garage/request", {
+await fetch("/catalog/import", {
     method: "POST",
     headers: { 
         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
