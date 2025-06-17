@@ -1,46 +1,73 @@
 # Запросы
-## Отправка данных
+
+## Запрашиваем список брендов
+При загрузке страницы запросы мы грузим бренды в переменную для форм
+```js
+await fetch("/brand", {
+  method: "GET",
+  headers: { 
+    Authorization: "Bearer <token>"
+  }
+})
 ```
-await fetch("/query/new", {
+### Ответ (status: 200)
+```json 
+[
+  {
+    "id": 1,
+    "name":"LOADERPRO"
+  },
+  {
+    "id": 2,
+    "name":"LUDA (RJ3)"
+  }
+]
+```
+## Новый запрос
+```js
+await fetch("/query", {
     method: "POST",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-    }
-    body: {
-        "brand": "WICKE (B69)",
+        Authorization: "Bearer <token>"
+    },
+    body: [
+      {
+        "brand": 5,
         "numparts": "323232DFW3",
         "count": 3
-    }
+      },
+      {
+        "brand": 2,
+        "numparts": "334DFS45",
+        "count": 3
+      }
+    ]
 })
-
 ```
+### Успешно отправлен запрос (status: 200)
 ## История запросов
 ### Запрос данных
-```
+```js
 await fetch("/query/history", {
-    method: "get",
+    method: "GET",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     }
 })
-
 ```
-### Ничего не найдено
+Поиск запроса по истории запросов
+```js
+await fetch("/query/history/search?brand=632&numparts=365132&numquery=23244&date=04.06.2025", {
+  method: "GET",
+  headers: {
+    Authorization: "Bearer <token>"
+  }
+})
 ```
-code: 200
-
+### Ничего не найдено (status: 404)
+### Есть результаты (status: 200)
+```json
 {
-    "status": "success",
-    "results": [],
-    "total_results": 0,
-    "message": "Нет истории запросов"
-}
-```
-### Есть результаты
-```
-code: 200 
-{
-    "status": "success",
     "page": 0,
     "total_page": 10,
     "total_results": 105,
@@ -49,61 +76,48 @@ code: 200
             "id": 1,
             "num_order": "Z17479110881",
             "status": 1,
-            "user" 23,
+            "user": "Иван Иванович",
             "date_create": "2025-06-06T12:34:56Z",
-            "date_valid": "2025-06-06T12:34:56Z",
+            "date_valid": "2025-06-06T12:34:56Z"
         }
-        ...
     ]
 }
 ```
 ## Воронка запросов
 ### Запрос данных
 Возвращает данные о первых 10 результатах в каждом статусе
-```
+```js
 await fetch("/query/funnel", {
-    method: "get",
+    method: "GET",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     }
 })
 
 ```
 Возвращает данные нужного статуса
-```
+```js
 await fetch("/query/funnel?status=2", {
-    method: "get",
+    method: "GET",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     }
 })
 
 ```
-### Поиск запроса
-```
-await fetch("/query/search?ordernumber=Z17479110881&user=3&date=04.06.2025", {
+Поиск запроса по воронке
+```js
+await fetch("/query/funnel/search?ordernumber=Z17479110881&user=38&date=04.06.2025", {
   method: "GET",
   headers: { 
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    Authorization: "Bearer <token>"
   }
 })
 ```
-### Ничего не найдено
-```
-code: 200
-
+### Ничего не найдено (status: 404)
+### Есть результаты (status: 200)
+```json 
 {
-    "status": "success",
-    "results": [],
-    "total_results": 0,
-    "message": "Нет запросов"
-}
-```
-### Есть результаты
-```
-code: 200 
-{
-    "status": "success",
     "page": 0,
     "total_page": 10,
     "total_results": 105,
@@ -112,12 +126,11 @@ code: 200
             "id": 1,
             "num_order": "Z17479110881",
             "status": 1,
-            "user" 23,
-            "company": "ООО Рога и копыта"
+            "user": "Иван Иванович",
+            "company": "ООО Рога и копыта",
             "date_create": "2025-06-06T12:34:56Z",
             "total_price": 343242
         }
-        ...
     ]
 }
 ```

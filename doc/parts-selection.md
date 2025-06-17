@@ -1,56 +1,55 @@
 # Подбор ЗЧ
 
-```
-await fetch("/garage/add", {
+## Создать транспорт
+```js
+await fetch("/transport", {
     method: "POST",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     },
     body: {
-        "transportbrand": "PCMIDWEST (BA2)",
-        "transportmodel": "S2",
-        "transportyearproduction": "2005",
-        "transportprefix": "B",
-        "transportserialnumber": "321651465410",
-        "enginebrand": "LUDA (RJ3)",
-        "enginemodel": "2A",
-        "enginevoltage": "48V",
-        "enginefueltype": "Дизель",
-        "engineserialnumber": "321651465410",
-        "mastbrand": "OLD TRACPIECES (RG4)",
-        "mastmodel": "VDW2F3",
-        "mastheight": "105",
-        "mastserialnumber": "321651465410",
-        "mastsections": "3",
-        "mastcylinders": "8",
-        "text": "Магический ТС",
-        "image": ['temp/1.jpg', 'temp/2.jpg', 'temp/3.jpg',]
+        "transportbrand": "LUDA (RJ3)", // Бренд
+        "transportmodel": "RC1", // Модель
+        "transportyearproduction": "2025", // Год производства
+        "transportprefix": "A", // Префикс
+        "transportserialnumber": "32156499DFDS8", // Серийный номер
+        "enginebrand": "LUDA (RJ3)", // Бренд двигателя
+        "enginemodel": "TD37J", // Модель двигателя
+        "enginevoltage": "48V", // Напряжение двигателя
+        "enginefueltype": "Дизель", // Типо топлива двигателя
+        "engineserialnumber": "32156499DFDS8", // Серийный номер двигателя
+        "mastbrand": "LUDA (RJ3)", // Бренд мачты
+        "mastmodel": "DW23", // Модель мачты
+        "mastheight": 123, // Высота мачты
+        "mastserialnumber": "32156499DFDS8", // Серийный номер мачты
+        "mastsections": 1, // Количество секций мачты
+        "mastcylinders": 1, // Количество цилиндров мачты
+        "text": "Крутой и непонятный", // Примечание
+        "image": [34, 654, 45] // Общие методы > Загрузка картинок
     }
 })
 ```
-### Ответ от сервера
-```
-code: 200
-
+### Ответ от сервера (status: 200)
+```json
 {
-    "status": "success",
-    "transporid": 4233,
+    "transporid": 4233
 }
 ```
-
 ## Запросить запчасти
-```
-await fetch("/garage/request", {
+```js
+await fetch("/transport/request", {
     method: "POST",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     },
     body: {
-        "transporid": 4233,
-        "titleparts": "Пружина",
-        "numparts": "9395003220"
-        "count": "3"
-        "comment": "Ну такая круглая"
-    }
+      "transporid": 4233,
+      "titleparts": "Пружина",
+      "numparts": "9395003220",
+      "count": 3,
+      "comment": "Ну такая круглая"
+    },
 })
 ```
+### Ответ от сервера (status: 200)
+Нужно ли тут обратный ответ для пользователя в виде номера? Или просто уведомляем что успешно запрошено?

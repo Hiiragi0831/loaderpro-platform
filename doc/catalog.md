@@ -1,19 +1,17 @@
 # Каталог
 ## Загрузка каталога
 ### Запрос
-```
+```js
 await fetch("/catalog/", {
   method: "GET",
   headers: { 
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    Authorization: "Bearer <token>"
   }
 })
 ```
-### Ответ
-```
-code: 200
+### Ответ (status: 200)
+```json
 {
-    "status": "success",
     "page": 0,
     "total_results": 105,
     "results": [
@@ -23,37 +21,24 @@ code: 200
             "status": 1,
             "price": 2564,
             "quality": 2,
-            "image": "/image/134324.jpg",
+            "image": "/image/134324.jpg"
         }
-        ...
     ]
 }
 ```
 ## Поиск
-```
+```js
 await fetch("/catalog/search?request=72642683", {
   method: "GET",
   headers: { 
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    Authorization: "Bearer <token>"
   }
 })
 ```
-### Ничего не найдено
-```
-code: 200
-
+### Ничего не найдено (status: 404)
+### Найдены результаты (status: 200)
+```json
 {
-    "status": "success",
-    "results": [],
-    "total_results": 0,
-    "message": "По вашему запросу, ничего не найдено"
-}
-```
-### Найдены результаты
-```
-code: 200
-{
-    "status": "success",
     "page": 0,
     "total_results": 105,
     "results": [
@@ -63,18 +48,17 @@ code: 200
             "status": 1,
             "price": 256,
             "quality": 2,
-            "image": "/image/134324.jpg",
+            "image": "/image/134324.jpg"
         }
-        ...
     ]
 }
 ```
 ## Добавить товар
-```
-await fetch("/catalog/add", {
+```js
+await fetch("/catalog", {
     method: "POST",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     },
     body: {
         "productname": "Пружина 4233",
@@ -87,19 +71,21 @@ await fetch("/catalog/add", {
         "measurement": 1,
         "weight": 0.5,
         "comment": "Самая обычная пружина.... титановая если можно, чтобы не ломалась",
-        "image": ['temp/1.jpg', 'temp/2.jpg', 'temp/3.jpg',]
+        "image": [3, 5, 7] // Общие методы > Загрузка картинок
     }
 })
 ```
 ## Импортировать товары
-```
+```js
 await fetch("/catalog/import", {
     method: "POST",
     headers: { 
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Authorization: "Bearer <token>"
     },
     body: {
         "file": "temp/1.xlsx"
     }
 })
 ```
+### Ошибка загрузки (status: 400)
+### Загрузка завершена (status: 200)
