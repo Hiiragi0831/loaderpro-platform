@@ -16,7 +16,7 @@
 - дата передается в формате ISO 8601
 - id передается в формате number
 
-## Общие методы
+# Общие методы
 
 ### Загрузка картинок
 
@@ -79,5 +79,28 @@ const status = [
         id: 7,
         name: "Отменен"
     }
+]
+```
+## Запрашиваем список брендов
+После авторизации мы грузим бренды в local storage
+```js
+await fetch("/brand", {
+  method: "GET",
+  headers: { 
+    Authorization: "Bearer <token>"
+  }
+})
+```
+### Ответ (status: 200)
+```json 
+[
+  {
+    "id": 1,
+    "name":"LOADERPRO"
+  },
+  {
+    "id": 2,
+    "name":"LUDA (RJ3)"
+  }
 ]
 ```

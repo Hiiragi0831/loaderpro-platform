@@ -8,17 +8,17 @@ await fetch("/transport", {
         Authorization: "Bearer <token>"
     },
     body: {
-        "transportbrand": "LUDA (RJ3)", // Бренд
+        "transportbrand": 3, // Бренд
         "transportmodel": "RC1", // Модель
         "transportyearproduction": "2025", // Год производства
         "transportprefix": "A", // Префикс
         "transportserialnumber": "32156499DFDS8", // Серийный номер
-        "enginebrand": "LUDA (RJ3)", // Бренд двигателя
+        "enginebrand": 3, // Бренд двигателя
         "enginemodel": "TD37J", // Модель двигателя
         "enginevoltage": "48V", // Напряжение двигателя
         "enginefueltype": "Дизель", // Типо топлива двигателя
         "engineserialnumber": "32156499DFDS8", // Серийный номер двигателя
-        "mastbrand": "LUDA (RJ3)", // Бренд мачты
+        "mastbrand": 4, // Бренд мачты
         "mastmodel": "DW23", // Модель мачты
         "mastheight": 123, // Высота мачты
         "mastserialnumber": "32156499DFDS8", // Серийный номер мачты

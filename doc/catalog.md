@@ -62,7 +62,7 @@ await fetch("/catalog", {
     },
     body: {
         "productname": "Пружина 4233",
-        "brand": "LPM (000)",
+        "brand": 2,
         "article": "9395003220",
         "price": 23059,
         "count": 2,

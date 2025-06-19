@@ -1,28 +1,4 @@
 # Запросы
-
-## Запрашиваем список брендов
-При загрузке страницы запросы мы грузим бренды в переменную для форм
-```js
-await fetch("/brand", {
-  method: "GET",
-  headers: { 
-    Authorization: "Bearer <token>"
-  }
-})
-```
-### Ответ (status: 200)
-```json 
-[
-  {
-    "id": 1,
-    "name":"LOADERPRO"
-  },
-  {
-    "id": 2,
-    "name":"LUDA (RJ3)"
-  }
-]
-```
 ## Новый запрос
 ```js
 await fetch("/query", {
