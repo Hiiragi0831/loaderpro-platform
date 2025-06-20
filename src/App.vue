@@ -4,13 +4,9 @@ import FooterApp from '@/components/FooterApp.vue'
 </script>
 
 <template>
-  <div class="relative flex flex-col h-full text-base">
-    <HeaderApp />
-    <RouterView />
-    <FooterApp />
-  </div>
+  <HeaderApp />
+  <RouterView />
+  <FooterApp />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

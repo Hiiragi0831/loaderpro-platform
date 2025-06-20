@@ -9,6 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     Badge: typeof import('primevue/badge')['default']
     Button: typeof import('primevue/button')['default']
+    Column: typeof import('primevue/column')['default']
+    DataTable: typeof import('primevue/datatable')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
     FooterApp: typeof import('./src/components/FooterApp.vue')['default']
     HeaderApp: typeof import('./src/components/HeaderApp.vue')['default']

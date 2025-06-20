@@ -9,7 +9,7 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
 </script>
 
 <template>
-  <footer>
+  <footer class="mt-auto">
     <div class="bg-zinc-850 py-30">
       <div class="container m-auto grid grid-cols-5 gap-45 max-lg:grid-cols-2 max-lg:gap-30">
         <div class="grid gap-16 max-lg:order-5 max-lg:col-span-2 max-lg:justify-items-center">
@@ -43,16 +43,16 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
         <div class="grid gap-16 text-white">
           <p class="font-semibold text-xl">Обслуживание клиентов</p>
           <RouterLink to="/about">О компании</RouterLink>
-          <RouterLink to="/">Оплата и доставка</RouterLink>
-          <RouterLink to="/">Условия возврата</RouterLink>
-          <RouterLink to="/">Реквизиты</RouterLink>
+          <RouterLink to="/payment-delivery">Оплата и доставка</RouterLink>
+          <RouterLink to="/return">Условия возврата</RouterLink>
+          <RouterLink to="/credentials">Реквизиты</RouterLink>
         </div>
         <div class="grid gap-16 text-white">
           <p class="font-semibold text-xl">Мой аккаунт</p>
-          <RouterLink to="/about">Запросы</RouterLink>
+          <RouterLink to="/">Запросы</RouterLink>
           <RouterLink to="/">Заказы</RouterLink>
           <RouterLink to="/">Настройки</RouterLink>
-          <RouterLink to="/">Конфиденциальность</RouterLink>
+          <RouterLink to="/privacy-policy">Конфиденциальность</RouterLink>
         </div>
         <div class="flex flex-col gap-16 text-white">
           <p class="font-semibold text-xl">Способы оплаты</p>

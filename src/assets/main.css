@@ -21,6 +21,9 @@
 @theme {
   --spacing: var(--width-multiplier);
   --default-font-family: "Montserrat", "Arial", "sans-serif";
+  --text-4xl: calc(36 * var(--width-multiplier));
+  --text-3xl: calc(32 * var(--width-multiplier));
+  --text-2xl: calc(24 * var(--width-multiplier));
   --text-xl: calc(18 * var(--width-multiplier));
   --text-base: calc(14 * var(--width-multiplier));
   --text-sm: calc(12 * var(--width-multiplier));
@@ -30,22 +33,29 @@
 }
 
 html {
-  @apply h-full;
-}
-body {
-  @apply h-full;
-}
-#app {
-  @apply h-full;
-}
-main {
-  @apply h-full;
-}
-
-html {
   font-size: 14px;
 }
+#app {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  min-height: 100vh
+}
+main {
 
+}
+
+h1 {
+  @apply text-4xl font-bold
+}
+
+h2 {
+  @apply text-3xl font-bold
+}
+
+h3 {
+  @apply text-2xl font-bold
+}
 
 .container {
   width: 100%;
