@@ -73,9 +73,4 @@ const dataTable = [
 </template>
 
 <style scoped>
-table {
-  td {
-    @apply border border-indigo-500;
-  }
-}
 </style>

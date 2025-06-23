@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import IconLogo from '@/components/icons/IconLogo.vue'
+import { computed, onMounted, reactive } from 'vue'
+import { useBrandStore } from '@/stores/brand.ts'
+
+const brandStore = useBrandStore();
+const formData = reactive({
+  brand: null as { name: string } | null,
+  numparts: '',
+  count: 1,
+})
+
+const brands = computed(() => brandStore.brand)
+
 </script>
 
 <template>
@@ -30,26 +42,36 @@ import IconLogo from '@/components/icons/IconLogo.vue'
     </div>
     <div class="py-25 bg-white">
       <div class="container m-auto flex justify-between items-center gap-40">
-        <IconLogo class="w-200 h-44 shrink-0" />
+        <RouterLink to="/">
+          <IconLogo class="w-200 h-44 shrink-0" />
+        </RouterLink>
         <div class="flex gap-20 items-center">
           <FloatLabel variant="on" class="w-1/4">
-            <InputText id="on_label" />
-            <label for="on_label">Бренд</label>
+            <Select
+              inputId="brand"
+              v-model="formData.brand"
+              :options="brands"
+              filter
+              optionLabel="name"
+              class="w-full"
+              fluid
+            />
+            <label for="brand">Бренд</label>
           </FloatLabel>
-          <FloatLabel variant="on" class="w-1/4">
-            <InputText id="on_label" />
-            <label for="on_label">Номер запчасти</label>
+          <FloatLabel variant="on" class="w-1/3">
+            <InputText id="numparts" v-model="formData.numparts" />
+            <label for="numparts">Номер запчасти</label>
           </FloatLabel>
 
-          <FloatLabel variant="on" class="w-1/4">
+          <FloatLabel variant="on" class="w-1/3">
             <InputNumber
-              inputId="on_label"
+              v-model="formData.count"
+              inputId="count"
               buttonLayout="horizontal"
               showButtons
+              class="w-full"
               suffix=" шт."
-              :min="0"
-              :max="40"
-              :modelValue="1"
+              :min="1"
             >
               <template #incrementbuttonicon>
                 <span class="pi pi-plus" />
@@ -58,7 +80,7 @@ import IconLogo from '@/components/icons/IconLogo.vue'
                 <span class="pi pi-minus" />
               </template>
             </InputNumber>
-            <label for="on_label">Количество</label>
+            <label for="count">Количество</label>
           </FloatLabel>
           <Button label="Запросить" class="w-1/4" />
         </div>
