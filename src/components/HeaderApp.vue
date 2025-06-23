@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconLogo from '@/components/icons/IconLogo.vue'
-import { computed, onMounted, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { useBrandStore } from '@/stores/brand.ts'
 
 const brandStore = useBrandStore();
@@ -107,7 +107,7 @@ const brands = computed(() => brandStore.brand)
               { name: 'Гараж', url: '/' },
             ],
             [
-              { name: 'Запросы', url: '/' },
+              { name: 'Запросы', url: '/query' },
               { name: 'Заказы', url: '/' },
               { name: 'Новости', url: '/' },
             ],

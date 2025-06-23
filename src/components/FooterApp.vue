@@ -49,7 +49,7 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
         </div>
         <div class="grid gap-16 text-white">
           <p class="font-semibold text-xl">Мой аккаунт</p>
-          <RouterLink to="/">Запросы</RouterLink>
+          <RouterLink to="/query">Запросы</RouterLink>
           <RouterLink to="/">Заказы</RouterLink>
           <RouterLink to="/">Настройки</RouterLink>
           <RouterLink to="/privacy-policy">Конфиденциальность</RouterLink>
