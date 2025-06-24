@@ -1,32 +1,44 @@
 <script setup lang="ts">
 import { useQueryStore } from '@/stores/query.ts'
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useBrandStore } from '@/stores/brand.ts'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+import { useField, useForm } from 'vee-validate'
 
 const queryStore = useQueryStore();
 const brandStore = useBrandStore();
 
-const formData = reactive({
-  brand: null as { name: string } | null,
-  numparts: '',
-  count: 1,
-})
-
 const brands = computed(() => brandStore.brand);
 
-const handleSubmit = () => {
-  // Добавляем копию с уникальным id
+const schema = toTypedSchema(
+  z.object({
+    brand: z.string({ required_error: 'Выберите бренд' }).min(1, 'Выберите бренд'),
+    numparts: z
+      .string({ required_error: 'Введите номер запчасти' })
+      .min(1, 'Введите номер запчасти'),
+    count: z
+      .number({ required_error: 'Укажите количество', invalid_type_error: 'Введите число' })
+      .min(1, 'Количество должно быть больше 0'),
+  }),
+)
+const { handleSubmit, errors, handleReset } = useForm({
+  validationSchema: schema,
+})
+
+const { value: brand } = useField('brand')
+const { value: numparts } = useField<string>('numparts')
+const { value: count } = useField<number>('count')
+
+const onSubmit = handleSubmit((values) => {
   queryStore.addQuery({
     id: Math.round(Date.now() + Math.random()),
-    brand: formData.brand?.name ?? '',
-    numparts: formData.numparts,
-    count: formData.count,
+    brand: values.brand,
+    numparts: values.numparts,
+    count: values.count,
   })
-  // Очищаем форму
-  formData.brand = null
-  formData.numparts = ''
-  formData.count = 1
-}
+  handleReset()
+})
 
 const handleSend = () => {
   // Здесь можно добавить логику отправки запроса
@@ -49,32 +61,53 @@ onMounted( () => {
           <Button variant="outlined">Импортировать из файла</Button>
         </div>
         <hr class="border-zinc-300" />
-        <form class="grid grid-cols-4 items-center gap-15 p-25" @submit.prevent="handleSubmit">
+        <form class="grid grid-cols-4 items-center gap-15 p-25" @submit="onSubmit">
           <FloatLabel variant="on">
             <Select
-              inputId="brand"
-              v-model="formData.brand"
+              label-id="brand"
+              v-model="brand"
               :options="brands"
-              filter
               optionLabel="name"
+              optionValue="name"
+              filter
               class="w-full"
               fluid
+              :invalid="!!errors?.brand"
             />
             <label for="brand">Бренд</label>
+            <Message
+              v-if="errors?.brand"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="absolute"
+            >{{ errors?.brand }}
+            </Message>
           </FloatLabel>
           <FloatLabel variant="on">
-            <InputText id="numparts" v-model="formData.numparts" />
+            <InputText id="numparts" v-model="numparts" :invalid="!!errors?.numparts" />
+            <Message
+              v-if="errors?.numparts"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="absolute"
+            >
+              {{ errors.numparts }}
+            </Message>
             <label for="numparts">Номер запчасти</label>
           </FloatLabel>
+
           <FloatLabel variant="on">
             <InputNumber
-              v-model="formData.count"
+              v-model="count"
               inputId="count"
               buttonLayout="horizontal"
               showButtons
               class="w-full"
               suffix=" шт."
               :min="1"
+              :invalid="!!errors?.count"
             >
               <template #incrementbuttonicon>
                 <span class="pi pi-plus" />
@@ -84,6 +117,15 @@ onMounted( () => {
               </template>
             </InputNumber>
             <label for="count">Количество</label>
+            <Message
+              v-if="errors?.count"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="absolute"
+            >
+              {{ errors.count }}
+            </Message>
           </FloatLabel>
           <Button type="submit">Добавить в запрос</Button>
         </form>

@@ -1,17 +1,37 @@
 <script setup lang="ts">
 import IconLogo from '@/components/icons/IconLogo.vue'
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 import { useBrandStore } from '@/stores/brand.ts'
+import * as z from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useField, useForm } from 'vee-validate'
 
-const brandStore = useBrandStore();
-const formData = reactive({
-  brand: null as { name: string } | null,
-  numparts: '',
-  count: 1,
-})
-
+const brandStore = useBrandStore()
 const brands = computed(() => brandStore.brand)
 
+const schema = toTypedSchema(
+  z.object({
+    brand: z.string({ required_error: 'Выберите бренд' }).min(1, 'Выберите бренд'),
+    numparts: z
+      .string({ required_error: 'Введите номер запчасти' })
+      .min(1, 'Введите номер запчасти'),
+    count: z
+      .number({ required_error: 'Укажите количество', invalid_type_error: 'Введите число' })
+      .min(1, 'Количество должно быть больше 0'),
+  }),
+)
+const { handleSubmit, errors, handleReset } = useForm({
+  validationSchema: schema,
+})
+
+const { value: brand } = useField('brand')
+const { value: numparts } = useField<string>('numparts')
+const { value: count } = useField<number>('count')
+
+const onSubmit = handleSubmit((values) => {
+  console.log(values)
+  handleReset()
+})
 </script>
 
 <template>
@@ -45,33 +65,53 @@ const brands = computed(() => brandStore.brand)
         <RouterLink to="/">
           <IconLogo class="w-200 h-44 shrink-0" />
         </RouterLink>
-        <div class="flex gap-20 items-center">
-          <FloatLabel variant="on" class="w-1/4">
+        <form class="flex gap-20 items-center" @submit="onSubmit">
+          <FloatLabel variant="on" class="w-200">
             <Select
-              inputId="brand"
-              v-model="formData.brand"
+              label-id="brand"
+              v-model="brand"
               :options="brands"
-              filter
               optionLabel="name"
+              optionValue="name"
+              filter
               class="w-full"
               fluid
+              :invalid="!!errors?.brand"
             />
             <label for="brand">Бренд</label>
+            <Message
+              v-if="errors?.brand"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="absolute"
+              >{{ errors?.brand }}
+            </Message>
           </FloatLabel>
-          <FloatLabel variant="on" class="w-1/3">
-            <InputText id="numparts" v-model="formData.numparts" />
+          <FloatLabel variant="on" class="w-170">
+            <InputText id="numparts" v-model="numparts" :invalid="!!errors?.numparts" />
+            <Message
+              v-if="errors?.numparts"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="absolute"
+            >
+              {{ errors.numparts }}
+            </Message>
             <label for="numparts">Номер запчасти</label>
           </FloatLabel>
 
-          <FloatLabel variant="on" class="w-1/3">
+          <FloatLabel variant="on" class="w-200">
             <InputNumber
-              v-model="formData.count"
+              v-model="count"
               inputId="count"
               buttonLayout="horizontal"
               showButtons
               class="w-full"
               suffix=" шт."
               :min="1"
+              :invalid="!!errors?.count"
             >
               <template #incrementbuttonicon>
                 <span class="pi pi-plus" />
@@ -81,9 +121,18 @@ const brands = computed(() => brandStore.brand)
               </template>
             </InputNumber>
             <label for="count">Количество</label>
+            <Message
+              v-if="errors?.count"
+              severity="error"
+              size="small"
+              variant="simple"
+              class="absolute"
+            >
+              {{ errors.count }}
+            </Message>
           </FloatLabel>
-          <Button label="Запросить" class="w-1/4" />
-        </div>
+          <Button label="Запросить" class="w-160" type="submit" />
+        </form>
         <div class="flex gap-10 shrink-0">
           <div class="flex flex-col gap-10">
             <div class="flex gap-10 items-center">
