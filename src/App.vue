@@ -5,7 +5,7 @@ import { useBrandStore } from '@/stores/brand.ts'
 import { onMounted } from 'vue'
 
 const brandStore = useBrandStore()
-onMounted( () => {
+onMounted(() => {
   brandStore.getBrands()
 })
 </script>

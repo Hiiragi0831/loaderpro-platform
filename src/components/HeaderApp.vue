@@ -28,16 +28,16 @@ const onSubmit = handleSubmit((values) => {
     <div class="py-18 bg-gray-100">
       <div class="container m-auto flex justify-between">
         <div class="flex gap-40">
-          <RouterLink to="/">Обслуживание клиентов</RouterLink>
-          <RouterLink to="/">Свяжитесь с нами</RouterLink>
+          <RouterLink to="/home">Обслуживание клиентов</RouterLink>
+          <RouterLink to="/home">Свяжитесь с нами</RouterLink>
         </div>
         <div class="flex gap-20 items-center">
-          <RouterLink to="/" class="flex">
+          <RouterLink to="/home" class="flex">
             <OverlayBadge value="2" size="small" class="size-20">
               <i class="pi pi-bell" style="font-size: calc(20 * var(--width-multiplier))" />
             </OverlayBadge>
           </RouterLink>
-          <RouterLink to="/" class="flex gap-10">
+          <RouterLink to="/home" class="flex gap-10">
             <OverlayBadge value="2" size="small" class="size-20">
               <i
                 class="pi pi-shopping-cart"
@@ -51,7 +51,7 @@ const onSubmit = handleSubmit((values) => {
     </div>
     <div class="py-25 bg-white">
       <div class="container m-auto flex justify-between items-center gap-40">
-        <RouterLink to="/">
+        <RouterLink to="/home">
           <IconLogo class="w-200 h-44 shrink-0" />
         </RouterLink>
         <form class="flex gap-20 items-center" @submit="onSubmit">
@@ -140,14 +140,14 @@ const onSubmit = handleSubmit((values) => {
           class="flex"
           v-for="(item, id) in [
             [
-              { name: 'Подбор ЗЧ', url: '/' },
-              { name: 'Каталог', url: '/' },
-              { name: 'Гараж', url: '/' },
+              { name: 'Подбор ЗЧ', url: '/home' },
+              { name: 'Каталог', url: '/home' },
+              { name: 'Гараж', url: '/home' },
             ],
             [
               { name: 'Запросы', url: '/query' },
-              { name: 'Заказы', url: '/' },
-              { name: 'Новости', url: '/' },
+              { name: 'Заказы', url: '/home' },
+              { name: 'Новости', url: '/home' },
             ],
           ]"
           :key="id"

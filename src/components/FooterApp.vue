@@ -50,8 +50,8 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
         <div class="grid gap-16 text-white">
           <p class="font-semibold text-xl">Мой аккаунт</p>
           <RouterLink to="/query">Запросы</RouterLink>
-          <RouterLink to="/">Заказы</RouterLink>
-          <RouterLink to="/">Настройки</RouterLink>
+          <RouterLink to="/home">Заказы</RouterLink>
+          <RouterLink to="/home">Настройки</RouterLink>
           <RouterLink to="/privacy-policy">Конфиденциальность</RouterLink>
         </div>
         <div class="flex flex-col gap-16 text-white">
