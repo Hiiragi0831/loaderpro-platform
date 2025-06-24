@@ -12,6 +12,7 @@ declare module 'vue' {
     Column: typeof import('primevue/column')['default']
     DataTable: typeof import('primevue/datatable')['default']
     Divider: typeof import('primevue/divider')['default']
+    FileUpload: typeof import('primevue/fileupload')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
     FooterApp: typeof import('./src/components/FooterApp.vue')['default']
     HeaderApp: typeof import('./src/components/HeaderApp.vue')['default']
@@ -36,11 +37,13 @@ declare module 'vue' {
     Message: typeof import('primevue/message')['default']
     OverlayBadge: typeof import('primevue/overlaybadge')['default']
     QueryItem: typeof import('./src/components/QueryItem.vue')['default']
+    QueryLoadFile: typeof import('./src/components/QueryLoadFile.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']
     SocialR: typeof import('./src/components/icons/social-r.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    Toast: typeof import('primevue/toast')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }

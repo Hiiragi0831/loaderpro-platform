@@ -2,28 +2,17 @@
 import { useQueryStore } from '@/stores/query.ts'
 import { computed, onMounted } from 'vue'
 import { useBrandStore } from '@/stores/brand.ts'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
 import { useField, useForm } from 'vee-validate'
+import { querySchema } from '@/schema/querySchema.ts'
+import QueryLoadFile from '@/components/QueryLoadFile.vue'
 
-const queryStore = useQueryStore();
-const brandStore = useBrandStore();
+const queryStore = useQueryStore()
+const brandStore = useBrandStore()
 
-const brands = computed(() => brandStore.brand);
+const brands = computed(() => brandStore.brand)
 
-const schema = toTypedSchema(
-  z.object({
-    brand: z.string({ required_error: 'Выберите бренд' }).min(1, 'Выберите бренд'),
-    numparts: z
-      .string({ required_error: 'Введите номер запчасти' })
-      .min(1, 'Введите номер запчасти'),
-    count: z
-      .number({ required_error: 'Укажите количество', invalid_type_error: 'Введите число' })
-      .min(1, 'Количество должно быть больше 0'),
-  }),
-)
 const { handleSubmit, errors, handleReset } = useForm({
-  validationSchema: schema,
+  validationSchema: querySchema,
 })
 
 const { value: brand } = useField('brand')
@@ -47,8 +36,8 @@ const handleSend = () => {
   queryStore.clearQuery()
 }
 
-onMounted( () => {
-  queryStore.loadQuery();
+onMounted(() => {
+  queryStore.loadQuery()
 })
 </script>
 
@@ -58,7 +47,7 @@ onMounted( () => {
       <div class="shadow-lg rounded bg-white">
         <div class="flex justify-between items-center p-25">
           <h3>Запрос цены</h3>
-          <Button variant="outlined">Импортировать из файла</Button>
+          <QueryLoadFile />
         </div>
         <hr class="border-zinc-300" />
         <form class="grid grid-cols-4 items-center gap-15 p-25" @submit="onSubmit">
@@ -81,7 +70,7 @@ onMounted( () => {
               size="small"
               variant="simple"
               class="absolute"
-            >{{ errors?.brand }}
+              >{{ errors?.brand }}
             </Message>
           </FloatLabel>
           <FloatLabel variant="on">
