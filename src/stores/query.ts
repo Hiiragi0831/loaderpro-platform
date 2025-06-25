@@ -8,8 +8,13 @@ export const useQueryStore = defineStore('query', {
     loadQuery() {
       this.query = JSON.parse(localStorage.getItem('query') || '[]')
     },
-    addQuery(item: object) {
-      this.query.push(item)
+    addQuery(item: object | object[]) {
+      if (Array.isArray(item)) {
+        const items = Array.isArray(item) ? item.flat() : [item]
+        this.query.push(...items)
+      } else {
+        this.query.push(item)
+      }
       localStorage.setItem('query', JSON.stringify(this.query))
     },
     removeQuery(index: number) {

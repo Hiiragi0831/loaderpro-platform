@@ -4,7 +4,7 @@ import { computed, onMounted } from 'vue'
 import { useBrandStore } from '@/stores/brand.ts'
 import { useField, useForm } from 'vee-validate'
 import { querySchema } from '@/schema/querySchema.ts'
-import QueryLoadFile from '@/components/QueryLoadFile.vue'
+import QueryLoadExcel from '@/components/QueryLoadExcel.vue'
 
 const queryStore = useQueryStore()
 const brandStore = useBrandStore()
@@ -47,7 +47,7 @@ onMounted(() => {
       <div class="shadow-lg rounded bg-white">
         <div class="flex justify-between items-center p-25">
           <h3>Запрос цены</h3>
-          <QueryLoadFile />
+          <QueryLoadExcel />
         </div>
         <hr class="border-zinc-300" />
         <form class="grid grid-cols-4 items-center gap-15 p-25" @submit="onSubmit">
