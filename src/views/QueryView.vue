@@ -51,7 +51,7 @@ onMounted(() => {
         </div>
         <hr class="border-zinc-300" />
         <form class="grid grid-cols-4 items-center gap-15 p-25" @submit="onSubmit">
-          <FloatLabel variant="on">
+          <FloatLabel variant="on" class="h-full">
             <Select
               label-id="brand"
               v-model="brand"
@@ -59,7 +59,7 @@ onMounted(() => {
               optionLabel="name"
               optionValue="name"
               filter
-              class="w-full"
+              class="w-full h-full"
               fluid
               :invalid="!!errors?.brand"
             />
@@ -73,8 +73,8 @@ onMounted(() => {
               >{{ errors?.brand }}
             </Message>
           </FloatLabel>
-          <FloatLabel variant="on">
-            <InputText id="numparts" v-model="numparts" :invalid="!!errors?.numparts" />
+          <FloatLabel variant="on" class="h-full">
+            <InputText id="numparts" v-model="numparts" :invalid="!!errors?.numparts" class="h-full"/>
             <Message
               v-if="errors?.numparts"
               severity="error"
@@ -87,13 +87,13 @@ onMounted(() => {
             <label for="numparts">Номер запчасти</label>
           </FloatLabel>
 
-          <FloatLabel variant="on">
+          <FloatLabel variant="on" class="h-full">
             <InputNumber
               v-model="count"
               inputId="count"
               buttonLayout="horizontal"
               showButtons
-              class="w-full"
+              class="w-full h-full"
               suffix=" шт."
               :min="1"
               :invalid="!!errors?.count"
@@ -116,7 +116,7 @@ onMounted(() => {
               {{ errors.count }}
             </Message>
           </FloatLabel>
-          <Button type="submit">Добавить в запрос</Button>
+          <Button type="submit" class="!text-base h-full">Добавить в запрос</Button>
         </form>
       </div>
       <div class="shadow-lg rounded bg-white" v-if="queryStore.query.length > 0">

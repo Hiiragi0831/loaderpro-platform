@@ -37,6 +37,10 @@
 html {
   font-size: 14px;
 }
+
+body{
+  font-size: var(--text-base);
+}
 #app {
   display: flex;
   flex-direction: column;
