@@ -5,16 +5,13 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import PrimeVue from 'primevue/config';
-import Aura from '@primeuix/themes/aura';
-import {definePreset} from "@primeuix/themes";
+import PrimeVue from 'primevue/config'
+import Aura from '@primeuix/themes/aura'
+import { definePreset } from '@primeuix/themes'
 import { ToastService } from 'primevue'
 
-const app = createApp(App);
-
-app.use(createPinia());
-app.use(router);
-app.use(ToastService);
+const app = createApp(App)
+const pinia = createPinia()
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -29,20 +26,23 @@ const MyPreset = definePreset(Aura, {
       700: '#A05D05',
       800: '#693D03',
       900: '#331E02',
-      950: '#180E01'
-    }
+      950: '#180E01',
+    },
   },
   pt: {
     badge: {
       root: 'w-10',
-    }
-  }
-});
+    },
+  },
+})
 
+app.use(pinia)
+app.use(router)
+app.use(ToastService)
 app.use(PrimeVue, {
   theme: {
-    preset: MyPreset
-  }
-});
+    preset: MyPreset,
+  },
+})
 
-app.mount('#app');
+app.mount('#app')

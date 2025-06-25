@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type Router } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.ts'
 
 const router = createRouter({
@@ -47,16 +47,18 @@ const router = createRouter({
   ],
 })
 
+const publicRoutes = ['login', 'query', 'about', 'payment-delivery', 'return', 'credentials', 'privacy-policy']
+
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   await authStore.checkToken()
-  if (!authStore.isAuthenticated && to.path !== '/') {
-    next({ path: '/' })
-  } else if (authStore.isAuthenticated && to.path === '/') {
-    next({ path: '/home' })
-  } else {
-    next()
+
+  // Если маршрут не является публичным и пользователь не аутентифицирован, перенаправляем на логин
+  if (!publicRoutes.includes(to.name as string) && !authStore.isAuthenticated) {
+    return next({ path: '/login' })
   }
+
+  next()
 })
 
 export default router
