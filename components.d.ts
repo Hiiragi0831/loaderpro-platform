@@ -36,6 +36,7 @@ declare module 'vue' {
     InputText: typeof import('primevue/inputtext')['default']
     Message: typeof import('primevue/message')['default']
     OverlayBadge: typeof import('primevue/overlaybadge')['default']
+    Password: typeof import('primevue/password')['default']
     QueryItem: typeof import('./src/components/QueryItem.vue')['default']
     QueryLoadFile: typeof import('./src/components/QueryLoadFile.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
