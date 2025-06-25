@@ -6,7 +6,7 @@ export const useAuthStore = defineStore('auth', {
       name: '',
       email: '',
       token: '',
-      login: '',
+      loginAt: '',
     },
     message: {
       type: '',
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
         })
         const data = await res.json()
         if (res.ok && data.data && data.token) {
-          this.user = { ...data.data, token: data.token, login: Date.now() }
+          this.user = { ...data.data, token: data.token, loginAt: Date.now() }
           localStorage.setItem('user', JSON.stringify(this.user))
           this.isAuthenticated = true
           this.message = { type: 'success', title: 'Вы успешно вошли в аккаунт', text: 'Здравствуйте, ' + this.user.name + '!' }
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
         } else if (data.message) {
           this.message = { type: 'error', title: 'Ошибка', text: String(data.message) }
         } else {
-          this.message = { type: 'error', title: 'Ошибка регистрации', text: `код ${res.status}` }
+          this.message = { type: 'error', title: 'Ошибка авторизации', text: `код ${res.status}` }
         }
       } catch {
         this.message = { type: 'error', title: 'Сетевая ошибка', text: ' Попробуйте позже' }
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore('auth', {
       const user = JSON.parse(userStr)
       const now = Date.now()
       const DAY_MS = 24 * 60 * 60 * 1000
-      if (!user.login || now - user.login > DAY_MS) {
+      if (!user.loginAt || now - user.loginAt > DAY_MS) {
         this.logout()
         return
       }
@@ -74,7 +74,7 @@ export const useAuthStore = defineStore('auth', {
     },
     logout() {
       this.message = { type: 'error', title: 'Вы не авторизованы', text: 'Пожалуйста, войдите в систему' }
-      this.user = { name: '', email: '', token: '', login: '' }
+      this.user = { name: '', email: '', token: '', loginAt: '' }
       this.isAuthenticated = false
       localStorage.removeItem('user')
     },
