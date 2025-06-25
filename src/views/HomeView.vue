@@ -6,6 +6,9 @@ const authStore = useAuthStore()
 const onCheck = async () => {
   await authStore.checkToken()
 }
+const onOut = async () => {
+  await authStore.logout()
+}
 </script>
 
 <template>
@@ -14,6 +17,7 @@ const onCheck = async () => {
       <div class="container m-auto">
         <p>Главная</p>
         <Button label="Проверка токена" class="w-full" @click="onCheck" />
+        <Button label="Выйти" class="w-full" @click="onOut" />
       </div>
     </section>
   </main>
