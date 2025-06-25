@@ -2,6 +2,7 @@
 import HeaderApp from '@/components/HeaderApp.vue'
 import FooterApp from '@/components/FooterApp.vue'
 import { useBrandStore } from '@/stores/brand.ts'
+import { watch } from 'vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import { useToast } from 'primevue/usetoast'
 
