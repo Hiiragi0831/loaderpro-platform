@@ -2,29 +2,24 @@
 import HeaderApp from '@/components/HeaderApp.vue'
 import FooterApp from '@/components/FooterApp.vue'
 import { useBrandStore } from '@/stores/brand.ts'
-import { onMounted, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import { useToast } from 'primevue/usetoast'
-import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const brandStore = useBrandStore()
 const toast = useToast()
-const router = useRouter()
-
-onMounted(() => {
-  brandStore.getBrands()
-})
 
 watch(
   [() => authStore.message, () => authStore.isAuthenticated],
-  ([message, isAuthenticated]) => {
+  async ([message, isAuthenticated]) => {
     if (message) {
       toast.add({ severity: message.type, summary: message.title, detail: message.text, life: 3000 })
       authStore.message = null
     }
-    if (!isAuthenticated) {
-      router.push({ name: 'login' })
+
+    // Загружаем бренды при успешной авторизации
+    if (isAuthenticated) {
+      await brandStore.getBrands()
     }
   },
   { immediate: true }
