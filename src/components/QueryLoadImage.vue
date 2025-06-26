@@ -45,7 +45,6 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
 
 <template>
   <div class="card flex justify-center">
-    <Toast />
     <FileUpload
       :customUpload="true"
       :auto="true"

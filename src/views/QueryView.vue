@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQueryStore } from '@/stores/query.ts'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useBrandStore } from '@/stores/brand.ts'
 import { useField, useForm } from 'vee-validate'
 import { querySchema } from '@/schema/querySchema.ts'
@@ -8,6 +8,11 @@ import QueryLoadExcel from '@/components/QueryLoadExcel.vue'
 
 const queryStore = useQueryStore()
 const brandStore = useBrandStore()
+
+const rowsPerPage = 10
+const first = ref(0)
+const totalRecords = computed(() => queryStore.query.length)
+const showPaginator = computed(() => totalRecords.value > rowsPerPage)
 
 const brands = computed(() => brandStore.brand)
 
@@ -116,7 +121,7 @@ onMounted(() => {
               {{ errors.count }}
             </Message>
           </FloatLabel>
-          <Button type="submit" class="!text-base h-full">Добавить в запрос</Button>
+          <Button type="submit" class="!text-base h-full" label="Добавить в запрос" />
         </form>
       </div>
       <div class="shadow-lg rounded bg-white" v-if="queryStore.query.length > 0">
@@ -126,13 +131,21 @@ onMounted(() => {
         </div>
         <hr class="border-zinc-300" />
         <div class="p-25 flex flex-col gap-25">
-          <DataTable :value="queryStore.query" showGridlines>
-            <Column field="brand" header="Бренд" class="w-1/4" />
-            <Column field="numparts" header="Номер запчасти" />
-            <Column field="count" header="Количество" class="w-1/6">
+          <DataTable
+            :value="queryStore.query"
+            showGridlines
+            :paginator="showPaginator"
+            :rows="rowsPerPage"
+            :first="first"
+            @update:first="val => first = val"
+            :totalRecords="totalRecords"
+          >
+            <Column field="brand" header="Бренд" class="w-1/4 !p-10" />
+            <Column field="numparts" header="Номер запчасти" class="!p-10"/>
+            <Column field="count" header="Количество" class="w-1/6 !p-10">
               <template #body="slotProps"> {{ slotProps.data.count }} шт. </template>
             </Column>
-            <Column header="Действия" class="w-24">
+            <Column header="Действия" class="w-24 !p-10">
               <template #body="slotProps">
                 <div class="justify-center items-center flex">
                   <Button icon="pi pi-times" @click="queryStore.removeQuery(slotProps.index)" />
