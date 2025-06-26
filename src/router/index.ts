@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const publicRoutes = ['login', 'query', 'about', 'payment-delivery', 'return', 'credentials', 'privacy-policy']
+const publicRoutes = ['login', 'privacy-policy']
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

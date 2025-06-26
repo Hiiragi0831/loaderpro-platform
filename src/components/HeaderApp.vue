@@ -54,8 +54,8 @@ const onSubmit = handleSubmit((values) => {
         <RouterLink to="/home">
           <IconLogo class="w-200 h-44 shrink-0" />
         </RouterLink>
-        <form class="flex gap-20 items-center" @submit="onSubmit">
-          <FloatLabel variant="on" class="w-200">
+        <form class="flex gap-20 items-center h-45" @submit="onSubmit">
+          <FloatLabel variant="on" class="w-200 h-full">
             <Select
               label-id="brand"
               v-model="brand"
@@ -63,7 +63,7 @@ const onSubmit = handleSubmit((values) => {
               optionLabel="name"
               optionValue="name"
               filter
-              class="w-full"
+              class="w-full h-full"
               fluid
               :invalid="!!errors?.brand"
             />
@@ -77,8 +77,8 @@ const onSubmit = handleSubmit((values) => {
               >{{ errors?.brand }}
             </Message>
           </FloatLabel>
-          <FloatLabel variant="on" class="w-170">
-            <InputText id="numparts" v-model="numparts" :invalid="!!errors?.numparts" />
+          <FloatLabel variant="on" class="w-170 h-full">
+            <InputText id="numparts" v-model="numparts" :invalid="!!errors?.numparts" class="h-full"/>
             <Message
               v-if="errors?.numparts"
               severity="error"
@@ -91,13 +91,13 @@ const onSubmit = handleSubmit((values) => {
             <label for="numparts">Номер запчасти</label>
           </FloatLabel>
 
-          <FloatLabel variant="on" class="w-200">
+          <FloatLabel variant="on" class="w-220 h-full">
             <InputNumber
               v-model="count"
               inputId="count"
               buttonLayout="horizontal"
               showButtons
-              class="w-full"
+              class="w-full h-full"
               suffix=" шт."
               :min="1"
               :invalid="!!errors?.count"
@@ -120,7 +120,7 @@ const onSubmit = handleSubmit((values) => {
               {{ errors.count }}
             </Message>
           </FloatLabel>
-          <Button label="Запросить" class="w-160" type="submit" />
+          <Button label="Запросить" class="h-full" type="submit" />
         </form>
         <div class="flex gap-10 shrink-0">
           <div class="flex flex-col gap-10">
