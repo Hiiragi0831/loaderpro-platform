@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import router from '@/router'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -55,7 +56,11 @@ export const useAuthStore = defineStore('auth', {
       const now = Date.now()
       const DAY_MS = 24 * 60 * 60 * 1000
       if (!user.loginAt || now - user.loginAt > DAY_MS) {
-        this.logout()
+        this.logout({
+          type: 'warn',
+          title: 'Сессия истекла',
+          text: 'Время сессии истекло. Пожалуйста, войдите снова'
+        })
         return
       }
       try {
@@ -66,17 +71,30 @@ export const useAuthStore = defineStore('auth', {
           this.user = user
           this.isAuthenticated = true
         } else {
-          this.logout()
+          this.logout({
+            type: 'error',
+            title: 'Ошибка авторизации',
+            text: 'Ваша сессия недействительна. Пожалуйста, войдите снова'
+          })
         }
       } catch {
-        this.logout()
+        this.logout({
+          type: 'error',
+          title: 'Ошибка авторизации',
+          text: 'Ваша сессия недействительна. Пожалуйста, войдите снова'
+        })
       }
     },
-    logout() {
-      this.message = { type: 'error', title: 'Вы не авторизованы', text: 'Пожалуйста, войдите в систему' }
+    logout(messageParams?: { type?: string; title?: string; text?: string }) {
+      this.message = {
+        type: messageParams?.type || 'info',
+        title: messageParams?.title || 'Выход из системы',
+        text: messageParams?.text || 'Вы успешно вышли из аккаунта'
+      }
       this.user = { name: '', email: '', token: '', loginAt: '' }
       this.isAuthenticated = false
       localStorage.removeItem('user')
-    },
+      router.push({ name: 'login' })
+    }
   },
 })

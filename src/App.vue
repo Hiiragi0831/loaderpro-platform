@@ -28,25 +28,26 @@ watch(
 </script>
 
 <template>
-  <HeaderApp v-if="authStore.isAuthenticated"/>
-  <RouterView />
-  <FooterApp v-if="authStore.isAuthenticated"/>
+  <Transition name="fade" mode="out-in">
+    <div v-if="authStore.isAuthenticated" key="main-layout" class="wrapper">
+      <HeaderApp />
+      <RouterView />
+      <FooterApp />
+    </div>
+    <div v-else key="auth-layout" class="wrapper">
+      <RouterView />
+    </div>
+  </Transition>
   <Toast />
 </template>
 
-<style scoped></style>
-
-
-<!--
-Если не авторизован
-то показываем страницу регистрации или входа
-если пользователь хочет попасть на защищённую страницу то переводим его на страницу входа
-Если авторизован направляем на домашнюю страницу
-
-процесс авторизации
-мы отправляем запрос на сервер с логином и паролем
-если авторизация успешна то сервер возвращает токен
-и мы сохраняем его в localStorage
-и переходим на домашнюю страницу
-Если авторизация не успешна то показываем ошибку
--->
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

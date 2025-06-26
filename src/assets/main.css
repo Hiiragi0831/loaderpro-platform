@@ -41,7 +41,7 @@ html {
 body{
   font-size: var(--text-base);
 }
-#app {
+#app, .wrapper {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
