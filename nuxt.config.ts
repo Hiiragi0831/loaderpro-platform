@@ -33,7 +33,14 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@primevue/nuxt-module', '@pinia/nuxt'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@primevue/nuxt-module',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt'
+  ],
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],

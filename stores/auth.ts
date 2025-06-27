@@ -30,9 +30,9 @@ export const useAuthStore = defineStore('auth', {
         if (res.ok && data.data && data.token) {
           this.user = { ...data.data, token: data.token, loginAt: Date.now() }
           localStorage.setItem('user', JSON.stringify(this.user))
+          await useBrandStore().getBrands()
           this.isAuthenticated = true
           this.message = { type: 'success', title: 'Вы успешно вошли в аккаунт', text: 'Здравствуйте, ' + this.user.name + '!' }
-          await useBrandStore().getBrands()
         } else if (res.status === 401) {
           this.message = { type: 'error', title: 'Ошибка', text: 'Неверный логин или пароль' }
         } else if (data.message) {
@@ -93,6 +93,7 @@ export const useAuthStore = defineStore('auth', {
       }
       this.user = { name: '', email: '', token: '', loginAt: '' }
       this.isAuthenticated = false
+      useBrandStore().loaded = false
       localStorage.clear()
     }
   },

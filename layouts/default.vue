@@ -1,5 +1,10 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
+const brandStore = useBrandStore()
+
+onMounted(() => {
+  brandStore.getBrands()
+})
 </script>
 
 <template>

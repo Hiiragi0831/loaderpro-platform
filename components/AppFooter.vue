@@ -50,8 +50,8 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
         <div class="grid gap-16 text-white">
           <p class="font-semibold text-xl">Мой аккаунт</p>
           <NuxtLink to="/query">Запросы</NuxtLink>
-          <NuxtLink to="/home">Заказы</NuxtLink>
-          <NuxtLink to="/home">Настройки</NuxtLink>
+          <NuxtLink to="/orders">Заказы</NuxtLink>
+          <NuxtLink to="/user">Настройки</NuxtLink>
           <NuxtLink to="/privacy-policy">Конфиденциальность</NuxtLink>
         </div>
         <div class="flex flex-col gap-16 text-white">
@@ -60,14 +60,14 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
             <div class="flex gap-10">
               <IconBank class="w-26 h-26 text-primary-500" />
               <p class="text-md">
-                Безнал <br />
+                Безнал <br>
                 с&nbsp;НДС
               </p>
             </div>
             <div class="flex gap-10">
               <IconCreditCard class="w-26 h-26 text-primary-500" />
               <p class="text-md">
-                Оплата <br />
+                Оплата <br>
                 картой
               </p>
             </div>

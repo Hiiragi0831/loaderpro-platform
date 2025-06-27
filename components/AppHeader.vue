@@ -10,13 +10,13 @@ const brandStore = useBrandStore()
 const brands = computed(() => brandStore.brand)
 const menu = [
   [
-    { name: 'Подбор ЗЧ', url: '/home' },
+    { name: 'Подбор ЗЧ', url: '/parts-selection' },
     { name: 'Каталог', url: '/home' },
     { name: 'Гараж', url: '/home' },
   ],
   [
     { name: 'Запросы', url: '/query' },
-    { name: 'Заказы', url: '/home' },
+    { name: 'Заказы', url: '/orders' },
     { name: 'Новости', url: '/home' },
   ],
 ]

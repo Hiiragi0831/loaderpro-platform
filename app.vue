@@ -26,6 +26,7 @@ watch(
   <NuxtLayout class="wrapper">
     <NuxtPage />
   </NuxtLayout>
+  <Toast />
 </template>
 
 <style>
