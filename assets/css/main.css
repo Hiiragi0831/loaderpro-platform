@@ -35,7 +35,7 @@
 }
 
 html {
-  font-size: 14px;
+  font-size: var(--text-base);
 }
 
 body{

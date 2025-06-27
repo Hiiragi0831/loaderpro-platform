@@ -4,11 +4,11 @@ const authStore = useAuthStore()
 
 <template>
   <div v-if="authStore.isAuthenticated" key="main-layout" class="wrapper">
-    <AppHeader v-if="authStore.isAuthenticated" />
+    <AppHeader />
     <div>
       <slot />
     </div>
-    <AppFooter v-if="authStore.isAuthenticated" />
+    <AppFooter />
   </div>
   <div v-else key="auth-layout" class="wrapper">
     <slot />

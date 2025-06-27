@@ -8,6 +8,18 @@ import { querySchema } from '@/schema/querySchema'
 const brandStore = useBrandStore()
 
 const brands = computed(() => brandStore.brand)
+const menu = [
+  [
+    { name: 'Подбор ЗЧ', url: '/home' },
+    { name: 'Каталог', url: '/home' },
+    { name: 'Гараж', url: '/home' },
+  ],
+  [
+    { name: 'Запросы', url: '/query' },
+    { name: 'Заказы', url: '/home' },
+    { name: 'Новости', url: '/home' },
+  ],
+]
 
 const { handleSubmit, errors, handleReset } = useForm({
   validationSchema: querySchema,
@@ -54,7 +66,7 @@ const onSubmit = handleSubmit((values) => {
         <NuxtLink to="/home">
           <IconLogo class="w-200 h-44 shrink-0" />
         </NuxtLink>
-        <form class="flex gap-20 items-center h-45" @submit="onSubmit">
+        <form class="flex gap-20 items-center h-40" @submit="onSubmit">
           <FloatLabel variant="on" class="w-200 h-full">
             <Select
               v-model="brand"
@@ -125,7 +137,7 @@ const onSubmit = handleSubmit((values) => {
               {{ errors.count }}
             </Message>
           </FloatLabel>
-          <Button label="Запросить" class="h-full" type="submit" />
+          <Button class="h-full" type="submit">Запросить</Button>
         </form>
         <div class="flex gap-10 shrink-0">
           <div class="flex flex-col gap-10">
@@ -142,18 +154,7 @@ const onSubmit = handleSubmit((values) => {
     <div class="bg-zinc-850">
       <div class="container m-auto flex justify-between">
         <div
-          v-for="(item, id) in [
-            [
-              { name: 'Подбор ЗЧ', url: '/home' },
-              { name: 'Каталог', url: '/home' },
-              { name: 'Гараж', url: '/home' },
-            ],
-            [
-              { name: 'Запросы', url: '/query' },
-              { name: 'Заказы', url: '/home' },
-              { name: 'Новости', url: '/home' },
-            ],
-          ]"
+          v-for="(item, id) in menu"
           :key="id"
           class="flex"
         >

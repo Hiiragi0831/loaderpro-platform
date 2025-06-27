@@ -54,7 +54,7 @@ onMounted(() => {
           <h3>Запрос цены</h3>
           <QueryLoadExcel />
         </div>
-        <hr class="border-zinc-300" />
+        <hr class="border-zinc-300">
         <form class="grid grid-cols-4 items-center gap-15 p-25" @submit="onSubmit">
           <FloatLabel variant="on" class="h-full">
             <Select
@@ -126,7 +126,7 @@ onMounted(() => {
               {{ errors.count }}
             </Message>
           </FloatLabel>
-          <Button type="submit" class="!text-base h-full" label="Добавить в запрос" />
+          <Button type="submit" class="h-full">Добавить в запрос</Button>
         </form>
       </div>
       <div v-if="queryStore.query.length > 0" class="shadow-lg rounded bg-white">
@@ -134,7 +134,7 @@ onMounted(() => {
           <h3>Ваш запрос</h3>
           <Button variant="outlined" @click="queryStore.clearQuery()">Очистить форму</Button>
         </div>
-        <hr class="border-zinc-300" />
+        <hr class="border-zinc-300">
         <div class="p-25 flex flex-col gap-25">
           <DataTable
             :value="queryStore.query"
