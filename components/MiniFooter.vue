@@ -49,14 +49,14 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
             <div class="flex gap-10">
               <IconBank class="w-26 h-26 text-primary-500" />
               <p class="text-md">
-                Безнал <br />
+                Безнал <br>
                 с&nbsp;НДС
               </p>
             </div>
             <div class="flex gap-10">
               <IconCreditCard class="w-26 h-26 text-primary-500" />
               <p class="text-md">
-                Оплата <br />
+                Оплата <br>
                 картой
               </p>
             </div>
@@ -67,14 +67,14 @@ import IconCreditCard from '@/components/icons/IconCreditCard.vue'
           <div class="flex gap-20">
             <a href="https://www.cdek.ru/" target="_blank" class="w-65 h-20">
               <picture>
-                <source srcset="@/assets/images/logo-cdek.png" />
-                <img src="@/assets/images/logo-cdek.png" alt="" decoding="async" />
+                <source srcset="@/assets/images/logo-cdek.png" >
+                <img src="@/assets/images/logo-cdek.png" alt="" decoding="async" >
               </picture>
             </a>
             <a href="https://www.dellin.ru/" target="_blank" class="w-65 h-20">
               <picture>
-                <source srcset="@/assets/images/logo-del.png" />
-                <img src="@/assets/images/logo-del.png" alt="" decoding="async" />
+                <source srcset="@/assets/images/logo-del.png" >
+                <img src="@/assets/images/logo-del.png" alt="" decoding="async" >
               </picture>
             </a>
           </div>

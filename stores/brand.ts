@@ -6,12 +6,20 @@ export interface Brand {
 
 export const useBrandStore = defineStore('brand', {
   state: () => ({
-    brand: [],
+    brand: [] as Brand[],
     loaded: false
   }),
   actions: {
     async getBrands() {
       if (this.loaded) return
+
+      const storedBrands = localStorage.getItem('brand')
+      if (storedBrands) {
+        this.brand = JSON.parse(storedBrands)
+        this.loaded = true
+        return
+      }
+
       const res = await fetch(`${import.meta.env.VITE_API_URL}/brand`)
       this.brand = await res.json()
       localStorage.setItem('brand', JSON.stringify(this.brand))

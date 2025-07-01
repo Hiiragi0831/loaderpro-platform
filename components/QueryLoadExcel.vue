@@ -2,14 +2,14 @@
 import type { FileUploadUploaderEvent } from 'primevue/fileupload'
 import { useToast } from 'primevue/usetoast'
 import readXlsxFile from 'read-excel-file'
-import { useQueryStore } from '@/stores/query.ts'
-import { useBrandStore } from '@/stores/brand.ts'
+import { useQueryStore } from '@/stores/query'
+import { useBrandStore } from '@/stores/brand'
 
 interface ExcelRow {
   brand: string
   numparts: string
   count: number
-  [key: string]: any
+  [key: string]: string | number
 }
 
 const toast = useToast()
@@ -29,9 +29,9 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
   if (!file) return
 
   const map = {
-    Бренд: 'brand',
+    'Бренд': 'brand',
     'Номер запчасти': 'numparts',
-    Количество: 'count',
+    'Количество': 'count',
   }
 
   readXlsxFile(file, { map }).then((data) => {
