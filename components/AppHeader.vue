@@ -6,6 +6,7 @@ import { useField, useForm } from 'vee-validate'
 import { querySchema } from '@/schema/querySchema'
 
 const brandStore = useBrandStore()
+const userStore = useAuthStore();
 
 const brands = computed(() => brandStore.brand)
 const menu = [
@@ -26,7 +27,7 @@ const { handleSubmit, errors, handleReset } = useForm({
 })
 
 const { value: brand } = useField('brand')
-const { value: numparts } = useField<string>('numparts')
+const { value: numParts } = useField<string>('numParts')
 const { value: count } = useField<number>('count')
 
 const onSubmit = handleSubmit((values) => {
@@ -91,21 +92,21 @@ const onSubmit = handleSubmit((values) => {
           </FloatLabel>
           <FloatLabel variant="on" class="w-170 h-full">
             <InputText
-              id="numparts"
-              v-model="numparts"
-              :invalid="!!errors?.numparts"
+              id="numParts"
+              v-model="numParts"
+              :invalid="!!errors?.numParts"
               class="h-full"
             />
             <Message
-              v-if="errors?.numparts"
+              v-if="errors?.numParts"
               severity="error"
               size="small"
               variant="simple"
               class="absolute"
             >
-              {{ errors.numparts }}
+              {{ errors.numParts }}
             </Message>
-            <label for="numparts">Номер запчасти</label>
+            <label for="numParts">Номер запчасти</label>
           </FloatLabel>
 
           <FloatLabel variant="on" class="w-220 h-full">
@@ -143,9 +144,9 @@ const onSubmit = handleSubmit((values) => {
           <div class="flex flex-col gap-10">
             <div class="flex gap-10 items-center">
               <i class="pi pi-user color-primary-500" />
-              <p>Имя пользователя</p>
+              <p>{{userStore.user.name}}</p>
             </div>
-            <div class="text-sm">35465756200 - telkhpro 000</div>
+            <div class="text-sm">{{userStore.user.company}}</div>
           </div>
           <i class="pi pi-chevron-down" />
         </div>

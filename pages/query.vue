@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQueryStore } from '@/stores/query'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useBrandStore } from '@/stores/brand'
 import { useField, useForm } from 'vee-validate'
 import { querySchema } from '@/schema/querySchema'
@@ -21,14 +21,14 @@ const { handleSubmit, errors, handleReset } = useForm({
 })
 
 const { value: brand } = useField('brand')
-const { value: numparts } = useField<string>('numparts')
+const { value: numParts } = useField<string>('numParts')
 const { value: count } = useField<number>('count')
 
 const onSubmit = handleSubmit((values) => {
-  queryStore.addQuery({
+  queryStore.add({
     id: Math.round(Date.now() + Math.random()),
     brand: values.brand,
-    numparts: values.numparts,
+    numParts: values.numParts,
     count: values.count,
   })
   handleReset()
@@ -38,12 +38,8 @@ const handleSend = () => {
   // Здесь можно добавить логику отправки запроса
   console.log('Отправка запроса:', queryStore.query)
   // Очистка запроса после отправки
-  queryStore.clearQuery()
+  queryStore.clear()
 }
-
-onMounted(() => {
-  queryStore.loadQuery()
-})
 </script>
 
 <template>
@@ -80,21 +76,21 @@ onMounted(() => {
           </FloatLabel>
           <FloatLabel variant="on" class="h-full">
             <InputText
-              id="numparts"
-              v-model="numparts"
-              :invalid="!!errors?.numparts"
+              id="numParts"
+              v-model="numParts"
+              :invalid="!!errors?.numParts"
               class="h-full"
             />
             <Message
-              v-if="errors?.numparts"
+              v-if="errors?.numParts"
               severity="error"
               size="small"
               variant="simple"
               class="absolute"
             >
-              {{ errors.numparts }}
+              {{ errors.numParts }}
             </Message>
-            <label for="numparts">Номер запчасти</label>
+            <label for="numParts">Номер запчасти</label>
           </FloatLabel>
 
           <FloatLabel variant="on" class="h-full">
@@ -132,7 +128,7 @@ onMounted(() => {
       <div v-if="queryStore.query.length > 0" class="shadow-lg rounded bg-white">
         <div class="flex justify-between items-center p-25">
           <h3>Ваш запрос</h3>
-          <Button variant="outlined" @click="queryStore.clearQuery()">Очистить форму</Button>
+          <Button variant="outlined" @click="queryStore.clear()">Очистить форму</Button>
         </div>
         <hr class="border-zinc-300">
         <div class="p-25 flex flex-col gap-25">
@@ -146,14 +142,14 @@ onMounted(() => {
             @update:first="(val) => (first = val)"
           >
             <Column field="brand" header="Бренд" class="w-1/4 !p-10" />
-            <Column field="numparts" header="Номер запчасти" class="!p-10" />
+            <Column field="numParts" header="Номер запчасти" class="!p-10" />
             <Column field="count" header="Количество" class="w-1/6 !p-10">
               <template #body="slotProps"> {{ slotProps.data.count }} шт. </template>
             </Column>
             <Column header="Действия" class="w-24 !p-10">
               <template #body="slotProps">
                 <div class="justify-center items-center flex">
-                  <Button icon="pi pi-times" @click="queryStore.removeQuery(slotProps.index)" />
+                  <Button icon="pi pi-times" @click="queryStore.remove(slotProps.index)" />
                 </div>
               </template>
             </Column>

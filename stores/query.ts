@@ -2,13 +2,10 @@ import { defineStore } from 'pinia'
 
 export const useQueryStore = defineStore('query', {
   state: () => ({
-    query: [] as object[],
+    query: JSON.parse(localStorage.getItem('query') || '[]'),
   }),
   actions: {
-    loadQuery() {
-      this.query = JSON.parse(localStorage.getItem('query') || '[]')
-    },
-    addQuery(item: object | object[]) {
+    add(item: object | object[]) {
       if (Array.isArray(item)) {
         const items = Array.isArray(item) ? item.flat() : [item]
         this.query.push(...items)
@@ -17,11 +14,11 @@ export const useQueryStore = defineStore('query', {
       }
       localStorage.setItem('query', JSON.stringify(this.query))
     },
-    removeQuery(index: number) {
+    remove(index: number) {
       this.query.splice(index, 1)
       localStorage.setItem('query', JSON.stringify(this.query))
     },
-    clearQuery() {
+    clear() {
       this.query = []
       localStorage.removeItem('query')
     }

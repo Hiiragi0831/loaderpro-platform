@@ -1,7 +1,7 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-export const partsSelectionSchema = toTypedSchema(
+export const partsSelectionTransport = toTypedSchema(
   z.object({
     transportBrand: z.string({
       required_error: 'Выберите бренд транспорта',

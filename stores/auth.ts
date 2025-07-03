@@ -4,6 +4,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: {
       name: '',
+      company: '',
       email: '',
       token: '',
       loginAt: '',
@@ -91,7 +92,7 @@ export const useAuthStore = defineStore('auth', {
         title: messageParams?.title || 'Выход из системы',
         text: messageParams?.text || 'Вы успешно вышли из аккаунта'
       }
-      this.user = { name: '', email: '', token: '', loginAt: '' }
+      this.user = { name: '', email: '', token: '', loginAt: '', company: '' }
       this.isAuthenticated = false
       useBrandStore().loaded = false
       localStorage.clear()

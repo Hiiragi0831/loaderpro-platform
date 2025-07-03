@@ -2,23 +2,22 @@
 import type { FileUploadUploaderEvent } from 'primevue/fileupload'
 import { useToast } from 'primevue/usetoast'
 import readXlsxFile from 'read-excel-file'
-import { useQueryStore } from '@/stores/query'
-import { useBrandStore } from '@/stores/brand'
+import { usePartsSelectionStore } from '~/stores/partsSelection'
 
-interface ExcelRow {
-  brand: string
-  numParts: string
-  count: number
-  [key: string]: string | number
+interface PartsRow {
+  titleParts?: string
+  numParts?: string
+  count?: number
+  comment?: string
+  image?: string
+  id?: string
 }
 
 const toast = useToast()
-const queryStore = useQueryStore()
-const brandStore = useBrandStore()
+const partsSelectionStore = usePartsSelectionStore()
 
 const upLoader = async (event: FileUploadUploaderEvent) => {
   let file: File | undefined
-  const brands = brandStore.brand.map((b) => b.name) // список брендов с сервера
 
   if (Array.isArray(event.files)) {
     file = event.files[0]
@@ -29,28 +28,19 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
   if (!file) return
 
   const map = {
-    'Бренд': 'brand',
-    'Номер запчасти': 'numParts',
+    'Наименование запчасти': 'titleParts',
+    'Каталожный номер запчасти': 'numParts',
     'Количество': 'count',
+    'Комментарий': 'comment',
+    'Фото': 'image',
   }
 
   readXlsxFile(file, { map }).then((data) => {
-    const rows = (data.rows as ExcelRow[]).map((row) => {
-      const matchedBrand = brands.find(
-        (b) =>
-          String(row.brand).toLowerCase().includes(b.toLowerCase()) ||
-          b.toLowerCase().includes(String(row.brand).toLowerCase()),
-      )
-      return {
-        ...row,
-        brand: matchedBrand || row.brand,
-      }
-    })
-    const rowsWithId = rows.map((row: ExcelRow) => ({
+    const rowsWithId = data.rows.map((row: PartsRow) => ({
       id: Math.round(Date.now() + Math.random()),
       ...row,
     }))
-    queryStore.add(rowsWithId)
+    partsSelectionStore.add(rowsWithId)
     toast.add({
       severity: 'success',
       summary: 'Файл загружен',
@@ -59,9 +49,8 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
     })
   })
 }
-
 const handleDownload = () =>
-  downloadTemplate('/templates/loaderpro_query_template.xlsx', 'loaderpro_query_template.xlsx')
+  downloadTemplate('/templates/loaderpro_parts_template.xlsx', 'loaderpro_parts_template.xlsx')
 </script>
 
 <template>
