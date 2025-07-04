@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import PartsSelectionTransport from '@/components/PartsSelectionTransport.vue'
+import PartsSelectionFormRequest from '@/components/PartsSelectionFormRequest.vue'
 
 const selectedTransportId = ref<number | null>(null)
 const showFormRequest = ref(false)
@@ -17,16 +19,24 @@ const handleFormRequestSent = () => {
 
 <template>
   <main class="py-30">
-    <PartsSelectionTransport
-      v-if="!showFormRequest"
-      @select="handleTransportSelect"
-    />
-    <PartsSelectionFormRequest
-      v-if="showFormRequest"
-      :transport-id="selectedTransportId"
-      @sent="handleFormRequestSent"
-    />
+    <Transition name="fade" mode="out-in">
+      <component
+        :is="showFormRequest ? PartsSelectionFormRequest : PartsSelectionTransport"
+        :key="showFormRequest ? 'form' : 'transport'"
+        v-bind="showFormRequest ? { transportId: selectedTransportId } : {}"
+        v-on="showFormRequest
+          ? { sent: handleFormRequestSent }
+          : { select: handleTransportSelect }"
+      />
+    </Transition>
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>

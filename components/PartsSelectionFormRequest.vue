@@ -34,7 +34,7 @@ const onSubmit = handleSubmit((values) => {
     titleParts: values.titleParts,
     numParts: values.numParts,
     count: values.count,
-    comment: values.comment,
+    comment: values.comment || '',
     image: uploadedFiles.value[0]?.url || '',
   })
   removeFile()
