@@ -8,6 +8,7 @@ import QueryLoadExcel from '@/components/QueryLoadExcel.vue'
 
 const queryStore = useQueryStore()
 const brandStore = useBrandStore()
+const toast = useToast()
 
 const rowsPerPage = 10
 const first = ref(0)
@@ -34,10 +35,31 @@ const onSubmit = handleSubmit((values) => {
   handleReset()
 })
 
-const handleSend = () => {
+const handleSend = async () => {
   // Здесь можно добавить логику отправки запроса
-  console.log('Отправка запроса:', queryStore.query)
+  console.log('Отправка запроса:', JSON.stringify(queryStore.query))
   // Очистка запроса после отправки
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/query`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(queryStore.query),
+    })
+    if (res.ok) {
+      toast.add({
+        severity: 'success',
+        summary: 'Успех',
+        detail: 'Заявка успешно отправлена!',
+        life: 4000,
+      })
+      handleReset()
+    } else {
+      const error = await res.text()
+      toast.add({ severity: 'error', summary: 'Ошибка', detail: error, life: 4000 })
+    }
+  } catch (e) {
+    toast.add({ severity: 'error', summary: 'Ошибка', detail: String(e), life: 4000 })
+  }
   queryStore.clear()
 }
 </script>

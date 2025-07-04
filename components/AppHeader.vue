@@ -6,7 +6,8 @@ import { useField, useForm } from 'vee-validate'
 import { querySchema } from '@/schema/querySchema'
 
 const brandStore = useBrandStore()
-const userStore = useAuthStore();
+const userStore = useAuthStore()
+const toast = useToast()
 
 const brands = computed(() => brandStore.brand)
 const menu = [
@@ -30,9 +31,29 @@ const { value: brand } = useField('brand')
 const { value: numParts } = useField<string>('numParts')
 const { value: count } = useField<number>('count')
 
-const onSubmit = handleSubmit((values) => {
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/query`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    })
+    if (res.ok) {
+      toast.add({
+        severity: 'success',
+        summary: 'Успех',
+        detail: 'Заявка успешно отправлена!',
+        life: 4000,
+      })
+      handleReset()
+    } else {
+      const error = await res.text()
+      toast.add({ severity: 'error', summary: 'Ошибка', detail: error, life: 4000 })
+    }
+  } catch (e) {
+    toast.add({ severity: 'error', summary: 'Ошибка', detail: String(e), life: 4000 })
+  }
   console.log(values)
-  handleReset()
 })
 </script>
 
@@ -144,9 +165,9 @@ const onSubmit = handleSubmit((values) => {
           <div class="flex flex-col gap-10">
             <div class="flex gap-10 items-center">
               <i class="pi pi-user color-primary-500" />
-              <p>{{userStore.user.name}}</p>
+              <p>{{ userStore.user.name }}</p>
             </div>
-            <div class="text-sm">{{userStore.user.company}}</div>
+            <div class="text-sm">{{ userStore.user.company }}</div>
           </div>
           <i class="pi pi-chevron-down" />
         </div>
@@ -154,11 +175,7 @@ const onSubmit = handleSubmit((values) => {
     </div>
     <div class="bg-zinc-850">
       <div class="container m-auto flex justify-between">
-        <div
-          v-for="(item, id) in menu"
-          :key="id"
-          class="flex"
-        >
+        <div v-for="(item, id) in menu" :key="id" class="flex">
           <NuxtLink
             v-for="(nav, navId) in item"
             :key="navId"
