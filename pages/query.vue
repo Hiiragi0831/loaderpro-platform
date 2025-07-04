@@ -4,7 +4,6 @@ import { computed, ref } from 'vue'
 import { useBrandStore } from '@/stores/brand'
 import { useField, useForm } from 'vee-validate'
 import { querySchema } from '@/schema/querySchema'
-import QueryLoadExcel from '@/components/QueryLoadExcel.vue'
 
 const queryStore = useQueryStore()
 const brandStore = useBrandStore()
