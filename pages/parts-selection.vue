@@ -23,8 +23,8 @@ const handleFormRequestSent = () => {
       <component
         :is="showFormRequest ? PartsSelectionFormRequest : PartsSelectionTransport"
         :key="showFormRequest ? 'form' : 'transport'"
-        v-bind="showFormRequest ? { transportId: selectedTransportId } : {}"
-        v-on="showFormRequest
+        :bind="showFormRequest ? { transportId: selectedTransportId } : {}"
+        :on="showFormRequest
           ? { sent: handleFormRequestSent }
           : { select: handleTransportSelect }"
       />
