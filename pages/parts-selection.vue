@@ -19,24 +19,17 @@ const handleFormRequestSent = () => {
 
 <template>
   <main class="py-30">
-    <Transition name="fade" mode="out-in">
-      <component
-        :is="showFormRequest ? PartsSelectionFormRequest : PartsSelectionTransport"
-        :key="showFormRequest ? 'form' : 'transport'"
-        :bind="showFormRequest ? { transportId: selectedTransportId } : {}"
-        :on="showFormRequest
-          ? { sent: handleFormRequestSent }
-          : { select: handleTransportSelect }"
-      />
-    </Transition>
+    <PartsSelectionTransport
+      v-if="!showFormRequest"
+      @select="handleTransportSelect"
+    />
+    <PartsSelectionFormRequest
+      v-if="showFormRequest"
+      :transport-id="selectedTransportId"
+      @sent="handleFormRequestSent"
+    />
   </main>
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
 </style>
