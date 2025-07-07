@@ -69,7 +69,7 @@ const loadData = async () => {
 
   const status = getFilterValue<string>('statusName')
   if (status) {
-    params.set('status', status)
+    params.set('statusName', status)
   }
 
   loading.value = true
