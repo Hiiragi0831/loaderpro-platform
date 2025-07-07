@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import type { DataTableFilterEvent, DataTableFilterMeta, DataTablePageEvent, DataTableSortEvent } from 'primevue'
+import { useFormatter } from '@/utils/useFormatter'
 
 // Типы данных элемента таблицы
 interface QueryHistoryItem {
@@ -14,6 +15,7 @@ interface QueryHistoryItem {
 }
 
 const toast = useToast()
+const { formatMoney, formatNumber } = useFormatter()
 
 const items = ref<QueryHistoryItem[]>([])
 const totalRecords = ref(0)
@@ -148,7 +150,11 @@ onMounted(() => {
                 {{ formatDateIntl(slotProps.data.createTime) }}
               </template>
             </Column>
-            <Column field="numOrders" header="Номер запроса" class="!p-10" />
+            <Column field="numOrders" header="Номер запроса" class="!p-10">
+              <template #body="slotProps">
+                {{ formatNumber(slotProps.data.numOrders) }}
+              </template>
+            </Column>
             <Column
               field="statusName"
               header="Статус"
@@ -198,7 +204,7 @@ onMounted(() => {
             </Column>
             <Column field="total" header="Сумма" class="!p-10" :sortable="true">
               <template #body="slotProps">
-                {{ slotProps.data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ₽
+                {{ formatMoney(slotProps.data.total) }}
               </template>
             </Column>
           </DataTable>
