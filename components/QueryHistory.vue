@@ -1,8 +1,10 @@
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import type { DataTableFilterEvent, DataTableFilterMeta, DataTablePageEvent, DataTableSortEvent } from 'primevue'
 import { useFormatter } from '@/utils/useFormatter'
+import { useQueryHistoryStore } from '@/stores/queryHistory'
 
 // Типы данных элемента таблицы
 interface QueryHistoryItem {
@@ -16,10 +18,10 @@ interface QueryHistoryItem {
 
 const toast = useToast()
 const { formatMoney, formatNumber } = useFormatter()
+const queryHistoryStore = useQueryHistoryStore()
 
 const items = ref<QueryHistoryItem[]>([])
 const totalRecords = ref(0)
-const loading = ref(false)
 
 const currentPage = ref(1)
 const perPage = ref(10)
@@ -30,6 +32,9 @@ const statuses = ['Котел', 'В запросе', 'Обработан', 'По
 const filters = ref<DataTableFilterMeta>({
   statusName: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
+
+// Используем computed для получения состояния загрузки из стора
+const loading = computed(() => queryHistoryStore.isLoading)
 
 function getSeverity(status: string): string {
   switch (status) {
@@ -57,64 +62,66 @@ function getFilterValue<T = unknown>(field: string): T | null {
 }
 
 const loadData = async () => {
-  const params = new URLSearchParams()
-
-  params.set('page', String(currentPage.value))
-  params.set('limit', String(perPage.value))
-
-  if (sortField.value) {
-    const sortValue = sortOrder.value === 1
-      ? sortField.value
-      : `-${sortField.value}`
-    params.set('sortBy', sortValue)
-  }
-
-  const status = getFilterValue<string>('statusName')
-  if (status) {
-    params.set('statusName', status)
-  }
-
-  loading.value = true
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/orders?${params}`, {
-      method: 'GET',
-    })
-    if (res.ok) {
-      const result = await res.json()
+    const status = getFilterValue<string>('statusName')
+    const sortValue = sortField.value && sortOrder.value
+      ? (sortOrder.value === 1 ? sortField.value : `-${sortField.value}`)
+      : undefined
 
-      items.value = result.items
-      totalRecords.value = result.meta.total_items
-    } else {
-      const error = await res.text()
-      toast.add({ severity: 'error', summary: 'Ошибка', detail: error, life: 4000 })
+    const params = {
+      page: currentPage.value,
+      limit: perPage.value,
+      ...(sortValue && { sortBy: sortValue }),
+      ...(status && { statusName: status }),
     }
-  } catch (e) {
-    toast.add({ severity: 'error', summary: 'Ошибка', detail: String(e), life: 4000 })
-  } finally {
-    loading.value = false
+
+    const result = await queryHistoryStore.fetchQueryHistory(params)
+
+    items.value = result.items
+    totalRecords.value = result.meta.total_items
+
+    // Предзагружаем следующую страницу если есть ещё данные
+    if (currentPage.value * perPage.value < totalRecords.value) {
+      queryHistoryStore.preloadNextPage(params)
+    }
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Ошибка',
+      detail: String(error),
+      life: 4000
+    })
   }
 }
 
 const onPageChange = (event: DataTablePageEvent) => {
   currentPage.value = event.page + 1 // PrimeVue начинается с 0
   perPage.value = event.rows
-
   loadData()
 }
 
 const onSortChange = (event: DataTableSortEvent) => {
   sortField.value = typeof event.sortField === 'string' ? event.sortField : null
   sortOrder.value = typeof event.sortOrder === 'number' ? event.sortOrder : null
-
   loadData()
 }
 
 function onFilter(event: DataTableFilterEvent) {
   filters.value = event.filters
   currentPage.value = 1
-
   loadData()
 }
+
+// Функция для обновления данных (например, после создания нового запроса)
+const refreshData = () => {
+  queryHistoryStore.clearCache()
+  loadData()
+}
+
+// Экспортируем функцию для использования в родительском компоненте
+defineExpose({
+  refreshData,
+})
 
 onMounted(() => {
   loadData()
@@ -127,6 +134,12 @@ onMounted(() => {
       <div class="shadow-lg rounded bg-white">
         <div class="flex justify-between items-center p-25">
           <h3>История запросов</h3>
+          <Button
+            label="Обновить"
+            icon="pi pi-refresh"
+            :loading="loading"
+            @click="refreshData"
+          />
         </div>
         <hr class="border-zinc-300" >
         <div class="p-25 flex flex-col gap-25">

@@ -7,6 +7,7 @@ import { querySchema } from '@/schema/querySchema'
 
 const queryStore = useQueryStore()
 const brandStore = useBrandStore()
+const queryHistoryStore = useQueryHistoryStore()
 const toast = useToast()
 
 const rowsPerPage = 10
@@ -52,6 +53,7 @@ const handleSend = async () => {
         life: 4000,
       })
       handleReset()
+      queryHistoryStore.invalidateCache()
     } else {
       const error = await res.text()
       toast.add({ severity: 'error', summary: 'Ошибка', detail: error, life: 4000 })

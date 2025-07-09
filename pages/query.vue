@@ -1,11 +1,26 @@
 <script setup lang="ts">
-import QueryNewRequest from '~/components/QueryNewRequest.vue'
+import { useQueryViewStore } from '~/stores/queryViewStore'
+
+const store = useQueryViewStore()
 </script>
 
 <template>
   <main class="py-30 flex flex-col gap-30">
-    <QueryNewRequest />
-    <QueryHistory/>
+    <section>
+      <div class="container mx-auto flex flex-col gap-15">
+        <Tabs :value="store.activeView">
+          <TabList>
+            <Tab value="new-request" @click="store.setActiveView('new-request')">Новый запрос</Tab>
+            <Tab value="history" @click="store.setActiveView('history')">История</Tab>
+            <Tab value="funnel" @click="store.setActiveView('funnel')">Воронка</Tab>
+          </TabList>
+        </Tabs>
+      </div>
+    </section>
+
+    <QueryNewRequest v-if="store.activeView === 'new-request'" />
+    <QueryHistory v-else-if="store.activeView === 'history'" />
+    <QueryFunnel v-else-if="store.activeView === 'funnel'" />
   </main>
 </template>
 
