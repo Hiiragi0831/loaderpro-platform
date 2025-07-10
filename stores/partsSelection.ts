@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 interface PartItem {
   id: number
-  titleParts: string
-  numParts: string
+  title_parts: string
+  num_parts: string
   count: number
   comment?: string
   image?: string

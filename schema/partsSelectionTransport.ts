@@ -3,35 +3,35 @@ import * as z from 'zod'
 
 export const partsSelectionTransport = toTypedSchema(
   z.object({
-    transportBrand: z.string({
+    transport_brand: z.string({
       required_error: 'Выберите бренд транспорта',
       invalid_type_error: 'Бренд транспорта должен быть числом',
     }),
-    transportModel: z.string({
+    transport_model: z.string({
       required_error: 'Укажите модель транспорта',
       invalid_type_error: 'Модель транспорта должна быть строкой',
     }).min(1, 'Укажите модель транспорта'),
-    transportYearProduction: z.string({
+    transport_year_production: z.string({
       required_error: 'Укажите год производства',
       invalid_type_error: 'Год должен быть строкой из 4 цифр',
     })
       .regex(/^\d{4}$/, 'Год должен состоять из 4 цифр'),
-    transportSerialNumber: z.string({
+    transport_serial_number: z.string({
       required_error: 'Укажите серийный номер',
       invalid_type_error: 'Серийный номер должен быть строкой',
     }).min(1, 'Укажите серийный номер'),
-    transportPrefix: z.string().optional(),
-    engineBrand: z.string().optional(),
-    engineModel: z.string().optional(),
-    engineVoltage: z.string().optional(),
-    engineFuelType: z.string().optional(),
-    engineSerialNumber: z.string().optional(),
-    mastBrand: z.string().optional(),
-    mastModel: z.string().optional(),
-    mastHeight: z.number().optional(),
-    mastSerialNumber: z.string().optional(),
-    mastSections: z.number().optional(),
-    mastCylinders: z.number().optional(),
-    textComment: z.string().optional(),
+    transport_prefix: z.string().optional(),
+    engine_brand: z.string().optional(),
+    engine_model: z.string().optional(),
+    engine_voltage: z.string().optional(),
+    engine_fuel_type: z.string().optional(),
+    engine_serial_number: z.string().optional(),
+    mast_brand: z.string().optional(),
+    mast_model: z.string().optional(),
+    mast_height: z.number().optional(),
+    mast_serial_number: z.string().optional(),
+    mast_sections: z.number().optional(),
+    mast_cylinders: z.number().optional(),
+    text_comment: z.string().optional(),
   }),
 )

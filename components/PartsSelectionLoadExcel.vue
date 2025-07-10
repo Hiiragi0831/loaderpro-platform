@@ -5,8 +5,8 @@ import readXlsxFile from 'read-excel-file'
 import { usePartsSelectionStore } from '~/stores/partsSelection'
 
 interface PartsRow {
-  titleParts?: string
-  numParts?: string
+  title_parts?: string
+  num_parts?: string
   count?: number
   comment?: string
   image?: string
@@ -28,8 +28,8 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
   if (!file) return
 
   const map = {
-    'Наименование запчасти': 'titleParts',
-    'Каталожный номер запчасти': 'numParts',
+    'Наименование запчасти': 'title_parts',
+    'Каталожный номер запчасти': 'num_parts',
     'Количество': 'count',
     'Комментарий': 'comment',
     'Фото': 'image',

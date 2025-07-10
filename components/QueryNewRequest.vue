@@ -22,14 +22,14 @@ const { handleSubmit, errors, handleReset } = useForm({
 })
 
 const { value: brand } = useField('brand')
-const { value: numParts } = useField<string>('numParts')
+const { value: num_parts } = useField<string>('num_parts')
 const { value: count } = useField<number>('count')
 
 const onSubmit = handleSubmit((values) => {
   queryStore.add({
     id: Math.round(Date.now() + Math.random()),
     brand: values.brand,
-    numParts: values.numParts,
+    num_parts: values.num_parts,
     count: values.count,
   })
   handleReset()
@@ -99,21 +99,21 @@ const handleSend = async () => {
           </FloatLabel>
           <FloatLabel variant="on" class="h-full">
             <InputText
-              id="numParts"
-              v-model="numParts"
-              :invalid="!!errors?.numParts"
+              id="num_parts"
+              v-model="num_parts"
+              :invalid="!!errors?.num_parts"
               class="h-full"
             />
             <Message
-              v-if="errors?.numParts"
+              v-if="errors?.num_parts"
               severity="error"
               size="small"
               variant="simple"
               class="absolute"
             >
-              {{ errors.numParts }}
+              {{ errors.num_parts }}
             </Message>
-            <label for="numParts">Номер запчасти</label>
+            <label for="num_parts">Номер запчасти</label>
           </FloatLabel>
 
           <FloatLabel variant="on" class="h-full">
@@ -165,7 +165,7 @@ const handleSend = async () => {
             @update:first="(val) => (first = val)"
           >
             <Column field="brand" header="Бренд" class="w-1/4 !p-10" />
-            <Column field="numParts" header="Номер запчасти" class="!p-10" />
+            <Column field="num_parts" header="Номер запчасти" class="!p-10" />
             <Column field="count" header="Количество" class="w-1/6 !p-10">
               <template #body="slotProps"> {{ slotProps.data.count }} шт. </template>
             </Column>

@@ -9,12 +9,12 @@ await fetch("/query", {
     body: [
       {
         "brand": 5,
-        "numparts": "323232DFW3",
+        "num_parts": "323232DFW3",
         "count": 3
       },
       {
         "brand": 2,
-        "numparts": "334DFS45",
+        "num_parts": "334DFS45",
         "count": 3
       }
     ]
@@ -33,7 +33,7 @@ await fetch("/query/history", {
 ```
 Поиск запроса по истории запросов
 ```js
-await fetch("/query/history/search?brand=632&numparts=365132&numquery=23244&date=04.06.2025", {
+await fetch("/query/history/search?brand=632&num_parts=365132&numquery=23244&date=04.06.2025", {
   method: "GET",
   headers: {
     Authorization: "Bearer <token>"

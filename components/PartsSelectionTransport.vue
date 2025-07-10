@@ -20,26 +20,26 @@ const { handleSubmit, errors, handleReset } = useForm({
   validationSchema: partsSelectionTransport,
 })
 
-const { value: transportBrand } = useField('transportBrand')
-const { value: transportModel } = useField<string>('transportModel')
-const { value: transportYearProduction } = useField<string>('transportYearProduction')
-const { value: transportPrefix } = useField<string>('transportPrefix')
-const { value: transportSerialNumber } = useField<string>('transportSerialNumber')
+const { value: transport_brand } = useField('transport_brand')
+const { value: transport_model } = useField<string>('transport_model')
+const { value: transport_year_production } = useField<string>('transport_year_production')
+const { value: transport_prefix } = useField<string>('transport_prefix')
+const { value: transport_serial_number } = useField<string>('transport_serial_number')
 
-const { value: engineBrand } = useField<string>('engineBrand')
-const { value: engineModel } = useField<string>('engineModel')
-const { value: engineVoltage } = useField<string>('engineVoltage')
-const { value: engineFuelType } = useField<string>('engineFuelType')
-const { value: engineSerialNumber } = useField<string>('engineSerialNumber')
+const { value: engine_brand } = useField<string>('engine_brand')
+const { value: engine_model } = useField<string>('engine_model')
+const { value: engine_voltage } = useField<string>('engine_voltage')
+const { value: engine_fuel_type } = useField<string>('engine_fuel_type')
+const { value: engine_serial_number } = useField<string>('engine_serial_number')
 
-const { value: mastBrand } = useField<string>('mastBrand')
-const { value: mastModel } = useField<string>('mastModel')
-const { value: mastHeight } = useField<number>('mastHeight')
-const { value: mastSerialNumber } = useField<string>('mastSerialNumber')
-const { value: mastSections } = useField<number>('mastSections')
-const { value: mastCylinders } = useField<number>('mastCylinders')
+const { value: mast_brand } = useField<string>('mast_brand')
+const { value: mast_model } = useField<string>('mast_model')
+const { value: mast_height } = useField<number>('mast_height')
+const { value: mast_serial_number } = useField<string>('mast_serial_number')
+const { value: mast_sections } = useField<number>('mast_sections')
+const { value: mast_cylinders } = useField<number>('mast_cylinders')
 
-const { value: textComment } = useField<string>('textComment')
+const { value: text_comment } = useField<string>('text_comment')
 
 const upLoader = async (event: FileUploadUploaderEvent) => {
   const files = Array.isArray(event.files) ? event.files : [event.files]
@@ -126,74 +126,74 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="grid grid-cols-5 items-center gap-20 p-25">
             <FloatLabel variant="on" class="h-full">
               <Select
-                v-model="transportBrand"
-                label-id="transportBrand"
+                v-model="transport_brand"
+                label-id="transport_brand"
                 :options="brands"
                 option-label="name"
                 option-value="name"
                 filter
                 class="w-full h-full"
                 fluid
-                :invalid="!!errors?.transportBrand"
+                :invalid="!!errors?.transport_brand"
               />
               <label for="brand">Бренд*</label>
               <Message
-                v-if="errors?.transportBrand"
+                v-if="errors?.transport_brand"
                 severity="error"
                 size="small"
                 variant="simple"
                 class="absolute"
-                >{{ errors?.transportBrand }}
+                >{{ errors?.transport_brand }}
               </Message>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
               <InputText
-                id="transportModel"
-                v-model="transportModel"
-                :invalid="!!errors?.transportModel"
+                id="transport_model"
+                v-model="transport_model"
+                :invalid="!!errors?.transport_model"
                 class="h-full"
               />
               <Message
-                v-if="errors?.transportModel"
+                v-if="errors?.transport_model"
                 severity="error"
                 size="small"
                 variant="simple"
                 class="absolute"
               >
-                {{ errors.transportModel }}
+                {{ errors.transport_model }}
               </Message>
-              <label for="transportModel">Модель*</label>
+              <label for="transport_model">Модель*</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
               <InputText
-                id="transportYearProduction"
-                v-model="transportYearProduction"
+                id="transport_year_production"
+                v-model="transport_year_production"
                 fluid
-                :invalid="!!errors?.transportYearProduction"
+                :invalid="!!errors?.transport_year_production"
                 class="h-full"
               />
               <Message
-                v-if="errors?.transportYearProduction"
+                v-if="errors?.transport_year_production"
                 severity="error"
                 size="small"
                 variant="simple"
                 class="absolute"
               >
-                {{ errors.transportYearProduction }}
+                {{ errors.transport_year_production }}
               </Message>
-              <label for="transportmodel">Год производства*</label>
+              <label for="transport_model">Год производства*</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
               <InputText
-                id="transportSerialNumber"
-                v-model="transportSerialNumber"
+                id="transport_serial_number"
+                v-model="transport_serial_number"
                 class="h-full"
               />
-              <label for="transportSerialNumber">Серийный номер*</label>
+              <label for="transport_serial_number">Серийный номер*</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="transportPrefix" v-model="transportPrefix" class="h-full" />
-              <label for="transportPrefix">Префикс</label>
+              <InputText id="transport_prefix" v-model="transport_prefix" class="h-full" />
+              <label for="transport_prefix">Префикс</label>
             </FloatLabel>
           </div>
         </div>
@@ -205,8 +205,8 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="grid grid-cols-5 items-center gap-15 p-25">
             <FloatLabel variant="on" class="h-full">
               <Select
-                v-model="engineBrand"
-                label-id="engineBrand"
+                v-model="engine_brand"
+                label-id="engine_brand"
                 :options="brands"
                 option-label="name"
                 option-value="name"
@@ -214,23 +214,23 @@ const onSubmit = handleSubmit(async (values) => {
                 class="w-full h-full"
                 fluid
               />
-              <label for="engineBrand">Бренд</label>
+              <label for="engine_brand">Бренд</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="engineModel" v-model="engineModel" class="h-full" />
-              <label for="engineModel">Модель</label>
+              <InputText id="engine_model" v-model="engine_model" class="h-full" />
+              <label for="engine_model">Модель</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="engineVoltage" v-model="engineVoltage" class="h-full" />
-              <label for="engineVoltage">Напряжение</label>
+              <InputText id="engine_voltage" v-model="engine_voltage" class="h-full" />
+              <label for="engine_voltage">Напряжение</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="engineFuelType" v-model="engineFuelType" class="h-full" />
-              <label for="engineFuelType">Тип топлива</label>
+              <InputText id="engine_fuel_type" v-model="engine_fuel_type" class="h-full" />
+              <label for="engine_fuel_type">Тип топлива</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="engineSerialNumber" v-model="engineSerialNumber" class="h-full" />
-              <label for="engineSerialNumber">Серийный номер</label>
+              <InputText id="engine_serial_number" v-model="engine_serial_number" class="h-full" />
+              <label for="engine_serial_number">Серийный номер</label>
             </FloatLabel>
           </div>
         </div>
@@ -242,8 +242,8 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="grid grid-cols-6 items-center gap-15 p-25">
             <FloatLabel variant="on" class="h-full">
               <Select
-                v-model="mastBrand"
-                label-id="mastBrand"
+                v-model="mast_brand"
+                label-id="mast_brand"
                 :options="brands"
                 option-label="name"
                 option-value="name"
@@ -251,27 +251,27 @@ const onSubmit = handleSubmit(async (values) => {
                 class="w-full h-full"
                 fluid
               />
-              <label for="mastBrand">Бренд</label>
+              <label for="mast_brand">Бренд</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="mastModel" v-model="mastModel" class="h-full" />
-              <label for="mastModel">Модель</label>
+              <InputText id="mast_model" v-model="mast_model" class="h-full" />
+              <label for="mast_model">Модель</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputNumber id="mastHeight" v-model="mastHeight" class="h-full w-full" />
-              <label for="mastHeight">Высота (м)</label>
+              <InputNumber id="mast_height" v-model="mast_height" class="h-full w-full" />
+              <label for="mast_height">Высота (м)</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputText id="mastSerialNumber" v-model="mastSerialNumber" class="h-full" />
-              <label for="mastSerialNumber">Серийный номер</label>
+              <InputText id="mast_serial_number" v-model="mast_serial_number" class="h-full" />
+              <label for="mast_serial_number">Серийный номер</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputNumber id="mastSections" v-model="mastSections" class="h-full w-full" />
-              <label for="mastSections">Количество секций</label>
+              <InputNumber id="mast_sections" v-model="mast_sections" class="h-full w-full" />
+              <label for="mast_sections">Количество секций</label>
             </FloatLabel>
             <FloatLabel variant="on" class="h-full">
-              <InputNumber id="mastCylinders" v-model="mastCylinders" class="h-full w-full" />
-              <label for="mastCylinders">Количество цилиндров</label>
+              <InputNumber id="mast_cylinders" v-model="mast_cylinders" class="h-full w-full" />
+              <label for="mast_cylinders">Количество цилиндров</label>
             </FloatLabel>
           </div>
         </div>
@@ -282,8 +282,8 @@ const onSubmit = handleSubmit(async (values) => {
           <hr class="border-zinc-300" >
           <div class="grid grid-cols-1 items-center gap-15 p-25">
             <FloatLabel variant="on" class="h-full">
-              <Textarea id="textComment" v-model="textComment" class="w-full h-full" fluid />
-              <label for="textComment">Комментарий</label>
+              <Textarea id="text_comment" v-model="text_comment" class="w-full h-full" fluid />
+              <label for="text_comment">Комментарий</label>
             </FloatLabel>
           </div>
         </div>

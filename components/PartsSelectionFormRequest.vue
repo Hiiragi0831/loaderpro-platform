@@ -23,16 +23,16 @@ const { handleSubmit, errors, handleReset } = useForm({
   validationSchema: partsSelectionRequest,
 })
 
-const { value: titleParts } = useField<string>('titleParts')
-const { value: numParts } = useField<string>('numParts')
+const { value: title_parts } = useField<string>('title_parts')
+const { value: num_parts } = useField<string>('num_parts')
 const { value: count } = useField<number>('count')
 const { value: comment } = useField<string>('comment')
 
 const onSubmit = handleSubmit((values) => {
   partsSelectionStore.add({
     id: Math.round(Date.now() + Math.random()),
-    titleParts: values.titleParts,
-    numParts: values.numParts,
+    title_parts: values.title_parts,
+    num_parts: values.num_parts,
     count: values.count,
     comment: values.comment || '',
     image: uploadedFiles.value[0]?.url || '',
@@ -92,39 +92,39 @@ const removeFile = () => {
         <div class="grid grid-cols-3 items-center gap-20 p-25">
           <FloatLabel variant="on" class="w-full h-full">
             <InputText
-              id="titleParts"
-              v-model="titleParts"
-              :invalid="!!errors?.titleParts"
+              id="title_parts"
+              v-model="title_parts"
+              :invalid="!!errors?.title_parts"
               class="h-full"
             />
             <Message
-              v-if="errors?.titleParts"
+              v-if="errors?.title_parts"
               severity="error"
               size="small"
               variant="simple"
               class="absolute"
             >
-              {{ errors.titleParts }}
+              {{ errors.title_parts }}
             </Message>
-            <label for="titleParts">Наименование запчасти*</label>
+            <label for="title_parts">Наименование запчасти*</label>
           </FloatLabel>
           <FloatLabel variant="on" class="w-full h-full">
             <InputText
-              id="numParts"
-              v-model="numParts"
-              :invalid="!!errors?.numParts"
+              id="num_parts"
+              v-model="num_parts"
+              :invalid="!!errors?.num_parts"
               class="h-full"
             />
             <Message
-              v-if="errors?.numParts"
+              v-if="errors?.num_parts"
               severity="error"
               size="small"
               variant="simple"
               class="absolute"
             >
-              {{ errors.numParts }}
+              {{ errors.num_parts }}
             </Message>
-            <label for="numParts">Каталожный номер запчасти*</label>
+            <label for="num_parts">Каталожный номер запчасти*</label>
           </FloatLabel>
           <FloatLabel variant="on" class="w-full h-full">
             <InputNumber
@@ -204,8 +204,8 @@ const removeFile = () => {
             :total-records="totalRecords"
             @update:first="(val) => (first = val)"
           >
-            <Column field="titleParts" header="Наименование запчасти" class="!p-10" />
-            <Column field="numParts" header="Каталожный номер запчасти" class="!p-10" />
+            <Column field="title_parts" header="Наименование запчасти" class="!p-10" />
+            <Column field="num_parts" header="Каталожный номер запчасти" class="!p-10" />
             <Column field="count" header="Количество" class="w-1/6 !p-10">
               <template #body="slotProps"> {{ slotProps.data.count }} шт. </template>
             </Column>

@@ -5,16 +5,8 @@ import { FilterMatchMode } from '@primevue/core/api'
 import type { DataTableFilterEvent, DataTableFilterMeta, DataTablePageEvent, DataTableSortEvent } from 'primevue'
 import { useFormatter } from '@/utils/useFormatter'
 import { useQueryHistoryStore } from '@/stores/queryHistory'
+import type { QueryHistoryItem } from '~/types/queryType'
 
-// Типы данных элемента таблицы
-interface QueryHistoryItem {
-  createTime: string
-  numOrders: string
-  firstname: string
-  lastname: string
-  statusName: string
-  total: number
-}
 
 const toast = useToast()
 const { formatMoney, formatNumber } = useFormatter()
@@ -30,7 +22,7 @@ const sortOrder = ref<number | null>(null)
 
 const statuses = ['Котел', 'В запросе', 'Обработан', 'Подбор']
 const filters = ref<DataTableFilterMeta>({
-  statusName: { value: null, matchMode: FilterMatchMode.EQUALS }
+  status_name: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
 
 // Используем computed для получения состояния загрузки из стора
@@ -63,7 +55,7 @@ function getFilterValue<T = unknown>(field: string): T | null {
 
 const loadData = async () => {
   try {
-    const status = getFilterValue<string>('statusName')
+    const status = getFilterValue<string>('status_name')
     const sortValue = sortField.value && sortOrder.value
       ? (sortOrder.value === 1 ? sortField.value : `-${sortField.value}`)
       : undefined
@@ -72,7 +64,7 @@ const loadData = async () => {
       page: currentPage.value,
       limit: perPage.value,
       ...(sortValue && { sortBy: sortValue }),
-      ...(status && { statusName: status }),
+      ...(status && { status_name: status }),
     }
 
     const result = await queryHistoryStore.fetchQueryHistory(params)
@@ -158,18 +150,18 @@ onMounted(() => {
             @sort="onSortChange"
             @filter="onFilter"
           >
-            <Column field="createTime" header="Дата создания" class="w-1/4 !p-10" :sortable="true">
+            <Column field="create_time" header="Дата создания" class="w-1/4 !p-10" :sortable="true">
               <template #body="slotProps">
-                {{ formatDateIntl(slotProps.data.createTime) }}
+                {{ formatDateIntl(slotProps.data.create_time) }}
               </template>
             </Column>
-            <Column field="numOrders" header="Номер запроса" class="!p-10">
+            <Column field="num_orders" header="Номер запроса" class="!p-10">
               <template #body="slotProps">
-                {{ formatNumber(slotProps.data.numOrders) }}
+                {{ formatNumber(slotProps.data.num_orders) }}
               </template>
             </Column>
             <Column
-              field="statusName"
+              field="status_name"
               header="Статус"
               class="w-1/4"
               :show-filter-match-modes="false"
@@ -177,8 +169,8 @@ onMounted(() => {
             >
               <template #body="{ data }">
                 <Tag
-                  :value="data.statusName"
-                  :class="`px-5 py-3 rounded-md font-semibold ${getSeverity(data.statusName)}`"
+                  :value="data.status_name"
+                  :class="`px-5 py-3 rounded-md font-semibold ${getSeverity(data.status_name)}`"
                   :unstyled="true"
                 />
               </template>

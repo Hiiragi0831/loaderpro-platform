@@ -28,7 +28,7 @@ const { handleSubmit, errors, handleReset } = useForm({
 })
 
 const { value: brand } = useField('brand')
-const { value: numParts } = useField<string>('numParts')
+const { value: num_parts } = useField<string>('num_parts')
 const { value: count } = useField<number>('count')
 
 const onSubmit = handleSubmit(async (values) => {
@@ -113,21 +113,21 @@ const onSubmit = handleSubmit(async (values) => {
           </FloatLabel>
           <FloatLabel variant="on" class="w-170 h-full">
             <InputText
-              id="numParts"
-              v-model="numParts"
-              :invalid="!!errors?.numParts"
+              id="num_parts"
+              v-model="num_parts"
+              :invalid="!!errors?.num_parts"
               class="h-full"
             />
             <Message
-              v-if="errors?.numParts"
+              v-if="errors?.num_parts"
               severity="error"
               size="small"
               variant="simple"
               class="absolute"
             >
-              {{ errors.numParts }}
+              {{ errors.num_parts }}
             </Message>
-            <label for="numParts">Номер запчасти</label>
+            <label for="num_parts">Номер запчасти</label>
           </FloatLabel>
 
           <FloatLabel variant="on" class="w-220 h-full">

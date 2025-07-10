@@ -1,19 +1,12 @@
 import { defineStore } from 'pinia'
+import type { QueryHistoryItem } from '~/types/queryType'
 
-interface QueryHistoryItem {
-  createTime: string
-  numOrders: string
-  firstname: string
-  lastname: string
-  statusName: string
-  total: number
-}
 
 interface QueryHistoryParams {
   page: number
   limit: number
   sortBy?: string
-  statusName?: string
+  status_name?: string
 }
 
 interface QueryHistoryResponse {
@@ -69,11 +62,11 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
           urlParams.set('sortBy', params.sortBy)
         }
 
-        if (params.statusName) {
-          urlParams.set('statusName', params.statusName)
+        if (params.status_name) {
+          urlParams.set('status_name', params.status_name)
         }
 
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/orders?${urlParams}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/querys?${urlParams}`, {
           method: 'GET',
         })
 

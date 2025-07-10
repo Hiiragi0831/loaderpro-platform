@@ -7,7 +7,7 @@ import { useBrandStore } from '@/stores/brand'
 
 interface ExcelRow {
   brand: string
-  numParts: string
+  num_parts: string
   count: number
   [key: string]: string | number
 }
@@ -30,7 +30,7 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
 
   const map = {
     'Бренд': 'brand',
-    'Номер запчасти': 'numParts',
+    'Номер запчасти': 'num_parts',
     'Количество': 'count',
   }
 
