@@ -44,8 +44,14 @@ export function useFormatter(locale: string = 'ru-RU', defaultCurrency: string =
     }).format(number)
   }
 
+  function formatDate(dateStr: string): string {
+    const date = new Date(dateStr.replace(' ', 'T'))
+    return new Intl.DateTimeFormat('ru-RU').format(date)
+  }
+
   return {
     formatMoney,
     formatNumber,
+    formatDate,
   }
 }

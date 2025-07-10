@@ -1,28 +1,28 @@
 import { defineStore } from 'pinia'
-import type { QueryHistoryItem } from '~/types/queryType'
+import type { OrderItem } from '~/types/orderType'
 
 
-interface QueryHistoryParams {
+interface OrderHistoryParams {
   page: number
   limit: number
   sortBy?: string
   status_name?: string
 }
 
-interface QueryHistoryResponse {
-  items: QueryHistoryItem[]
+interface OrderHistoryResponse {
+  items: OrderItem[]
   meta: {
     total_items: number
   }
 }
 
 interface CacheEntry {
-  data: QueryHistoryResponse
+  data: OrderHistoryResponse
   timestamp: number
-  params: QueryHistoryParams
+  params: OrderHistoryParams
 }
 
-export const useQueryHistoryStore = defineStore('queryHistory', {
+export const useOrderStore = defineStore('order', {
   state: () => ({
     cache: new Map<string, CacheEntry>(),
     loading: false,
@@ -34,7 +34,7 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
   },
 
   actions: {
-    generateCacheKey(params: QueryHistoryParams): string {
+    generateCacheKey(params: OrderHistoryParams): string {
       return JSON.stringify(params)
     },
 
@@ -42,7 +42,7 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
       return Date.now() - entry.timestamp < this.cacheTimeout
     },
 
-    async fetchQueryHistory(params: QueryHistoryParams): Promise<QueryHistoryResponse> {
+    async fetchOrderHistory(params: OrderHistoryParams): Promise<OrderHistoryResponse> {
       const cacheKey = this.generateCacheKey(params)
       const cachedEntry = this.cache.get(cacheKey)
 
@@ -66,7 +66,7 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
           urlParams.set('status_name', params.status_name)
         }
 
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/querys?${urlParams}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/orders?${urlParams}`, {
           method: 'GET',
         })
 
@@ -94,7 +94,7 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
       this.cache.clear()
     },
 
-    invalidateCache(pattern?: Partial<QueryHistoryParams>) {
+    invalidateCache(pattern?: Partial<OrderHistoryParams>) {
       if (!pattern) {
         this.clearCache()
         return
@@ -104,7 +104,7 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
       for (const [key, entry] of this.cache.entries()) {
         const shouldInvalidate = Object.entries(pattern).every(([paramKey, paramValue]) => {
           if (paramValue === undefined) return true
-          return entry.params[paramKey as keyof QueryHistoryParams] === paramValue
+          return entry.params[paramKey as keyof OrderHistoryParams] === paramValue
         })
 
         if (shouldInvalidate) {
@@ -112,5 +112,6 @@ export const useQueryHistoryStore = defineStore('queryHistory', {
         }
       }
     },
+
   },
 })

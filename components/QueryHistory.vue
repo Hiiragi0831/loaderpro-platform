@@ -6,10 +6,11 @@ import type { DataTableFilterEvent, DataTableFilterMeta, DataTablePageEvent, Dat
 import { useFormatter } from '@/utils/useFormatter'
 import { useQueryHistoryStore } from '@/stores/queryHistory'
 import type { QueryHistoryItem } from '~/types/queryType'
+import { getFilterValue } from '~/utils/getFilterValue'
 
 
 const toast = useToast()
-const { formatMoney, formatNumber } = useFormatter()
+const { formatMoney, formatNumber, formatDate } = useFormatter()
 const queryHistoryStore = useQueryHistoryStore()
 
 const items = ref<QueryHistoryItem[]>([])
@@ -41,21 +42,9 @@ function getSeverity(status: string): string {
   }
 }
 
-function formatDateIntl(dateStr: string): string {
-  const date = new Date(dateStr.replace(' ', 'T'))
-  return new Intl.DateTimeFormat('ru-RU').format(date)
-}
-
-function getFilterValue<T = unknown>(field: string): T | null {
-  const filter = filters.value[field]
-  return (typeof filter === 'object' && filter !== null && 'value' in filter)
-    ? (filter as { value: T }).value
-    : null
-}
-
 const loadData = async () => {
   try {
-    const status = getFilterValue<string>('status_name')
+    const status = getFilterValue<string>('status_name', filters)
     const sortValue = sortField.value && sortOrder.value
       ? (sortOrder.value === 1 ? sortField.value : `-${sortField.value}`)
       : undefined
@@ -71,11 +60,6 @@ const loadData = async () => {
 
     items.value = result.items
     totalRecords.value = result.meta.total_items
-
-    // Предзагружаем следующую страницу если есть ещё данные
-    if (currentPage.value * perPage.value < totalRecords.value) {
-      queryHistoryStore.preloadNextPage(params)
-    }
   } catch (error) {
     toast.add({
       severity: 'error',
@@ -109,11 +93,6 @@ const refreshData = () => {
   queryHistoryStore.clearCache()
   loadData()
 }
-
-// Экспортируем функцию для использования в родительском компоненте
-defineExpose({
-  refreshData,
-})
 
 onMounted(() => {
   loadData()
@@ -152,7 +131,7 @@ onMounted(() => {
           >
             <Column field="create_time" header="Дата создания" class="w-1/4 !p-10" :sortable="true">
               <template #body="slotProps">
-                {{ formatDateIntl(slotProps.data.create_time) }}
+                {{ formatDate(slotProps.data.create_time) }}
               </template>
             </Column>
             <Column field="num_orders" header="Номер запроса" class="!p-10">
