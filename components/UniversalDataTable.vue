@@ -1,36 +1,35 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { DataTableFilterEvent, DataTableFilterMeta, DataTablePageEvent, DataTableSortEvent } from 'primevue'
+import type {
+  DataTableFilterEvent,
+  DataTableFilterMeta,
+  DataTablePageEvent,
+  DataTableSortEvent,
+} from 'primevue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useFormatter } from '~/utils/useFormatter'
 import { getFilterValue } from '~/utils/getFilterValue'
+import type { DataTableType } from '~/types/dataTableType'
 
 // Типы для конфигурации колонок
-interface ColumnConfig {
+interface TableColumn {
   field: string
   header: string
-  sortable?: boolean
-  filterable?: boolean
-  filterType?: 'select' | 'text' | 'date'
-  filterOptions?: string[]
-  formatter?: 'money' | 'number' | 'date'
+  formatter?: 'number' | 'date' | 'money'
   customClass?: string
-  customRenderer?: (value: unknown, rowData: Record<string, unknown>) => string
-  statusConfig?: Record<string, string> // статус -> CSS классы
+  filterable?: boolean
+  filterType?: 'select'
+  filterOptions?: string[]
+  statusConfig?: Record<string, string>
+  sortable?: boolean
+  customRenderer?: (value: string | null) => string
 }
 
 interface TableConfig {
   title: string
-  columns: ColumnConfig[]
-  defaultPerPage?: number
+  columns: TableColumn[]
+  defaultPerPage: number
   showRefreshButton?: boolean
-}
-
-interface LoadDataParams {
-  page: number
-  limit: number
-  sortBy?: string
-  [key: string]: unknown
 }
 
 interface LoadDataResult<T = Record<string, unknown>> {
@@ -43,7 +42,7 @@ interface LoadDataResult<T = Record<string, unknown>> {
 // Props
 interface Props {
   config: TableConfig
-  loadDataFunction: (params: LoadDataParams) => Promise<LoadDataResult>
+  loadDataFunction: (params: DataTableType) => Promise<LoadDataResult>
   clearCacheFunction?: () => void
 }
 
@@ -66,11 +65,12 @@ const loading = ref(false)
 const initFilters = () => {
   const filterMeta: DataTableFilterMeta = {}
 
-  props.config.columns.forEach(column => {
+  props.config.columns.forEach((column) => {
     if (column.filterable) {
       filterMeta[column.field] = {
         value: null,
-        matchMode: column.filterType === 'select' ? FilterMatchMode.EQUALS : FilterMatchMode.CONTAINS
+        matchMode:
+          column.filterType === 'select' ? FilterMatchMode.EQUALS : FilterMatchMode.CONTAINS,
       }
     }
   })
@@ -87,13 +87,18 @@ const getStatusSeverity = (status: string, statusConfig?: Record<string, string>
 }
 
 // Функция для форматирования значений
-const formatValue = (value: any, formatter?: ColumnConfig['formatter'], customRenderer?: ColumnConfig['customRenderer'], rowData?: any): string => {
+const formatValue = (
+  value: string | number,
+  formatter?: TableColumn['formatter'],
+  customRenderer?: TableColumn['customRenderer'],
+): string => {
   if (customRenderer) {
-    return customRenderer(value, rowData)
+    // Преобразуем значение к string | null для customRenderer
+    return customRenderer(value !== null && value !== undefined ? String(value) : null)
   }
 
   if (value === null || value === undefined) {
-    return 'Не указано'
+    return 'Нет данных'
   }
 
   switch (formatter) {
@@ -102,7 +107,10 @@ const formatValue = (value: any, formatter?: ColumnConfig['formatter'], customRe
     case 'number':
       return formatNumber(value)
     case 'date':
-      return formatDate(value)
+      if (typeof value === 'string') {
+        return formatDate(value)
+      }
+      return formatDate(new Date(value).toLocaleDateString())
     default:
       return String(value)
   }
@@ -114,8 +122,8 @@ const loadData = async (): Promise<void> => {
     loading.value = true
 
     // Собираем параметры фильтров
-    const filterParams: Record<string, any> = {}
-    props.config.columns.forEach(column => {
+    const filterParams: Record<string, unknown> = {}
+    props.config.columns.forEach((column) => {
       if (column.filterable) {
         const filterValue = getFilterValue(column.field, filters)
         if (filterValue) {
@@ -125,11 +133,14 @@ const loadData = async (): Promise<void> => {
     })
 
     // Формируем параметры сортировки
-    const sortValue = sortField.value && sortOrder.value
-      ? (sortOrder.value === 1 ? sortField.value : `-${sortField.value}`)
-      : undefined
+    const sortValue =
+      sortField.value && sortOrder.value
+        ? sortOrder.value === 1
+          ? sortField.value
+          : `-${sortField.value}`
+        : undefined
 
-    const params: LoadDataParams = {
+    const params: DataTableType = {
       page: currentPage.value,
       limit: perPage.value,
       ...(sortValue && { sortBy: sortValue }),
@@ -145,7 +156,7 @@ const loadData = async (): Promise<void> => {
       severity: 'error',
       summary: 'Ошибка',
       detail: String(error),
-      life: 4000
+      life: 4000,
     })
   } finally {
     loading.value = false
@@ -198,7 +209,7 @@ onMounted(() => {
             @click="refreshData"
           />
         </div>
-        <hr class="border-zinc-300">
+        <hr class="border-zinc-300" >
         <div class="p-25 flex flex-col gap-25">
           <DataTable
             v-model:filters="filters"
@@ -235,12 +246,14 @@ onMounted(() => {
                   />
                 </div>
                 <span v-else>
-                  {{ formatValue(data[column.field], column.formatter, column.customRenderer, data) }}
+                  {{ formatValue(data[column.field], column.formatter, column.customRenderer) }}
                 </span>
               </template>
 
-
-              <template v-if="column.filterable && column.filterType === 'select'" #filter="{ filterModel }">
+              <template
+                v-if="column.filterable && column.filterType === 'select'"
+                #filter="{ filterModel }"
+              >
                 <Select
                   v-model="filterModel.value"
                   :options="column.filterOptions || []"

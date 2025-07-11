@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useOrderStore } from '~/stores/orders'
 import UniversalDataTable from '~/components/UniversalDataTable.vue'
+import type { DataTableType } from '~/types/dataTableType'
 
 const orderStore = useOrderStore()
 
@@ -40,21 +41,21 @@ const ordersTableConfig = {
       header: 'Дата оплаты',
       sortable: true,
       customClass: '!p-10',
-      customRenderer: (value) => value ? new Date(value).toLocaleDateString() : 'Не оплачено'
+      formatter: 'date' as const,
     },
     {
       field: 'shipment_date',
       header: 'Дата поставки',
       sortable: true,
       customClass: '!p-10',
-      customRenderer: (value: any) => value ? new Date(value).toLocaleDateString() : 'Не отправлено'
+      formatter: 'date' as const,
     },
     {
       field: 'ship_date',
       header: 'Дата отгрузки',
       sortable: true,
       customClass: '!p-10',
-      customRenderer: (value: any) => value ? new Date(value).toLocaleDateString() : 'Не отгружено'
+      formatter: 'date' as const,
     },
     {
       field: 'total_price',
@@ -69,8 +70,17 @@ const ordersTableConfig = {
 }
 
 // Функция загрузки данных
-const loadOrdersData = async (params: any) => {
-  return await orderStore.fetchOrderHistory(params)
+const loadOrdersData = async (params: DataTableType) => {
+  const response = orderStore.fetchOrderHistory(params)
+  // Приводим тип ответа от хранилища к типу, который ожидает UniversalDataTable.
+  // Это предполагает, что структура ответа (поля `items` и `meta.total_items`)
+  // фактически совпадает с тем, что ожидает компонент таблицы.
+  return response as unknown as {
+    items: Record<string, unknown>[]
+    meta: {
+      total_items: number
+    }
+  }
 }
 
 // Функция очистки кеша
