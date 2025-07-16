@@ -2,6 +2,7 @@
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
+  compatibilityDate: '2025-05-15',
   ssr: false,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -31,7 +32,6 @@ export default defineNuxtConfig({
       host: 'localhost',
     },
   },
-  compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
   modules: [
     '@nuxt/eslint',

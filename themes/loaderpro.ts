@@ -1,8 +1,7 @@
-
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
-const MyPreset = definePreset(Aura, {
+const Loaderpro = definePreset(Aura, {
   semantic: {
     primary: {
       50: '#FEE9CF',
@@ -26,7 +25,7 @@ const MyPreset = definePreset(Aura, {
 });
 
 export default {
-  preset: MyPreset,
+  preset: Loaderpro,
   options: {
     darkModeSelector: '.p-dark'
   }
