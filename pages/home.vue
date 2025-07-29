@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
-import { useLogout } from '~/composables/useLogout'
+import { useAuthStore } from "@/stores/auth";
+import { useLogout } from "~/composables/useLogout";
 
-const authStore = useAuthStore()
-const logOut = useLogout()
+const authStore = useAuthStore();
+const logOut = useLogout();
 
 const onCheck = async () => {
-  await authStore.checkToken()
-}
+  await authStore.checkToken();
+};
 const onOut = async () => {
-  await logOut()
-}
+  await logOut();
+};
 </script>
 
 <template>

@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import PartsSelectionTransport from '@/components/PartsSelectionTransport.vue'
-import PartsSelectionFormRequest from '@/components/PartsSelectionFormRequest.vue'
+import { ref } from "vue";
+import PartsSelectionTransport from "@/components/PartsSelectionTransport.vue";
+import PartsSelectionFormRequest from "@/components/PartsSelectionFormRequest.vue";
 
-const selectedTransportId = ref<number | null>(null)
-const showFormRequest = ref(false)
+const selectedTransportId = ref<number | null>(null);
+const showFormRequest = ref(false);
 
 const handleTransportSelect = (id: number) => {
-  selectedTransportId.value = id
-  showFormRequest.value = true
-}
+  selectedTransportId.value = id;
+  showFormRequest.value = true;
+};
 
 const handleFormRequestSent = () => {
-  selectedTransportId.value = null
-  showFormRequest.value = false
-}
+  selectedTransportId.value = null;
+  showFormRequest.value = false;
+};
 </script>
 
 <template>
@@ -31,5 +31,4 @@ const handleFormRequestSent = () => {
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,60 +1,70 @@
 <script setup lang="ts">
-import IconLogo from '@/components/icons/IconLogo.vue'
-import { computed } from 'vue'
-import { useBrandStore } from '@/stores/brand'
-import { useField, useForm } from 'vee-validate'
-import { querySchema } from '@/schema/querySchema'
+import IconLogo from "@/components/icons/IconLogo.vue";
+import { computed } from "vue";
+import { useBrandStore } from "@/stores/brand";
+import { useField, useForm } from "vee-validate";
+import { querySchema } from "@/schema/querySchema";
 
-const brandStore = useBrandStore()
-const userStore = useAuthStore()
-const toast = useToast()
+const brandStore = useBrandStore();
+const userStore = useAuthStore();
+const toast = useToast();
 
-const brands = computed(() => brandStore.brand)
+const brands = computed(() => brandStore.brand);
 const menu = [
   [
-    { name: 'Подбор ЗЧ', url: '/parts-selection' },
-    { name: 'Каталог', url: '/home' },
-    { name: 'Гараж', url: '/home' },
+    { name: "Подбор ЗЧ", url: "/parts-selection" },
+    { name: "Каталог", url: "/home" },
+    { name: "Гараж", url: "/home" },
   ],
   [
-    { name: 'Запросы', url: '/query' },
-    { name: 'Заказы', url: '/orders' },
-    { name: 'Новости', url: '/home' },
+    { name: "Запросы", url: "/query" },
+    { name: "Заказы", url: "/orders" },
+    { name: "Новости", url: "/home" },
   ],
-]
+];
 
 const { handleSubmit, errors, handleReset } = useForm({
   validationSchema: querySchema,
-})
+});
 
-const { value: brand } = useField('brand')
-const { value: num_parts } = useField<string>('num_parts')
-const { value: count } = useField<number>('count')
+const { value: brand } = useField("brand");
+const { value: num_parts } = useField<string>("num_parts");
+const { value: count } = useField<number>("count");
 
 const onSubmit = handleSubmit(async (values) => {
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
-    })
+    });
     if (res.ok) {
       toast.add({
-        severity: 'success',
-        summary: 'Успех',
-        detail: 'Заявка успешно отправлена!',
+        severity: "success",
+        summary: "Успех",
+        detail: "Заявка успешно отправлена!",
         life: 4000,
-      })
-      handleReset()
+      });
+      handleReset();
     } else {
-      const error = await res.text()
-      toast.add({ severity: 'error', summary: 'Ошибка', detail: error, life: 4000 })
+      const error = await res.text();
+      toast.add({
+        severity: "error",
+        summary: "Ошибка",
+        detail: error,
+        life: 4000,
+      });
     }
   } catch (e) {
-    toast.add({ severity: 'error', summary: 'Ошибка', detail: String(e), life: 4000 })
+    toast.add({
+      severity: "error",
+      summary: "Ошибка",
+      detail: String(e),
+      life: 4000,
+    });
   }
-  console.log(values)
-})
+  console.log(values);
+});
 </script>
 
 <template>
@@ -68,7 +78,10 @@ const onSubmit = handleSubmit(async (values) => {
         <div class="flex gap-20 items-center">
           <NuxtLink to="/home" class="flex">
             <OverlayBadge value="2" size="small" class="size-20">
-              <i class="pi pi-bell" style="font-size: calc(20 * var(--width-multiplier))" />
+              <i
+                class="pi pi-bell"
+                style="font-size: calc(20 * var(--width-multiplier))"
+              />
             </OverlayBadge>
           </NuxtLink>
           <NuxtLink to="/home" class="flex gap-10">

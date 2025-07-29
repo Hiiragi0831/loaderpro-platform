@@ -1,12 +1,12 @@
 export interface DataTableType {
-  page: number
-  limit: number
-  sortBy?: string
-  [key: string]: unknown
+  page: number;
+  limit: number;
+  sortBy?: string;
+  [key: string]: unknown;
 }
 export interface DataResult<T = Record<string, unknown>> {
-  items: T[]
+  items: T[];
   meta: {
-    total_items: number
-  }
+    total_items: number;
+  };
 }

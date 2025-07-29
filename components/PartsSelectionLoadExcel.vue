@@ -1,56 +1,59 @@
 <script setup lang="ts">
-import type { FileUploadUploaderEvent } from 'primevue/fileupload'
-import { useToast } from 'primevue/usetoast'
-import readXlsxFile from 'read-excel-file'
-import { usePartsSelectionStore } from '~/stores/partsSelection'
+import type { FileUploadUploaderEvent } from "primevue/fileupload";
+import { useToast } from "primevue/usetoast";
+import readXlsxFile from "read-excel-file";
+import { usePartsSelectionStore } from "~/stores/partsSelection";
 
 interface PartsRow {
-  title_parts?: string
-  num_parts?: string
-  count?: number
-  comment?: string
-  image?: string
-  id?: string
+  title_parts?: string;
+  num_parts?: string;
+  count?: number;
+  comment?: string;
+  image?: string;
+  id?: string;
 }
 
-const toast = useToast()
-const partsSelectionStore = usePartsSelectionStore()
+const toast = useToast();
+const partsSelectionStore = usePartsSelectionStore();
 
 const upLoader = async (event: FileUploadUploaderEvent) => {
-  let file: File | undefined
+  let file: File | undefined;
 
   if (Array.isArray(event.files)) {
-    file = event.files[0]
+    file = event.files[0];
   } else {
-    file = event.files
+    file = event.files;
   }
 
-  if (!file) return
+  if (!file) return;
 
   const map = {
-    'Наименование запчасти': 'title_parts',
-    'Каталожный номер запчасти': 'num_parts',
-    'Количество': 'count',
-    'Комментарий': 'comment',
-    'Фото': 'image',
-  }
+    "Наименование запчасти": "title_parts",
+    "Каталожный номер запчасти": "num_parts",
+    Количество: "count",
+    Комментарий: "comment",
+    Фото: "image",
+  };
 
   readXlsxFile(file, { map }).then((data) => {
     const rowsWithId = data.rows.map((row: PartsRow) => ({
       id: Math.round(Date.now() + Math.random()),
       ...row,
-    }))
-    partsSelectionStore.add(rowsWithId)
+    }));
+    partsSelectionStore.add(rowsWithId);
     toast.add({
-      severity: 'success',
-      summary: 'Файл загружен',
-      detail: 'Данные успешно обработаны',
+      severity: "success",
+      summary: "Файл загружен",
+      detail: "Данные успешно обработаны",
       life: 3000,
-    })
-  })
-}
+    });
+  });
+};
 const handleDownload = () =>
-  downloadTemplate('/templates/loaderpro_parts_template.xlsx', 'loaderpro_parts_template.xlsx')
+  downloadTemplate(
+    "/templates/loaderpro_parts_template.xlsx",
+    "loaderpro_parts_template.xlsx",
+  );
 </script>
 
 <template>

@@ -1,35 +1,33 @@
 <script setup lang="ts">
-import { useToast } from 'primevue/usetoast'
+import { useToast } from "primevue/usetoast";
 
 const props = defineProps<{
-  idStart: number
-  idEnd: number
-}>()
+  idStart: number;
+  idEnd: number;
+}>();
 
-const toast = useToast()
+const toast = useToast();
 const deleteSingleFile = async (id: number) => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/uploads/${id}`, {
-    method: 'DELETE',
-  })
+    method: "DELETE",
+  });
   toast.add({
-    severity: res.ok ? 'success' : 'error',
-    summary: res.ok ? 'Удалено' : 'Ошибка',
-    detail: res.ok ? 'Файл удалён' : 'Не удалось удалить файл',
+    severity: res.ok ? "success" : "error",
+    summary: res.ok ? "Удалено" : "Ошибка",
+    detail: res.ok ? "Файл удалён" : "Не удалось удалить файл",
     life: 3000,
-  })
-}
+  });
+};
 
 const deleteFiles = async () => {
   for (let id = props.idStart; id <= props.idEnd; id++) {
-    await deleteSingleFile(id)
+    await deleteSingleFile(id);
   }
-}
+};
 </script>
 
 <template>
   <Button @click="deleteFiles">Удалить файл</Button>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

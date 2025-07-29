@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { useField, useForm } from 'vee-validate'
-import { partsSelectionRequest } from '~/schema/partsSelectionRequest'
-import { usePartsSelectionStore } from '~/stores/partsSelection'
-import { computed, ref } from 'vue'
-import type { FileUploadUploaderEvent } from 'primevue/fileupload'
+import { useField, useForm } from "vee-validate";
+import { partsSelectionRequest } from "~/schema/partsSelectionRequest";
+import { usePartsSelectionStore } from "~/stores/partsSelection";
+import { computed, ref } from "vue";
+import type { FileUploadUploaderEvent } from "primevue/fileupload";
 
-const props = defineProps<{ transportId: number | null }>()
-const emit = defineEmits(['sent'])
+const props = defineProps<{ transportId: number | null }>();
+const emit = defineEmits(["sent"]);
 
-const partsSelectionStore = usePartsSelectionStore()
+const partsSelectionStore = usePartsSelectionStore();
 
-const rowsPerPage = 10
-const first = ref(0)
-const totalRecords = computed(() => partsSelectionStore.partsSelection.length)
-const showPaginator = computed(() => totalRecords.value > rowsPerPage)
-const selectedFiles = ref<File[]>([])
-const uploadedFiles = ref<{ id: string; url: string }[]>([])
-const loadingFiles = ref<number[]>([])
-const toast = useToast()
+const rowsPerPage = 10;
+const first = ref(0);
+const totalRecords = computed(() => partsSelectionStore.partsSelection.length);
+const showPaginator = computed(() => totalRecords.value > rowsPerPage);
+const selectedFiles = ref<File[]>([]);
+const uploadedFiles = ref<{ id: string; url: string }[]>([]);
+const loadingFiles = ref<number[]>([]);
+const toast = useToast();
 
 const { handleSubmit, errors, handleReset } = useForm({
   validationSchema: partsSelectionRequest,
-})
+});
 
-const { value: title_parts } = useField<string>('title_parts')
-const { value: num_parts } = useField<string>('num_parts')
-const { value: count } = useField<number>('count')
-const { value: comment } = useField<string>('comment')
+const { value: title_parts } = useField<string>("title_parts");
+const { value: num_parts } = useField<string>("num_parts");
+const { value: count } = useField<number>("count");
+const { value: comment } = useField<string>("comment");
 
 const onSubmit = handleSubmit((values) => {
   partsSelectionStore.add({
@@ -34,49 +34,53 @@ const onSubmit = handleSubmit((values) => {
     title_parts: values.title_parts,
     num_parts: values.num_parts,
     count: values.count,
-    comment: values.comment || '',
-    image: uploadedFiles.value[0]?.url || '',
-  })
-  removeFile()
-  handleReset()
-})
+    comment: values.comment || "",
+    image: uploadedFiles.value[0]?.url || "",
+  });
+  removeFile();
+  handleReset();
+});
 
 const handleSend = () => {
   // Здесь можно добавить логику отправки запроса
-  console.log('Отправка запроса:', partsSelectionStore.partsSelection, props.transportId)
-  emit('sent')
+  console.log(
+    "Отправка запроса:",
+    partsSelectionStore.partsSelection,
+    props.transportId,
+  );
+  emit("sent");
   // Очистка запроса после отправки
-  partsSelectionStore.clear()
-}
+  partsSelectionStore.clear();
+};
 
 const upLoader = async (event: FileUploadUploaderEvent) => {
-  const file = Array.isArray(event.files) ? event.files[0] : event.files
-  if (!file) return
-  selectedFiles.value = [file]
-  loadingFiles.value = [0]
-  const formData = new FormData()
-  formData.append('file', file)
+  const file = Array.isArray(event.files) ? event.files[0] : event.files;
+  if (!file) return;
+  selectedFiles.value = [file];
+  loadingFiles.value = [0];
+  const formData = new FormData();
+  formData.append("file", file);
   const res = await fetch(`${import.meta.env.VITE_API_URL}/uploads`, {
-    method: 'POST',
+    method: "POST",
     body: formData,
-  })
+  });
   if (res.ok) {
-    const json = await res.json()
-    uploadedFiles.value[0] = { id: json.id, url: json.url }
+    const json = await res.json();
+    uploadedFiles.value[0] = { id: json.id, url: json.url };
     toast.add({
-      severity: 'success',
-      summary: 'Успех',
-      detail: 'Файл успешно загружен',
+      severity: "success",
+      summary: "Успех",
+      detail: "Файл успешно загружен",
       life: 4000,
-    })
+    });
   }
-  loadingFiles.value = []
-}
+  loadingFiles.value = [];
+};
 
 const removeFile = () => {
-  selectedFiles.value = []
-  uploadedFiles.value = []
-}
+  selectedFiles.value = [];
+  uploadedFiles.value = [];
+};
 </script>
 
 <template>
@@ -86,9 +90,9 @@ const removeFile = () => {
       <form class="shadow-lg rounded bg-white" @submit="onSubmit">
         <div class="flex justify-between items-center p-25">
           <h3>Добавить запчасти для ТС</h3>
-          <PartsSelectionLoadExcel/>
+          <PartsSelectionLoadExcel />
         </div>
-        <hr class="border-zinc-300" >
+        <hr class="border-zinc-300" />
         <div class="grid grid-cols-3 items-center gap-20 p-25">
           <FloatLabel variant="on" class="w-full h-full">
             <InputText
@@ -185,15 +189,22 @@ const removeFile = () => {
               @click="removeFile"
             />
           </div>
-          <Button type="submit" class="h-full col-end-4">Добавить в список</Button>
+          <Button type="submit" class="h-full col-end-4"
+            >Добавить в список</Button
+          >
         </div>
       </form>
-      <div v-if="partsSelectionStore.partsSelection.length > 0" class="shadow-lg rounded bg-white">
+      <div
+        v-if="partsSelectionStore.partsSelection.length > 0"
+        class="shadow-lg rounded bg-white"
+      >
         <div class="flex justify-between items-center p-25">
           <h3>Ваш запрос</h3>
-          <Button variant="outlined" @click="partsSelectionStore.clear()">Очистить форму</Button>
+          <Button variant="outlined" @click="partsSelectionStore.clear()"
+            >Очистить форму</Button
+          >
         </div>
-        <hr class="border-zinc-300" >
+        <hr class="border-zinc-300" />
         <div class="p-25 flex flex-col gap-25">
           <DataTable
             :value="partsSelectionStore.partsSelection"
@@ -204,10 +215,20 @@ const removeFile = () => {
             :total-records="totalRecords"
             @update:first="(val) => (first = val)"
           >
-            <Column field="title_parts" header="Наименование запчасти" class="!p-10" />
-            <Column field="num_parts" header="Каталожный номер запчасти" class="!p-10" />
+            <Column
+              field="title_parts"
+              header="Наименование запчасти"
+              class="!p-10"
+            />
+            <Column
+              field="num_parts"
+              header="Каталожный номер запчасти"
+              class="!p-10"
+            />
             <Column field="count" header="Количество" class="w-1/6 !p-10">
-              <template #body="slotProps"> {{ slotProps.data.count }} шт. </template>
+              <template #body="slotProps">
+                {{ slotProps.data.count }} шт.
+              </template>
             </Column>
             <Column field="comment" header="Комментарий" class="w-1/4 !p-10" />
             <Column field="image" header="Фото запчасти" class="!p-10">
@@ -224,7 +245,11 @@ const removeFile = () => {
                   </template>
                   <template #image>
                     <Button size="small" class="w-full">
-                      <img :src="slotProps.data.image" alt="image" class="!hidden" >
+                      <img
+                        :src="slotProps.data.image"
+                        alt="image"
+                        class="!hidden"
+                      />
                       Открыть фото
                     </Button>
                   </template>
@@ -233,7 +258,7 @@ const removeFile = () => {
                       :src="slotProps.data.image"
                       alt="preview"
                       :style="previewProps.style"
-                    >
+                    />
                   </template>
                 </Image>
               </template>
@@ -241,7 +266,10 @@ const removeFile = () => {
             <Column header="Действия" class="w-24 !p-10">
               <template #body="slotProps">
                 <div class="justify-center items-center flex">
-                  <Button icon="pi pi-times" @click="partsSelectionStore.remove(slotProps.index)" />
+                  <Button
+                    icon="pi pi-times"
+                    @click="partsSelectionStore.remove(slotProps.index)"
+                  />
                 </div>
               </template>
             </Column>

@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { useQueryStore } from '@/stores/query'
-import { computed, ref } from 'vue'
-import { useBrandStore } from '@/stores/brand'
-import { useField, useForm } from 'vee-validate'
-import { querySchema } from '@/schema/querySchema'
+import { useQueryStore } from "@/stores/query";
+import { computed, ref } from "vue";
+import { useBrandStore } from "@/stores/brand";
+import { useField, useForm } from "vee-validate";
+import { querySchema } from "@/schema/querySchema";
 
-const queryStore = useQueryStore()
-const brandStore = useBrandStore()
-const queryHistoryStore = useQueryHistoryStore()
-const toast = useToast()
+const queryStore = useQueryStore();
+const brandStore = useBrandStore();
+const queryHistoryStore = useQueryHistoryStore();
+const toast = useToast();
 
-const rowsPerPage = 10
-const first = ref(0)
-const totalRecords = computed(() => queryStore.query.length)
-const showPaginator = computed(() => totalRecords.value > rowsPerPage)
+const rowsPerPage = 10;
+const first = ref(0);
+const totalRecords = computed(() => queryStore.query.length);
+const showPaginator = computed(() => totalRecords.value > rowsPerPage);
 
-const brands = computed(() => brandStore.brand)
+const brands = computed(() => brandStore.brand);
 
 const { handleSubmit, errors, handleReset } = useForm({
   validationSchema: querySchema,
-})
+});
 
-const { value: brand } = useField('brand')
-const { value: num_parts } = useField<string>('num_parts')
-const { value: count } = useField<number>('count')
+const { value: brand } = useField("brand");
+const { value: num_parts } = useField<string>("num_parts");
+const { value: count } = useField<number>("count");
 
 const onSubmit = handleSubmit((values) => {
   queryStore.add({
@@ -31,38 +31,48 @@ const onSubmit = handleSubmit((values) => {
     brand: values.brand,
     num_parts: values.num_parts,
     count: values.count,
-  })
-  handleReset()
-})
+  });
+  handleReset();
+});
 
 const handleSend = async () => {
   // Здесь можно добавить логику отправки запроса
-  console.log('Отправка запроса:', JSON.stringify(queryStore.query))
+  console.log("Отправка запроса:", JSON.stringify(queryStore.query));
   // Очистка запроса после отправки
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(queryStore.query),
-    })
+    });
     if (res.ok) {
       toast.add({
-        severity: 'success',
-        summary: 'Успех',
-        detail: 'Заявка успешно отправлена!',
+        severity: "success",
+        summary: "Успех",
+        detail: "Заявка успешно отправлена!",
         life: 4000,
-      })
-      handleReset()
-      queryHistoryStore.invalidateCache()
+      });
+      handleReset();
+      queryHistoryStore.invalidateCache();
     } else {
-      const error = await res.text()
-      toast.add({ severity: 'error', summary: 'Ошибка', detail: error, life: 4000 })
+      const error = await res.text();
+      toast.add({
+        severity: "error",
+        summary: "Ошибка",
+        detail: error,
+        life: 4000,
+      });
     }
   } catch (e) {
-    toast.add({ severity: 'error', summary: 'Ошибка', detail: String(e), life: 4000 })
+    toast.add({
+      severity: "error",
+      summary: "Ошибка",
+      detail: String(e),
+      life: 4000,
+    });
   }
-  queryStore.clear()
-}
+  queryStore.clear();
+};
 </script>
 
 <template>
@@ -73,8 +83,11 @@ const handleSend = async () => {
           <h3>Запрос цены</h3>
           <QueryLoadExcel />
         </div>
-        <hr class="border-zinc-300" >
-        <form class="grid grid-cols-4 items-center gap-15 p-25" @submit="onSubmit">
+        <hr class="border-zinc-300" />
+        <form
+          class="grid grid-cols-4 items-center gap-15 p-25"
+          @submit="onSubmit"
+        >
           <FloatLabel variant="on" class="h-full">
             <Select
               v-model="brand"
@@ -148,12 +161,17 @@ const handleSend = async () => {
           <Button type="submit" class="h-full">Добавить в запрос</Button>
         </form>
       </div>
-      <div v-if="queryStore.query.length > 0" class="shadow-lg rounded bg-white">
+      <div
+        v-if="queryStore.query.length > 0"
+        class="shadow-lg rounded bg-white"
+      >
         <div class="flex justify-between items-center p-25">
           <h3>Ваш запрос</h3>
-          <Button variant="outlined" @click="queryStore.clear()">Очистить форму</Button>
+          <Button variant="outlined" @click="queryStore.clear()"
+            >Очистить форму</Button
+          >
         </div>
-        <hr class="border-zinc-300" >
+        <hr class="border-zinc-300" />
         <div class="p-25 flex flex-col gap-25">
           <DataTable
             :value="queryStore.query"
@@ -167,12 +185,17 @@ const handleSend = async () => {
             <Column field="brand" header="Бренд" class="w-1/4 !p-10" />
             <Column field="num_parts" header="Номер запчасти" class="!p-10" />
             <Column field="count" header="Количество" class="w-1/6 !p-10">
-              <template #body="slotProps"> {{ slotProps.data.count }} шт. </template>
+              <template #body="slotProps">
+                {{ slotProps.data.count }} шт.
+              </template>
             </Column>
             <Column header="Действия" class="w-24 !p-10">
               <template #body="slotProps">
                 <div class="justify-center items-center flex">
-                  <Button icon="pi pi-times" @click="queryStore.remove(slotProps.index)" />
+                  <Button
+                    icon="pi pi-times"
+                    @click="queryStore.remove(slotProps.index)"
+                  />
                 </div>
               </template>
             </Column>

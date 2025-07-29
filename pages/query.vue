@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useQueryViewStore } from '~/stores/queryViewStore'
+import { useQueryViewStore } from "~/stores/queryViewStore";
 
-const store = useQueryViewStore()
+const store = useQueryViewStore();
 </script>
 
 <template>
@@ -10,9 +10,15 @@ const store = useQueryViewStore()
       <div class="container mx-auto flex flex-col gap-15">
         <Tabs :value="store.activeView">
           <TabList>
-            <Tab value="new-request" @click="store.setActiveView('new-request')">Новый запрос</Tab>
-            <Tab value="history" @click="store.setActiveView('history')">История</Tab>
-            <Tab value="funnel" @click="store.setActiveView('funnel')">Воронка</Tab>
+            <Tab value="new-request" @click="store.setActiveView('new-request')"
+              >Новый запрос</Tab
+            >
+            <Tab value="history" @click="store.setActiveView('history')"
+              >История</Tab
+            >
+            <Tab value="funnel" @click="store.setActiveView('funnel')"
+              >Воронка</Tab
+            >
           </TabList>
         </Tabs>
       </div>

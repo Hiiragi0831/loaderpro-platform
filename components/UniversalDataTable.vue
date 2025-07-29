@@ -1,136 +1,143 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 import type {
   DataTableFilterEvent,
   DataTableFilterMeta,
   DataTablePageEvent,
   DataTableSortEvent,
-} from 'primevue'
-import { FilterMatchMode } from '@primevue/core/api'
-import { useFormatter } from '~/utils/useFormatter'
-import { getFilterValue } from '~/utils/getFilterValue'
-import type { DataTableType } from '~/types/dataTableType'
+} from "primevue";
+import { FilterMatchMode } from "@primevue/core/api";
+import { useFormatter } from "~/utils/useFormatter";
+import { getFilterValue } from "~/utils/getFilterValue";
+import type { DataTableType } from "~/types/dataTableType";
 
 // Типы для конфигурации колонок
 interface TableColumn {
-  field: string
-  header: string
-  formatter?: 'number' | 'date' | 'money'
-  customClass?: string
-  filterable?: boolean
-  filterType?: 'select'
-  filterOptions?: string[]
-  statusConfig?: Record<string, string>
-  sortable?: boolean
-  customRenderer?: (value: string | null) => string
+  field: string;
+  header: string;
+  formatter?: "number" | "date" | "money";
+  customClass?: string;
+  filterable?: boolean;
+  filterType?: "select";
+  filterOptions?: string[];
+  statusConfig?: Record<string, string>;
+  sortable?: boolean;
+  customRenderer?: (value: string | null) => string;
 }
 
 interface TableConfig {
-  title: string
-  columns: TableColumn[]
-  defaultPerPage: number
-  showRefreshButton?: boolean
+  title: string;
+  columns: TableColumn[];
+  defaultPerPage: number;
+  showRefreshButton?: boolean;
 }
 
 interface LoadDataResult<T = Record<string, unknown>> {
-  items: T[]
+  items: T[];
   meta: {
-    total_items: number
-  }
+    total_items: number;
+  };
 }
 
 // Props
 interface Props {
-  config: TableConfig
-  loadDataFunction: (params: DataTableType) => Promise<LoadDataResult>
-  clearCacheFunction?: () => void
+  config: TableConfig;
+  loadDataFunction: (params: DataTableType) => Promise<LoadDataResult>;
+  clearCacheFunction?: () => void;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 // Composables
-const toast = useToast()
-const { formatMoney, formatNumber, formatDate } = useFormatter()
+const toast = useToast();
+const { formatMoney, formatNumber, formatDate } = useFormatter();
 
 // Reactive state
-const items = ref<Record<string, unknown>[]>([])
-const totalRecords = ref(0)
-const currentPage = ref(1)
-const perPage = ref(props.config.defaultPerPage || 10)
-const sortField = ref<string | null>(null)
-const sortOrder = ref<number | null>(null)
-const loading = ref(false)
+const items = ref<Record<string, unknown>[]>([]);
+const totalRecords = ref(0);
+const currentPage = ref(1);
+const perPage = ref(props.config.defaultPerPage || 10);
+const sortField = ref<string | null>(null);
+const sortOrder = ref<number | null>(null);
+const loading = ref(false);
 
 // Инициализация фильтров на основе конфигурации
 const initFilters = () => {
-  const filterMeta: DataTableFilterMeta = {}
+  const filterMeta: DataTableFilterMeta = {};
 
   props.config.columns.forEach((column) => {
     if (column.filterable) {
       filterMeta[column.field] = {
         value: null,
         matchMode:
-          column.filterType === 'select' ? FilterMatchMode.EQUALS : FilterMatchMode.CONTAINS,
-      }
+          column.filterType === "select"
+            ? FilterMatchMode.EQUALS
+            : FilterMatchMode.CONTAINS,
+      };
     }
-  })
+  });
 
-  return filterMeta
-}
+  return filterMeta;
+};
 
-const filters = ref<DataTableFilterMeta>(initFilters())
+const filters = ref<DataTableFilterMeta>(initFilters());
 
 // Функция для получения CSS классов для статусов
-const getStatusSeverity = (status: string, statusConfig?: Record<string, string>): string => {
-  if (!statusConfig) return 'bg-gray-100 text-gray-800'
-  return statusConfig[status] || 'bg-gray-100 text-gray-800'
-}
+const getStatusSeverity = (
+  status: string,
+  statusConfig?: Record<string, string>,
+): string => {
+  if (!statusConfig) return "bg-gray-100 text-gray-800";
+  return statusConfig[status] || "bg-gray-100 text-gray-800";
+};
 
 // Функция для форматирования значений
 const formatValue = (
   value: string | number,
-  formatter?: TableColumn['formatter'],
-  customRenderer?: TableColumn['customRenderer'],
+  formatter?: TableColumn["formatter"],
+  customRenderer?: TableColumn["customRenderer"],
 ): string => {
   if (customRenderer) {
     // Преобразуем значение к string | null для customRenderer
-    return customRenderer(value !== null && value !== undefined ? String(value) : null)
+    return customRenderer(
+      value !== null && value !== undefined ? String(value) : null,
+    );
   }
 
   if (value === null || value === undefined) {
-    return 'Нет данных'
+    return "Нет данных";
   }
 
   switch (formatter) {
-    case 'money':
-      return formatMoney(value)
-    case 'number':
-      return formatNumber(value)
-    case 'date':
-      if (typeof value === 'string') {
-        return formatDate(value)
+    case "money":
+      return formatMoney(value);
+    case "number":
+      return formatNumber(value);
+    case "date":
+      if (typeof value === "string") {
+        return formatDate(value);
       }
-      return formatDate(new Date(value).toLocaleDateString())
+      return formatDate(new Date(value).toLocaleDateString());
     default:
-      return String(value)
+      return String(value);
   }
-}
+};
 
 // Загрузка данных
 const loadData = async (): Promise<void> => {
   try {
-    loading.value = true
+    loading.value = true;
 
     // Собираем параметры фильтров
-    const filterParams: Record<string, unknown> = {}
+    const filterParams: Record<string, unknown> = {};
     props.config.columns.forEach((column) => {
       if (column.filterable) {
-        const filterValue = getFilterValue(column.field, filters)
+        const filterValue = getFilterValue(column.field, filters);
         if (filterValue) {
-          filterParams[column.field] = filterValue
+          filterParams[column.field] = filterValue;
         }
       }
-    })
+    });
 
     // Формируем параметры сортировки
     const sortValue =
@@ -138,61 +145,63 @@ const loadData = async (): Promise<void> => {
         ? sortOrder.value === 1
           ? sortField.value
           : `-${sortField.value}`
-        : undefined
+        : undefined;
 
     const params: DataTableType = {
       page: currentPage.value,
       limit: perPage.value,
       ...(sortValue && { sortBy: sortValue }),
       ...filterParams,
-    }
+    };
 
-    const result = await props.loadDataFunction(params)
+    const result = await props.loadDataFunction(params);
 
-    items.value = result.items
-    totalRecords.value = result.meta.total_items
+    items.value = result.items;
+    totalRecords.value = result.meta.total_items;
   } catch (error) {
     toast.add({
-      severity: 'error',
-      summary: 'Ошибка',
+      severity: "error",
+      summary: "Ошибка",
       detail: String(error),
       life: 4000,
-    })
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 // Обработчики событий
 const onPageChange = (event: DataTablePageEvent) => {
-  currentPage.value = event.page + 1
-  perPage.value = event.rows
-  loadData()
-}
+  currentPage.value = event.page + 1;
+  perPage.value = event.rows;
+  loadData();
+};
 
 const onSortChange = (event: DataTableSortEvent) => {
-  sortField.value = typeof event.sortField === 'string' ? event.sortField : null
-  sortOrder.value = typeof event.sortOrder === 'number' ? event.sortOrder : null
-  loadData()
-}
+  sortField.value =
+    typeof event.sortField === "string" ? event.sortField : null;
+  sortOrder.value =
+    typeof event.sortOrder === "number" ? event.sortOrder : null;
+  loadData();
+};
 
 const onFilter = (event: DataTableFilterEvent) => {
-  filters.value = event.filters
-  currentPage.value = 1
-  loadData()
-}
+  filters.value = event.filters;
+  currentPage.value = 1;
+  loadData();
+};
 
 // Обновление данных
 const refreshData = (): void => {
   if (props.clearCacheFunction) {
-    props.clearCacheFunction()
+    props.clearCacheFunction();
   }
-  loadData()
-}
+  loadData();
+};
 
 onMounted(() => {
-  loadData()
-})
+  loadData();
+});
 </script>
 
 <template>
@@ -209,7 +218,7 @@ onMounted(() => {
             @click="refreshData"
           />
         </div>
-        <hr class="border-zinc-300" >
+        <hr class="border-zinc-300" />
         <div class="p-25 flex flex-col gap-25">
           <DataTable
             v-model:filters="filters"
@@ -246,7 +255,13 @@ onMounted(() => {
                   />
                 </div>
                 <span v-else>
-                  {{ formatValue(data[column.field], column.formatter, column.customRenderer) }}
+                  {{
+                    formatValue(
+                      data[column.field],
+                      column.formatter,
+                      column.customRenderer,
+                    )
+                  }}
                 </span>
               </template>
 
@@ -271,7 +286,10 @@ onMounted(() => {
               </template>
 
               <!-- Кнопки фильтра -->
-              <template v-if="column.filterable" #filterclear="{ filterCallback }">
+              <template
+                v-if="column.filterable"
+                #filterclear="{ filterCallback }"
+              >
                 <Button
                   type="button"
                   icon="pi pi-times"
@@ -279,7 +297,10 @@ onMounted(() => {
                   @click="filterCallback()"
                 />
               </template>
-              <template v-if="column.filterable" #filterapply="{ filterCallback }">
+              <template
+                v-if="column.filterable"
+                #filterapply="{ filterCallback }"
+              >
                 <Button
                   type="button"
                   icon="pi pi-check"
