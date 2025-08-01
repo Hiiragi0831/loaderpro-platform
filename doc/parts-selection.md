@@ -24,7 +24,7 @@ await fetch("/transport", {
         "mast_serial_number": "32156499DFDS8", // Серийный номер мачты
         "mast_sections": 1, // Количество секций мачты
         "mast_cylinders": 1, // Количество цилиндров мачты
-        "text": "Крутой и непонятный", // Примечание
+        "text_comment": "Крутой и непонятный", // Примечание
         "image": [34, 654, 45] // Общие методы > Загрузка картинок
     }
 })
@@ -32,7 +32,7 @@ await fetch("/transport", {
 ### Ответ от сервера (status: 200)
 ```json
 {
-    "transporid": 4233
+    "transport_id": 4233
 }
 ```
 ## Запросить запчасти
@@ -43,11 +43,11 @@ await fetch("/transport/request", {
         Authorization: "Bearer <token>"
     },
     body: {
-      "transporid": 4233,
+      "transport_id": 4233,
       "title_parts": "Пружина",
       "num_parts": "9395003220",
       "count": 3,
-      "comment": "Ну такая круглая"
+      "text_comment": "Ну такая круглая"
     },
 })
 ```
