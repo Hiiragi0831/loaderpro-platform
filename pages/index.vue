@@ -3,7 +3,6 @@ import { useAuthStore } from "@/stores/auth";
 import { useField, useForm } from "vee-validate";
 import { loginSchema } from "@/schema/loginSchema";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import IconLogo from "@/components/icons/IconLogo.vue";
 import MiniFooter from "~/components/MiniFooter.vue";
 
