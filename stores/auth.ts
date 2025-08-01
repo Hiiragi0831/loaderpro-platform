@@ -38,6 +38,7 @@ export const useAuthStore = defineStore("auth", {
             title: "Вы успешно вошли в аккаунт",
             text: "Здравствуйте, " + this.user.name + "!",
           };
+          await useRouter().push({ name: "home" });
         } else if (res.status === 401) {
           this.message = {
             type: "error",

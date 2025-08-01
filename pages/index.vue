@@ -12,7 +12,6 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const router = useRouter();
 const visible = ref(false);
 
 const { handleSubmit, errors, handleReset } = useForm({
@@ -24,9 +23,6 @@ const { value: password } = useField<string>("password");
 
 const onSubmit = handleSubmit(async (values) => {
   await authStore.signUp(values.email, values.password);
-  if (authStore.isAuthenticated) {
-    await router.push("/home");
-  }
   handleReset();
 });
 </script>
