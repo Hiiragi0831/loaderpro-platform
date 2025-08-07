@@ -57,6 +57,15 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
   primevue: {
-    importTheme: { from: "@/themes/loaderpro.ts" },
+    importTheme: { from: "~/themes/loaderpro.ts" },
+  },
+  runtimeConfig: {
+    // Приватные ключи (доступны только на сервере)
+    // apiSecret: process.env.API_SECRET,
+
+    // Публичные ключи (доступны на клиенте и сервере)
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_URL,
+    },
   },
 });

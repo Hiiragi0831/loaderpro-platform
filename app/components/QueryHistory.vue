@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useQueryHistoryStore } from "@/stores/queryHistory";
-import UniversalDataTable from "~/components/UniversalDataTable.vue";
-import type { DataTableType } from "~/types/dataTableType";
+import { baseTableStore } from "~/stores/baseTableStore";
 
+const useQueryHistoryStore = baseTableStore("queryHistoryStore", "querys");
 const queryHistoryStore = useQueryHistoryStore();
 
 // Конфигурация для таблицы истории запросов
@@ -48,8 +47,8 @@ const queryHistoryTableConfig = {
 };
 
 // Функция загрузки данных
-const loadQueryHistoryData = async (params: DataTableType) => {
-  const response = await queryHistoryStore.fetchQueryHistory(params);
+const loadQueryHistoryData = async (params: any) => {
+  const response = await queryHistoryStore.fetchData(params);
   // Приводим тип ответа от хранилища к типу, который ожидает UniversalDataTable.
   // Это предполагает, что структура ответа (поля `items` и `meta.total_items`)
   // фактически совпадает с тем, что ожидает компонент таблицы.

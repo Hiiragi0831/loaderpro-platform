@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
+import { useApi } from "~/composables/useApi";
 
 const props = defineProps<{
   idStart: number;
@@ -8,7 +9,7 @@ const props = defineProps<{
 
 const toast = useToast();
 const deleteSingleFile = async (id: number) => {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/uploads/${id}`, {
+  const res = await fetch(`${useApi().apiUrl}/uploads/${id}`, {
     method: "DELETE",
   });
   toast.add({

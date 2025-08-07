@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import IconLogo from "@/components/icons/IconLogo.vue";
-import IconSocialVk from "@/components/icons/IconSocialVk.vue";
-import IconSocialTelegram from "@/components/icons/IconSocialTelegram.vue";
-import IconSocialYoutube from "@/components/icons/IconSocialYoutube.vue";
-import IconSocialRutube from "@/components/icons/IconSocialRutube.vue";
-import IconBank from "@/components/icons/IconBank.vue";
-import IconCreditCard from "@/components/icons/IconCreditCard.vue";
+import IconLogo from "~/components/icons/IconLogo.vue";
+import IconSocialTelegram from "~/components/icons/IconSocialTelegram.vue";
+import IconSocialVk from "~/components/icons/IconSocialVk.vue";
+import IconSocialYoutube from "~/components/icons/IconSocialYoutube.vue";
+import IconSocialRutube from "~/components/icons/IconSocialRutube.vue";
+import IconBank from "~/components/icons/IconBank.vue";
+import IconCreditCard from "~/components/icons/IconCreditCard.vue";
 </script>
 
 <template>

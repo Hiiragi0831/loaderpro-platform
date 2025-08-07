@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useQueryStore } from "@/stores/query";
 import { computed, ref } from "vue";
-import { useBrandStore } from "@/stores/brand";
 import { useField, useForm } from "vee-validate";
-import { querySchema } from "@/schema/querySchema";
+import { querySchema } from "~/schema/querySchema";
+import { useApi } from "~/composables/useApi";
 
 const queryStore = useQueryStore();
 const brandStore = useBrandStore();
@@ -40,7 +39,7 @@ const handleSend = async () => {
   console.log("Отправка запроса:", JSON.stringify(queryStore.query));
   // Очистка запроса после отправки
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/query`, {
+    const res = await fetch(`${useApi().apiUrl}/query`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(queryStore.query),

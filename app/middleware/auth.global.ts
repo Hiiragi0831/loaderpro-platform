@@ -1,5 +1,3 @@
-import { useAuthStore } from "@/stores/auth";
-
 const publicRoutes = ["index", "privacy-policy"]; // Добавьте сюда ваши публичные маршруты
 
 export default defineNuxtRouteMiddleware(async (to) => {

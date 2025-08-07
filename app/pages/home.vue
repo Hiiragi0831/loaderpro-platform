@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useAuthStore } from "@/stores/auth";
-import { useLogout } from "~/composables/useLogout";
-
 const authStore = useAuthStore();
 const logOut = useLogout();
 

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { useAuthStore } from "@/stores/auth";
 import { useField, useForm } from "vee-validate";
-import { loginSchema } from "@/schema/loginSchema";
 import { ref } from "vue";
-import IconLogo from "@/components/icons/IconLogo.vue";
-import MiniFooter from "~/components/MiniFooter.vue";
+import { loginSchema } from "~/schema/loginSchema";
+import IconLogo from "~/components/icons/IconLogo.vue";
 
 definePageMeta({
   layout: "empty",

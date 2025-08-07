@@ -7,9 +7,13 @@ import type {
   DataTableSortEvent,
 } from "primevue";
 import { FilterMatchMode } from "@primevue/core/api";
-import { useFormatter } from "~/utils/useFormatter";
-import { getFilterValue } from "~/utils/getFilterValue";
-import type { DataTableType } from "~/types/dataTableType";
+
+interface DataTableType {
+  page: number;
+  limit: number;
+  sortBy?: string;
+  [key: string]: unknown;
+}
 
 // Типы для конфигурации колонок
 interface TableColumn {

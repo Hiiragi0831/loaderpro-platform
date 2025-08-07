@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useQueryViewStore } from "~/stores/queryViewStore";
-
 const store = useQueryViewStore();
 </script>
 

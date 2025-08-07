@@ -2,22 +2,21 @@
 import type { FileUploadUploaderEvent } from "primevue/fileupload";
 import { useToast } from "primevue/usetoast";
 import readXlsxFile from "read-excel-file";
-import { usePartsSelectionStore } from "~/stores/partsSelection";
 
-interface PartsRow {
-  title_parts?: string;
-  num_parts?: string;
-  count?: number;
-  comment?: string;
-  image?: string;
-  id?: string;
+interface ExcelRow {
+  brand: string;
+  num_parts: string;
+  count: number;
+  [key: string]: string | number;
 }
 
 const toast = useToast();
-const partsSelectionStore = usePartsSelectionStore();
+const queryStore = useQueryStore();
+const brandStore = useBrandStore();
 
 const upLoader = async (event: FileUploadUploaderEvent) => {
   let file: File | undefined;
+  const brands = brandStore.brand.map((b) => b.name); // список брендов с сервера
 
   if (Array.isArray(event.files)) {
     file = event.files[0];
@@ -28,19 +27,28 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
   if (!file) return;
 
   const map = {
-    "Наименование запчасти": "title_parts",
-    "Каталожный номер запчасти": "num_parts",
+    Бренд: "brand",
+    "Номер запчасти": "num_parts",
     Количество: "count",
-    Комментарий: "comment",
-    Фото: "image",
   };
 
   readXlsxFile(file, { map }).then((data) => {
-    const rowsWithId = data.rows.map((row: PartsRow) => ({
+    const rows = (data.rows as ExcelRow[]).map((row) => {
+      const matchedBrand = brands.find(
+        (b) =>
+          String(row.brand).toLowerCase().includes(b.toLowerCase()) ||
+          b.toLowerCase().includes(String(row.brand).toLowerCase()),
+      );
+      return {
+        ...row,
+        brand: matchedBrand || row.brand,
+      };
+    });
+    const rowsWithId = rows.map((row: ExcelRow) => ({
       id: Math.round(Date.now() + Math.random()),
       ...row,
     }));
-    partsSelectionStore.add(rowsWithId);
+    queryStore.add(rowsWithId);
     toast.add({
       severity: "success",
       summary: "Файл загружен",
@@ -49,10 +57,11 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
     });
   });
 };
+
 const handleDownload = () =>
   downloadTemplate(
-    "/templates/loaderpro_parts_template.xlsx",
-    "loaderpro_parts_template.xlsx",
+    "/templates/loaderpro_query_template.xlsx",
+    "loaderpro_query_template.xlsx",
   );
 </script>
 

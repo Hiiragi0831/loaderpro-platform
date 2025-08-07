@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useApi } from "~/composables/useApi";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -22,7 +23,7 @@ export const useAuthStore = defineStore("auth", {
       this.loader = true;
       this.message = null;
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
+        const res = await fetch(`${useApi().apiUrl}/auth`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
@@ -86,7 +87,7 @@ export const useAuthStore = defineStore("auth", {
         return;
       }
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/auth_me`, {
+        const res = await fetch(`${useApi().apiUrl}/auth_me`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         if (res.ok) {

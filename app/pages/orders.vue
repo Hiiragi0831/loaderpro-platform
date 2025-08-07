@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useOrderStore } from "~/stores/orders";
-import UniversalDataTable from "~/components/UniversalDataTable.vue";
-import type { DataTableType } from "~/types/dataTableType";
+import { baseTableStore } from "~/stores/baseTableStore";
 
+const useOrderStore = baseTableStore("orderStore", "orders");
 const orderStore = useOrderStore();
 
 // Конфигурация для таблицы заказов
@@ -77,8 +76,8 @@ const ordersTableConfig = {
 };
 
 // Функция загрузки данных
-const loadOrdersData = async (params: DataTableType) => {
-  const response = orderStore.fetchOrderHistory(params);
+const loadOrdersData = async (params:any) => {
+  const response = orderStore.fetchData(params);
   // Приводим тип ответа от хранилища к типу, который ожидает UniversalDataTable.
   // Это предполагает, что структура ответа (поля `items` и `meta.total_items`)
   // фактически совпадает с тем, что ожидает компонент таблицы.

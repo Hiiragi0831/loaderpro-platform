@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useBrandStore } from "~/stores/brand";
 import { computed } from "vue";
 import { useField, useForm } from "vee-validate";
-import { partsSelectionTransport } from "~/schema/partsSelectionTransport";
 import type { FileUploadUploaderEvent } from "primevue/fileupload";
+import { partsSelectionTransport } from "~/schema/partsSelectionTransport";
+import { useApi } from "~/composables/useApi";
 
 const emit = defineEmits<{
   (e: "select", id: number): void;
@@ -55,7 +55,7 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
     loadingFiles.value.push(idx);
     const formData = new FormData();
     formData.append("file", file);
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/uploads`, {
+    const res = await fetch(`${useApi().apiUrl}/uploads`, {
       method: "POST",
       body: formData,
     });
@@ -94,7 +94,7 @@ const onSubmit = handleSubmit(async (values) => {
     }
   });
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/transport`, {
+    const res = await fetch(`${useApi().apiUrl}/transport`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

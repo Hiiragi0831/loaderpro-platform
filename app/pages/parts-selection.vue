@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import PartsSelectionTransport from "@/components/PartsSelectionTransport.vue";
-import PartsSelectionFormRequest from "@/components/PartsSelectionFormRequest.vue";
 
 const selectedTransportId = ref<number | null>(null);
 const showFormRequest = ref(false);

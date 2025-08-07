@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import IconLogo from "@/components/icons/IconLogo.vue";
 import { computed } from "vue";
-import { useBrandStore } from "@/stores/brand";
 import { useField, useForm } from "vee-validate";
-import { querySchema } from "@/schema/querySchema";
+import { querySchema } from "~/schema/querySchema";
+import IconLogo from "~/components/icons/IconLogo.vue";
+import { useApi } from "~/composables/useApi";
 
 const brandStore = useBrandStore();
 const userStore = useAuthStore();
@@ -33,7 +33,7 @@ const { value: count } = useField<number>("count");
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/query`, {
+    const res = await fetch(`${useApi().apiUrl}/query`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

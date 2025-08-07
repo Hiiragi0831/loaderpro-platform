@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useApi } from "~/composables/useApi";
 
 export interface Brand {
   name: string;
@@ -42,7 +43,7 @@ export const useBrandStore = defineStore("brand", {
       const user = JSON.parse(userStr);
       // console.log("Загружаем бренды с сервера...");
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/brand`, {
+      const res = await fetch(`${useApi().apiUrl}/brand`, {
         method: "GET",
         headers: { Authorization: `Bearer ${user.token}` },
       });
