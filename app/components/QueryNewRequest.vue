@@ -3,9 +3,11 @@ import { computed, ref } from "vue";
 import { useField, useForm } from "vee-validate";
 import { querySchema } from "~/schema/querySchema";
 import { useApi } from "~/composables/useApi";
+import { baseTableStore } from "~/stores/baseTableStore";
 
 const queryStore = useQueryStore();
 const brandStore = useBrandStore();
+const useQueryHistoryStore = baseTableStore("queryHistoryStore", "querys");
 const queryHistoryStore = useQueryHistoryStore();
 const toast = useToast();
 

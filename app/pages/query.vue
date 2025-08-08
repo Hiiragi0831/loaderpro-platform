@@ -8,15 +8,15 @@ const store = useQueryViewStore();
       <div class="container mx-auto flex flex-col gap-15">
         <Tabs :value="store.activeView">
           <TabList>
-            <Tab value="new-request" @click="store.setActiveView('new-request')"
-              >Новый запрос</Tab
+            <Tab
+              value="new-request"
+              @click="store.setActiveView('new-request')"
             >
-            <Tab value="history" @click="store.setActiveView('history')"
-              >История</Tab
-            >
-            <Tab value="funnel" @click="store.setActiveView('funnel')"
-              >Воронка</Tab
-            >
+              Новый запрос
+            </Tab>
+            <Tab value="history" @click="store.setActiveView('history')">
+              История
+            </Tab>
           </TabList>
         </Tabs>
       </div>
@@ -24,7 +24,6 @@ const store = useQueryViewStore();
 
     <QueryNewRequest v-if="store.activeView === 'new-request'" />
     <QueryHistory v-else-if="store.activeView === 'history'" />
-    <QueryFunnel v-else-if="store.activeView === 'funnel'" />
   </main>
 </template>
 

@@ -2,11 +2,11 @@ export default defineNuxtPlugin(async () => {
   const authStore = useAuthStore();
   const brandStore = useBrandStore();
 
-  console.log("Плагин инициализации запущен");
+  // console.log("Плагин инициализации запущен");
 
   // Проверяем авторизацию при загрузке приложения
   const userStr = localStorage.getItem("user");
-  console.log("Пользователь в localStorage:", !!userStr);
+  // console.log("Пользователь в localStorage:", !!userStr);
 
   if (userStr) {
     try {

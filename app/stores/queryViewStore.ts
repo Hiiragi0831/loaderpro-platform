@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useQueryViewStore = defineStore("queryView", {
   state: () => ({
-    activeView: "funnel",
+    activeView: "new-request",
   }),
   actions: {
     setActiveView(view: string) {

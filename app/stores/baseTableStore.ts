@@ -18,7 +18,11 @@ export interface BaseParams {
 export interface BaseResponse<T> {
   items: T[]; // Массив данных
   meta: {
-    total_items: number; // Общее количество элементов (для пагинации)
+    current_page: number;
+    per_page: number;
+    remaining_count: number;
+    total_items: number;
+    total_pages: number;
   };
 }
 
@@ -251,14 +255,6 @@ export function baseTableStore<T, P extends BaseParams>(
             this.cache.delete(key);
           }
         }
-      },
-
-      /**
-       * Устанавливает новое время жизни кэша
-       * @param timeout - Время в миллисекундах
-       */
-      setCacheTimeout(timeout: number) {
-        this.cacheTimeout = timeout;
       },
     },
   });
