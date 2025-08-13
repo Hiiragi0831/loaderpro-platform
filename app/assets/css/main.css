@@ -25,6 +25,7 @@
   --text-3xl: calc(32 * var(--width-multiplier));
   --text-2xl: calc(24 * var(--width-multiplier));
   --text-xl: calc(18 * var(--width-multiplier));
+  --text-lg: calc(16 * var(--width-multiplier));
   --text-base: calc(14 * var(--width-multiplier));
   --text-sm: calc(12 * var(--width-multiplier));
   --text-md: calc(10 * var(--width-multiplier));

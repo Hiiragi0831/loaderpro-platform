@@ -13,8 +13,8 @@ const brands = computed(() => brandStore.brand);
 const menu = [
   [
     { name: "Подбор ЗЧ", url: "/parts-selection" },
-    { name: "Каталог", url: "/home" },
-    { name: "Гараж", url: "/home" },
+    { name: "Каталог", url: "/catalog" },
+    { name: "Гараж", url: "/garage" },
   ],
   [
     { name: "Запросы", url: "/query" },
