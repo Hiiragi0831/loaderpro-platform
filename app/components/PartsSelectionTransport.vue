@@ -346,7 +346,12 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="shadow-lg rounded bg-white">
           <div class="flex justify-between items-center p-25">
-            <h3>Приложите фото шильдиков или ПСМ</h3>
+            <h3>
+              Приложите фото шильдиков или
+              <span v-tooltip.bottom="{ value: 'Паспорт самоходной машины' }">
+                ПСМ
+              </span>
+            </h3>
           </div>
           <hr class="border-zinc-300" />
           <div class="grid grid-cols-1 items-start gap-15 p-25">

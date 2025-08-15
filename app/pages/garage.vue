@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import GarageItem from "~/components/garageItem.vue";
+</script>
 
 <template>
   <main class="relative grid py-30">
@@ -17,19 +19,8 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-20 mt-30">
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
+        <div class="grid gap-20 mt-30">
+          <garage-item />
         </div>
       </div>
     </section>
