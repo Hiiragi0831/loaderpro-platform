@@ -59,6 +59,14 @@ export default defineNuxtConfig({
   primevue: {
     importTheme: { from: "~/themes/loaderpro.ts" },
   },
+  icon: {
+    customCollections: [
+      {
+        prefix: "icons",
+        dir: "~/assets/icons",
+      },
+    ],
+  },
   runtimeConfig: {
     // Приватные ключи (доступны только на сервере)
     // apiSecret: process.env.API_SECRET,
