@@ -60,7 +60,7 @@ const getSeverity = (status: string) => {
 
 <template>
   <div
-    class="flex rounded-2xl overflow-hidden bg-white shadow-2xl p-30 gap-15 justify-between"
+    class="flex rounded-2xl overflow-hidden bg-white shadow-lg p-30 gap-15 justify-between"
   >
     <Image
       :src="image"

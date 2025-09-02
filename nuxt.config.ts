@@ -51,6 +51,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@primevue/nuxt-module",
     "@pinia/nuxt",
+    "nuxt-swiper",
   ],
   css: ["~/assets/css/main.css"],
   vite: {
@@ -63,7 +64,7 @@ export default defineNuxtConfig({
     customCollections: [
       {
         prefix: "icons",
-        dir: "~/assets/icons",
+        dir: "./app/assets/icons",
       },
     ],
   },
