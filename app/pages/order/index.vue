@@ -31,8 +31,8 @@ const ordersTableConfig = {
         "Счет отправлен": "bg-yellow-100 text-yellow-800",
         "Счет оплачен": "bg-blue-100 text-blue-800",
         "В пути": "bg-sky-100 text-sky-800",
-        Отгружен: "bg-green-100 text-green-800",
-        Отменен: "bg-red-100 text-red-800",
+        "Отгружен": "bg-green-100 text-green-800",
+        "Отменен": "bg-red-100 text-red-800",
       },
     },
     {
@@ -76,7 +76,7 @@ const ordersTableConfig = {
 };
 
 // Функция загрузки данных
-const loadOrdersData = async (params:any) => {
+const loadOrdersData = async (params: any) => {
   const response = orderStore.fetchData(params);
   // Приводим тип ответа от хранилища к типу, который ожидает UniversalDataTable.
   // Это предполагает, что структура ответа (поля `items` и `meta.total_items`)
