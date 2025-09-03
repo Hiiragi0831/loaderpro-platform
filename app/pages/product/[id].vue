@@ -46,14 +46,57 @@ defineProps({
         vendor: 123456,
         price: 2145,
         count: 10,
+        measurement: "шт.",
         timeDelivery: "В наличии",
         quality: "OEM",
         status: 1,
-      },{
+      },
+      {
         id: 1,
         vendor: 22,
         price: 2345,
         count: 100,
+        measurement: "шт.",
+        timeDelivery: "2-3 дня",
+        quality: "Оригинал",
+        status: 1,
+      },
+      {
+        id: 1,
+        vendor: 22,
+        price: 2345,
+        count: 100,
+        measurement: "шт.",
+        timeDelivery: "2-3 дня",
+        quality: "Оригинал",
+        status: 1,
+      },
+      {
+        id: 1,
+        vendor: 22,
+        price: 2345,
+        count: 100,
+        measurement: "шт.",
+        timeDelivery: "2-3 дня",
+        quality: "Оригинал",
+        status: 1,
+      },
+      {
+        id: 1,
+        vendor: 22,
+        price: 2345,
+        count: 100,
+        measurement: "шт.",
+        timeDelivery: "2-3 дня",
+        quality: "Оригинал",
+        status: 1,
+      },
+      {
+        id: 1,
+        vendor: 22,
+        price: 2345,
+        count: 100,
+        measurement: "шт.",
         timeDelivery: "2-3 дня",
         quality: "Оригинал",
         status: 1,
@@ -125,14 +168,8 @@ const getSeverity = (status: string) => {
               </swiper-slide>
             </swiper-container>
           </div>
-          <div class="w-350">
-            <DataTable :value="specs" striped-rows :show-headers="false">
-              <Column field="property" header="Свойство" class="h-60"></Column>
-              <Column field="value" header="Значение"></Column>
-            </DataTable>
-          </div>
-          <div class="w-350 ms-auto">
-            <div class="flex flex-col w-full gap-15 justify-end">
+          <div class="w-1000">
+            <div class="grid grid-cols-2 w-full gap-15 justify-end">
               <div
                 class="shadow-lg rounded-2xl p-15 bg-white flex gap-30 items-center justify-between"
               >
@@ -166,43 +203,44 @@ const getSeverity = (status: string) => {
                 </div>
               </div>
             </div>
+            <div class="flex flex-col gap-30 mt-20">
+              <p class="text-2xl font-bold hidden">Предложения поставщиков</p>
+              <DataTable :value="offers" :paginator="true" :rows="4">
+                <Column field="vendor" header="Поставщик" class="w-auto" />
+                <Column field="price" header="Цена" class="w-130">
+                  <template #body="{ data }">
+                    {{ formatter.formatMoney(data.price) }}
+                  </template>
+                </Column>
+                <Column field="count" header="Кол-во" class="w-100" />
+                <Column field="measurement" header="Ед. изм." class="w-100" />
+                <Column field="quality" header="Качество" class="w-130" />
+                <Column
+                  field="timeDelivery"
+                  header="Срок поставки"
+                  class="w-200"
+                >
+                  <template #body="{ data }">
+                    <span :class="getSeverity(data.timeDelivery)">
+                      {{ data.timeDelivery }}
+                    </span>
+                  </template>
+                </Column>
+                <Column field="id" class="w-150 h-60">
+                  <template #body="slotProps">
+                    <div class="flex gap-5">
+                      <InputNumber :default-value="1" show-buttons />
+                      <Button
+                        v-if="slotProps.data.status"
+                        class="flex-shrink-0"
+                        icon="pi pi-shopping-cart"
+                      />
+                    </div>
+                  </template>
+                </Column>
+              </DataTable>
+            </div>
           </div>
-        </div>
-        <div class="flex flex-col gap-30 mt-30">
-          <p class="text-2xl font-bold">Предложения поставщиков</p>
-          <DataTable :value="offers">
-            <Column field="vendor" header="Поставщик" class="w-auto" />
-            <Column field="price" header="Цена" class="w-150">
-              <template #body="{ data }">
-                {{ formatter.formatMoney(data.price) }}
-              </template>
-            </Column>
-            <Column field="count" header="Кол-во" class="w-100">
-              <template #body="{ data }">
-                {{ data.count }} {{ measurement }}
-              </template>
-            </Column>
-            <Column field="quality" header="Качество" class="w-200" />
-            <Column field="timeDelivery" header="Срок поставки" class="w-200">
-              <template #body="{ data }">
-                <span :class="getSeverity(data.timeDelivery)">
-                  {{ data.timeDelivery }}
-                </span>
-              </template>
-            </Column>
-            <Column field="id" class="w-150 h-60">
-              <template #body="slotProps">
-                <div class="flex gap-5">
-                  <InputNumber :default-value="1" show-buttons />
-                  <Button
-                    v-if="slotProps.data.status"
-                    class="flex-shrink-0"
-                    icon="pi pi-shopping-cart"
-                  />
-                </div>
-              </template>
-            </Column>
-          </DataTable>
         </div>
       </div>
     </section>
