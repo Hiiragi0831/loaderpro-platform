@@ -18,7 +18,7 @@ const menu = [
   ],
   [
     { name: "Запросы", url: "/query" },
-    { name: "Заказы", url: "/orders" },
+    { name: "Заказы", url: "/order" },
     { name: "Новости", url: "/home" },
   ],
 ];

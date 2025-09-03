@@ -105,19 +105,6 @@ defineProps({
   },
 });
 const formatter = useFormatter();
-const getSeverity = (status: string) => {
-  switch (status) {
-    case "В идентификации":
-    case "В запросе":
-    case "Срок уточняется":
-      return "text-yellow-500";
-    case "Нет предложений":
-    case "Некорректный номер":
-      return "text-red-500";
-    default:
-      return "text-green-500";
-  }
-};
 </script>
 
 <template>
@@ -128,21 +115,12 @@ const getSeverity = (status: string) => {
         <div class="flex gap-30 mt-30">
           <div class="flex flex-col w-400 gap-10">
             <swiper-container :slides-per-view="1" thumbs-swiper=".mySwiper2">
-              <swiper-slide
-                ><img src="https://swiperjs.com/demos/images/nature-1.jpg"
-              /></swiper-slide>
-              <swiper-slide
-                ><img src="https://swiperjs.com/demos/images/nature-2.jpg"
-              /></swiper-slide>
-              <swiper-slide
-                ><img src="https://swiperjs.com/demos/images/nature-3.jpg"
-              /></swiper-slide>
-              <swiper-slide
-                ><img src="https://swiperjs.com/demos/images/nature-4.jpg"
-              /></swiper-slide>
-              <swiper-slide
-                ><img src="https://swiperjs.com/demos/images/nature-5.jpg"
-              /></swiper-slide>
+              <swiper-slide v-for="(image, index) in Array(5)" :key="index">
+                <img
+                  :src="`https://swiperjs.com/demos/images/nature-${index + 1}.jpg`"
+                  :alt="`Изображение товара ${index + 1}`"
+                />
+              </swiper-slide>
             </swiper-container>
             <swiper-container
               class="mySwiper2 h-90"
@@ -151,20 +129,11 @@ const getSeverity = (status: string) => {
               :free-mode="true"
               :watch-slides-progress="true"
             >
-              <swiper-slide>
-                <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-              </swiper-slide>
-              <swiper-slide>
-                <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-              </swiper-slide>
-              <swiper-slide>
-                <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-              </swiper-slide>
-              <swiper-slide>
-                <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-              </swiper-slide>
-              <swiper-slide>
-                <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
+              <swiper-slide v-for="(image, index) in Array(5)" :key="index">
+                <img
+                  :src="`https://swiperjs.com/demos/images/nature-${index + 1}.jpg`"
+                  :alt="`Изображение товара ${index + 1}`"
+                />
               </swiper-slide>
             </swiper-container>
           </div>
@@ -221,7 +190,7 @@ const getSeverity = (status: string) => {
                   class="w-200"
                 >
                   <template #body="{ data }">
-                    <span :class="getSeverity(data.timeDelivery)">
+                    <span :class="getSeverityText(data.timeDelivery)">
                       {{ data.timeDelivery }}
                     </span>
                   </template>

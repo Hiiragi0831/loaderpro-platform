@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getSeverityText } from "~/utils/getSeverity";
+
 defineProps({
   image: {
     type: String,
@@ -43,19 +45,6 @@ defineProps({
   },
 });
 const formatter = useFormatter();
-const getSeverity = (status: string) => {
-  switch (status) {
-    case "В идентификации":
-    case "В запросе":
-    case "Срок уточняется":
-      return "text-yellow-500";
-    case "Нет предложений":
-    case "Некорректный номер":
-      return "text-red-500";
-    default:
-      return "text-green-500";
-  }
-};
 </script>
 
 <template>
@@ -114,7 +103,7 @@ const getSeverity = (status: string) => {
       </Column>
       <Column field="timeDelivery" header="Срок поставки" class="w-200">
         <template #body="{ data }">
-          <span :class="getSeverity(data.timeDelivery)">
+          <span :class="getSeverityText(data.timeDelivery)">
             {{ data.timeDelivery }}
           </span>
         </template>

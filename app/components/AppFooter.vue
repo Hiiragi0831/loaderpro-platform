@@ -64,7 +64,7 @@ import IconCreditCard from "~/components/icons/IconCreditCard.vue";
         <div class="grid gap-16 text-white">
           <p class="font-semibold text-xl">Мой аккаунт</p>
           <NuxtLink to="/query">Запросы</NuxtLink>
-          <NuxtLink to="/orders">Заказы</NuxtLink>
+          <NuxtLink to="/order">Заказы</NuxtLink>
           <NuxtLink to="/user">Настройки</NuxtLink>
           <NuxtLink to="/privacy-policy">Конфиденциальность</NuxtLink>
         </div>
