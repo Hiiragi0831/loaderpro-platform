@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import { useField, useForm } from "vee-validate";
+import { orderSchema } from "~/schema/orderShema";
+
 const route = useRoute();
 const formatter = useFormatter();
 const delivery = ref("");
+const carrierOp = [{ name: "Деловые линии" }, { name: "СДЭК" }];
+const methodOp = [{ name: "До дверей" }, { name: "До терминала" }];
+const priorityOp = [
+  { name: "Укомплектовать полностью" },
+  { name: "Отправить имеющееся в наличии" },
+];
 const testData = {
   total: 23453,
   info: [
@@ -27,6 +36,21 @@ const testData = {
     },
   ],
 };
+
+const { handleSubmit, errors, handleReset } = useForm({
+  validationSchema: orderSchema,
+});
+
+const { value: company } = useField<string>("company");
+const { value: inn } = useField<string>("inn");
+const { value: firstname } = useField<string>("firstname");
+const { value: surname } = useField<string>("surname");
+const { value: phone } = useField<string>("phone");
+const { value: carrier } = useField("carrier");
+const { value: method } = useField("method");
+const { value: city } = useField<string>("city");
+const { value: address } = useField<string>("address");
+const { value: priority } = useField<string>("priority");
 </script>
 
 <template>
@@ -96,6 +120,101 @@ const testData = {
                   />
                   <label for="delivery-3">До клиента</label>
                 </div>
+              </div>
+              <div class="flex flex-col gap-20 mt-20">
+                <OrderFormField
+                  id="company"
+                  v-model="company"
+                  :invalid="!!errors?.company"
+                  :error="errors?.company"
+                  label="Наименование компании"
+                  type="text"
+                />
+
+                <OrderFormField
+                  id="inn"
+                  v-model="inn"
+                  :invalid="!!errors?.inn"
+                  :error="errors?.inn"
+                  label="ИНН"
+                  type="text"
+                />
+
+                <OrderFormField
+                  id="firstname"
+                  v-model="firstname"
+                  :invalid="!!errors?.firstname"
+                  :error="errors?.firstname"
+                  label="Имя"
+                  type="text"
+                />
+
+                <OrderFormField
+                  id="surname"
+                  v-model="surname"
+                  :invalid="!!errors?.surname"
+                  :error="errors?.surname"
+                  label="Фамилия"
+                  type="text"
+                />
+
+                <OrderFormField
+                  id="phone"
+                  v-model="phone"
+                  :invalid="!!errors?.phone"
+                  :error="errors?.phone"
+                  label="Телефон"
+                  type="mask"
+                  mask="+7 (999) 999-99-99"
+                />
+
+                <OrderFormField
+                  id="carrier"
+                  v-model="carrier"
+                  :invalid="!!errors?.carrier"
+                  :error="errors?.carrier"
+                  label="Перевозчик"
+                  type="select"
+                  :options="carrierOp"
+                />
+
+                <OrderFormField
+                  id="method"
+                  v-model="method"
+                  :invalid="!!errors?.method"
+                  :error="errors?.method"
+                  label="Метод доставки"
+                  type="select"
+                  :options="methodOp"
+                />
+
+                <OrderFormField
+                  id="city"
+                  v-model="city"
+                  :invalid="!!errors?.city"
+                  :error="errors?.city"
+                  label="Город доставки"
+                  type="text"
+                />
+
+                <OrderFormField
+                  id="address"
+                  v-model="address"
+                  :invalid="!!errors?.address"
+                  :error="errors?.address"
+                  label="Адрес доставки"
+                  type="text"
+                />
+
+                <OrderFormField
+                  id="priority"
+                  v-model="priority"
+                  :invalid="!!errors?.priority"
+                  :error="errors?.priority"
+                  label="Приоритет отгрузки"
+                  type="select"
+                  :options="priorityOp"
+                />
               </div>
             </div>
           </div>
