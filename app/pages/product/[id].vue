@@ -21,10 +21,6 @@ defineProps({
     type: Number,
     default: 0,
   },
-  measurement: {
-    type: String,
-    default: "шт.",
-  },
   specs: {
     type: Array,
     default: () => [

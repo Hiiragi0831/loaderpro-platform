@@ -76,7 +76,7 @@ const onSubmit = handleSubmit(async (values) => {
           <NuxtLink to="/home">Свяжитесь с нами</NuxtLink>
         </div>
         <div class="flex gap-20 items-center">
-          <NuxtLink to="/home" class="flex">
+          <NuxtLink to="/notification" class="flex">
             <OverlayBadge value="2" size="small" class="size-20">
               <i
                 class="pi pi-bell"

@@ -7,7 +7,7 @@ defineProps({
   },
   link: {
     type: String,
-    default: "#",
+    default: "product/1",
   },
   name: {
     type: String,
