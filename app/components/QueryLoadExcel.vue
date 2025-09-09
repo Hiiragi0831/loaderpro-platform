@@ -59,10 +59,7 @@ const upLoader = async (event: FileUploadUploaderEvent) => {
 };
 
 const handleDownload = () =>
-  downloadTemplate(
-    "/templates/loaderpro_query_template.xlsx",
-    "loaderpro_query_template.xlsx",
-  );
+  downloadTemplate("/templates/loaderpro_query_template.xlsx", "loaderpro_query_template.xlsx");
 </script>
 
 <template>

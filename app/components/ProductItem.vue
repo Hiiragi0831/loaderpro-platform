@@ -2,8 +2,7 @@
 defineProps({
   image: {
     type: String,
-    default:
-      "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
+    default: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
   },
   link: {
     type: String,

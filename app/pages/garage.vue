@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import GarageItem from "~/components/garageItem.vue";
 </script>
 
 <template>
@@ -20,7 +19,7 @@ import GarageItem from "~/components/garageItem.vue";
         </div>
 
         <div class="grid gap-20 mt-30">
-          <garage-item />
+          <GarageItem />
         </div>
       </div>
     </section>

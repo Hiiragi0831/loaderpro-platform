@@ -1,7 +1,4 @@
-export function useFormatter(
-  locale: string = "ru-RU",
-  defaultCurrency: string = "RUB",
-) {
+export function useFormatter(locale: string = "ru-RU", defaultCurrency: string = "RUB") {
   /**
    * Форматирует число как денежную сумму.
    * @param value - Число или строка, которое нужно отформатировать
@@ -17,13 +14,9 @@ export function useFormatter(
     } = {},
   ): string {
     const number = typeof value === "string" ? parseFloat(value) : value;
-    if (isNaN(number)) return String(value);
+    if (Number.isNaN(number)) return String(value);
 
-    const {
-      currency = defaultCurrency,
-      currencyDisplay = "symbol",
-      withDecimals = false,
-    } = options;
+    const { currency = defaultCurrency, currencyDisplay = "symbol", withDecimals = false } = options;
 
     return new Intl.NumberFormat(locale, {
       style: "currency",
@@ -34,12 +27,9 @@ export function useFormatter(
     }).format(number);
   }
 
-  function formatNumber(
-    value: number | string,
-    options: Intl.NumberFormatOptions = {},
-  ): string {
+  function formatNumber(value: number | string, options: Intl.NumberFormatOptions = {}): string {
     const number = typeof value === "string" ? parseFloat(value) : value;
-    if (isNaN(number)) return String(value);
+    if (Number.isNaN(number)) return String(value);
 
     return new Intl.NumberFormat(locale, {
       useGrouping: true,

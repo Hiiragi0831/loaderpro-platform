@@ -7,7 +7,6 @@ export const useApi = () => {
     apiUrl,
     // Можно добавить другие полезные методы
     buildUrl: (endpoint: string) => `${apiUrl}${endpoint}`,
-    fetch: (endpoint: string, options?: RequestInit) =>
-      fetch(`${apiUrl}${endpoint}`, options),
+    fetch: (endpoint: string, options?: RequestInit) => fetch(`${apiUrl}${endpoint}`, options),
   };
 };

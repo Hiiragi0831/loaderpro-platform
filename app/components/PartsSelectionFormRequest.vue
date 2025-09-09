@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { FileUploadUploaderEvent } from "primevue/fileupload";
 import { useField, useForm } from "vee-validate";
 import { computed, ref } from "vue";
-import type { FileUploadUploaderEvent } from "primevue/fileupload";
-import { partsSelectionRequest } from "~/schema/partsSelectionRequest";
 import { useApi } from "~/composables/useApi";
+import { partsSelectionRequest } from "~/schema/partsSelectionRequest";
 
 const props = defineProps<{ transportId: number | null }>();
 const emit = defineEmits(["sent"]);
@@ -43,11 +43,7 @@ const onSubmit = handleSubmit((values) => {
 
 const handleSend = () => {
   // Здесь можно добавить логику отправки запроса
-  console.log(
-    "Отправка запроса:",
-    partsSelectionStore.partsSelection,
-    props.transportId,
-  );
+  console.log("Отправка запроса:", partsSelectionStore.partsSelection, props.transportId);
   emit("sent");
   // Очистка запроса после отправки
   partsSelectionStore.clear();

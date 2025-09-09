@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import { baseTableStore } from "~/stores/baseTableStore";
-import { ref } from "vue";
 import { FilterMatchMode } from "@primevue/core/api";
-import type {
-  DataTableFilterEvent,
-  DataTablePageEvent,
-  DataTableSortEvent,
-} from "primevue";
 import { watchDebounced } from "@vueuse/core";
-import { useFormatter } from "~/utils/useFormatter";
-import { getSeverityBg } from "~/utils/getSeverity";
+import type { DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent } from "primevue";
+import { ref } from "vue";
+import { baseTableStore } from "~/stores/baseTableStore";
 
 const useQueryHistoryStore = baseTableStore("queryHistoryStore", "querys");
 const queryHistoryStore = useQueryHistoryStore();
@@ -54,17 +48,12 @@ const loadData = async () => {
 
         if (filter.constraints && Array.isArray(filter.constraints)) {
           const activeConstraint = filter.constraints.find(
-            (c: any) =>
-              c.value !== null && c.value !== "" && c.value !== undefined,
+            (c: any) => c.value !== null && c.value !== "" && c.value !== undefined,
           );
           if (activeConstraint) {
             filterParams[key] = activeConstraint.value;
           }
-        } else if (
-          filter.value !== null &&
-          filter.value !== "" &&
-          filter.value !== undefined
-        ) {
+        } else if (filter.value !== null && filter.value !== "" && filter.value !== undefined) {
           if (filter.value instanceof Date) {
             filterParams[key] = filter.value.toISOString().split("T")[0]; // YYYY-MM-DD
           } else {
@@ -74,10 +63,9 @@ const loadData = async () => {
       });
     }
 
-    let sortValue;
+    let sortValue: any;
     if (sortField?.value && sortOrder?.value) {
-      sortValue =
-        sortOrder.value === 1 ? sortField.value : `-${sortField.value}`;
+      sortValue = sortOrder.value === 1 ? sortField.value : `-${sortField.value}`;
     }
 
     const params = {
@@ -310,7 +298,7 @@ onMounted(() => {
                   <Column field="brand" header="Бренд" class="w-1/4" />
                   <Column field="num_parts" header="Артикул" class="w-1/4" />
                   <Column field="count" header="Количество" class="w-1/4">
-                    <template #body="{ data }"> {{ data.count }} шт. </template>
+                    <template #body="{ data }"> {{ data.count }} шт.</template>
                   </Column>
                 </DataTable>
               </div>

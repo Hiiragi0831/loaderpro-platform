@@ -66,8 +66,7 @@ const testData = {
   products: [
     {
       id: 0,
-      image:
-        "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
+      image: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
       link: "#",
       name: "Название товара 1 dfdfef wefwefg wefw ",
       measurement: "шт.",
@@ -80,8 +79,7 @@ const testData = {
     },
     {
       id: 1,
-      image:
-        "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
+      image: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
       link: "#",
       name: "Название товара 2",
       measurement: "шт.",

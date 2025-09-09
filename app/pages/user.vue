@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { userSchema } from "~/schema/userShema";
 import { useField, useForm } from "vee-validate";
+import { userSchema } from "~/schema/userShema";
 
 const carrierOptions = [{ name: "Деловые линии" }, { name: "СДЭК" }];
 const deliveryMethodOptions = [{ name: "До дверей" }, { name: "До терминала" }];
-const priorityOptions = [
-  { name: "Укомплектовать полностью" },
-  { name: "Отправить имеющееся в наличии" },
-];
+const priorityOptions = [{ name: "Укомплектовать полностью" }, { name: "Отправить имеющееся в наличии" }];
 
 const initialValues = ref({});
 

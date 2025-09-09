@@ -46,13 +46,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: [
-    "@nuxt/eslint",
-    "@nuxt/icon",
-    "@primevue/nuxt-module",
-    "@pinia/nuxt",
-    "nuxt-swiper",
-  ],
+  modules: ["@nuxt/icon", "@primevue/nuxt-module", "@pinia/nuxt", "nuxt-swiper"],
   css: ["~/assets/css/main.css"],
   vite: {
     plugins: [tailwindcss()],

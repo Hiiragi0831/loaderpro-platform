@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useField, useForm } from "vee-validate";
-import { querySchema } from "~/schema/querySchema";
-import IconLogo from "~/components/icons/IconLogo.vue";
+import { computed } from "vue";
 import { useApi } from "~/composables/useApi";
+import { querySchema } from "~/schema/querySchema";
 
 const brandStore = useBrandStore();
 const userStore = useAuthStore();
@@ -121,7 +120,7 @@ const onSubmit = handleSubmit(async (values) => {
               size="small"
               variant="simple"
               class="absolute"
-              >{{ errors?.brand }}
+            >{{ errors?.brand }}
             </Message>
           </FloatLabel>
           <FloatLabel variant="on" class="w-170 h-full">
@@ -198,7 +197,7 @@ const onSubmit = handleSubmit(async (values) => {
             <span class="transition group-hover:opacity-0">{{ nav.name }}</span>
             <span
               class="transition font-bold opacity-0 absolute group-hover:scale-105 group-hover:opacity-100"
-              >{{ nav.name }}</span
+            >{{ nav.name }}</span
             >
           </NuxtLink>
         </div>

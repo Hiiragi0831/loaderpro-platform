@@ -20,7 +20,7 @@ const deleteSingleFile = async (id: number) => {
   });
 };
 
-const deleteFiles = async () => {
+const _deleteFiles = async () => {
   for (let id = props.idStart; id <= props.idEnd; id++) {
     await deleteSingleFile(id);
   }
@@ -28,7 +28,7 @@ const deleteFiles = async () => {
 </script>
 
 <template>
-  <Button @click="deleteFiles">Удалить файл</Button>
+  <Button @click="_deleteFiles">Удалить файл</Button>
 </template>
 
 <style scoped></style>

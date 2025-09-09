@@ -19,20 +19,13 @@ const ordersTableConfig = {
       header: "Статус",
       filterable: true,
       filterType: "select" as const,
-      filterOptions: [
-        "В обработке",
-        "Счет отправлен",
-        "Счет оплачен",
-        "В пути",
-        "Отгружен",
-        "Отменен",
-      ],
+      filterOptions: ["В обработке", "Счет отправлен", "Счет оплачен", "В пути", "Отгружен", "Отменен"],
       statusConfig: {
         "Счет отправлен": "bg-yellow-100 text-yellow-800",
         "Счет оплачен": "bg-blue-100 text-blue-800",
         "В пути": "bg-sky-100 text-sky-800",
-        "Отгружен": "bg-green-100 text-green-800",
-        "Отменен": "bg-red-100 text-red-800",
+        Отгружен: "bg-green-100 text-green-800",
+        Отменен: "bg-red-100 text-red-800",
       },
     },
     {

@@ -1,7 +1,4 @@
-export const downloadTemplate = async (
-  templatePath: string,
-  fileName?: string,
-) => {
+export const downloadTemplate = async (templatePath: string, fileName?: string) => {
   const response = await fetch(templatePath);
   if (!response.ok) {
     // обработка ошибки

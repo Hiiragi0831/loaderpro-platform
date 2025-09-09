@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, nextTick } from "vue";
-import type {
-  DataTableFilterEvent,
-  DataTableFilterMeta,
-  DataTablePageEvent,
-  DataTableSortEvent,
-} from "primevue";
 import { FilterMatchMode } from "@primevue/core/api";
+import type { DataTableFilterEvent, DataTableFilterMeta, DataTablePageEvent, DataTableSortEvent } from "primevue";
 import { useToast } from "primevue/usetoast";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useFormatter } from "~/utils/useFormatter";
 
 interface DataTableType {
@@ -104,10 +99,7 @@ const initFilters = () => {
     if (column.filterable) {
       filterMeta[column.field] = {
         value: null,
-        matchMode:
-          column.filterType === "select"
-            ? FilterMatchMode.EQUALS
-            : FilterMatchMode.CONTAINS,
+        matchMode: column.filterType === "select" ? FilterMatchMode.EQUALS : FilterMatchMode.CONTAINS,
       };
     }
   });
@@ -160,20 +152,12 @@ watch(
   },
 );
 
-const getFilterValue = (
-  field: string,
-  allFilters: { value: DataTableFilterMeta },
-): unknown | null => {
-  const f = allFilters.value?.[field] as
-    | { value: unknown; matchMode?: string }
-    | undefined;
+const getFilterValue = (field: string, allFilters: { value: DataTableFilterMeta }): unknown | null => {
+  const f = allFilters.value?.[field] as { value: unknown; matchMode?: string } | undefined;
   return f?.value ?? null;
 };
 
-const getStatusSeverity = (
-  status: string,
-  statusConfig?: Record<string, string>,
-): string => {
+const getStatusSeverity = (status: string, statusConfig?: Record<string, string>): string => {
   if (!statusConfig) return "bg-gray-100 text-gray-800";
   return statusConfig[status] || "bg-gray-100 text-gray-800";
 };
@@ -184,9 +168,7 @@ const formatValue = (
   customRenderer?: TableColumn["customRenderer"],
 ): string => {
   if (customRenderer) {
-    return customRenderer(
-      value !== null && value !== undefined ? String(value) : null,
-    );
+    return customRenderer(value !== null && value !== undefined ? String(value) : null);
   }
   if (value === null || value === undefined) {
     return "Нет данных";
@@ -212,11 +194,7 @@ const loadData = async (): Promise<void> => {
     props.config.columns.forEach((column) => {
       if (column.filterable) {
         const filterValue = getFilterValue(column.field, filters as any);
-        if (
-          filterValue !== null &&
-          filterValue !== undefined &&
-          String(filterValue).length > 0
-        ) {
+        if (filterValue !== null && filterValue !== undefined && String(filterValue).length > 0) {
           filterParams[column.field] = filterValue;
         }
       }
@@ -224,13 +202,8 @@ const loadData = async (): Promise<void> => {
 
     if (props.config.enableGlobalSearch) {
       const globalValue = getFilterValue("global", filters as any);
-      if (
-        globalValue !== null &&
-        globalValue !== undefined &&
-        String(globalValue).length > 0
-      ) {
-        filterParams[props.config.globalSearchParamName || "search"] =
-          globalValue;
+      if (globalValue !== null && globalValue !== undefined && String(globalValue).length > 0) {
+        filterParams[props.config.globalSearchParamName || "search"] = globalValue;
       }
     }
 
@@ -270,10 +243,8 @@ const onPageChange = (event: DataTablePageEvent) => {
 };
 
 const onSortChange = (event: DataTableSortEvent) => {
-  sortField.value =
-    typeof event.sortField === "string" ? event.sortField : null;
-  sortOrder.value =
-    typeof event.sortOrder === "number" ? event.sortOrder : null;
+  sortField.value = typeof event.sortField === "string" ? event.sortField : null;
+  sortOrder.value = typeof event.sortOrder === "number" ? event.sortOrder : null;
   loadData();
 };
 
@@ -298,9 +269,7 @@ const onRowEditSave = async (event: any) => {
         life: 3000,
       });
     } else {
-      const idx = items.value.findIndex(
-        (x) => (x as any).id === (newData as any).id,
-      );
+      const idx = items.value.findIndex((x) => (x as any).id === (newData as any).id);
       if (idx >= 0) items.value[idx] = newData;
       toast.add({
         severity: "success",

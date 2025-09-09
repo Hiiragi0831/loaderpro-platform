@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import IconLogo from "~/components/icons/IconLogo.vue";
-import IconSocialTelegram from "~/components/icons/IconSocialTelegram.vue";
-import IconSocialVk from "~/components/icons/IconSocialVk.vue";
-import IconSocialYoutube from "~/components/icons/IconSocialYoutube.vue";
-import IconSocialRutube from "~/components/icons/IconSocialRutube.vue";
-import IconBank from "~/components/icons/IconBank.vue";
-import IconCreditCard from "~/components/icons/IconCreditCard.vue";
+
 </script>
 
 <template>
@@ -31,26 +25,33 @@ import IconCreditCard from "~/components/icons/IconCreditCard.vue";
               href="https://t.me/loaderpro"
               target="_blank"
               class="text-white w-24 h-24"
-              ><IconSocialTelegram
-            /></a>
+            >
+              <IconSocialTelegram />
+            </a>
             <a
               href="https://vk.com/loaderproru"
               target="_blank"
               class="text-white w-24 h-24"
-              ><IconSocialVk
-            /></a>
+            >
+              <IconSocialVk
+              />
+            </a>
             <a
               href="https://www.youtube.com/@loaderpro"
               target="_blank"
               class="text-white w-24 h-24"
-              ><IconSocialYoutube
-            /></a>
+            >
+              <IconSocialYoutube
+              />
+            </a>
             <a
               href="https://rutube.ru/channel/34721255/"
               target="_blank"
               class="text-white w-24 h-24"
-              ><IconSocialRutube
-            /></a>
+            >
+              <IconSocialRutube
+              />
+            </a>
           </div>
         </div>
         <div class="flex flex-col gap-16 text-white">

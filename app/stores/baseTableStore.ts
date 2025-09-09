@@ -158,12 +158,9 @@ export function baseTableStore<T, P extends BaseParams>(
         try {
           // Строим URL с параметрами
           const urlParams = this.buildUrlParams(mergedParams);
-          const res = await fetch(
-            `${useApi().apiUrl}/${endpoint}?${urlParams}`,
-            {
-              method: "GET",
-            },
-          );
+          const res = await fetch(`${useApi().apiUrl}/${endpoint}?${urlParams}`, {
+            method: "GET",
+          });
 
           // Обрабатываем ошибки HTTP
           if (!res.ok) {
@@ -242,14 +239,12 @@ export function baseTableStore<T, P extends BaseParams>(
 
         // Удаляем только записи, соответствующие паттерну
         for (const [key, entry] of this.cache.entries()) {
-          const shouldInvalidate = Object.entries(pattern).every(
-            ([paramKey, paramValue]) => {
-              // Если значение паттерна undefined, считаем условие выполненным
-              if (paramValue === undefined) return true;
-              // Проверяем совпадение значения в кэшированных параметрах
-              return entry.params[paramKey as keyof P] === paramValue;
-            },
-          );
+          const shouldInvalidate = Object.entries(pattern).every(([paramKey, paramValue]) => {
+            // Если значение паттерна undefined, считаем условие выполненным
+            if (paramValue === undefined) return true;
+            // Проверяем совпадение значения в кэшированных параметрах
+            return entry.params[paramKey as keyof P] === paramValue;
+          });
 
           if (shouldInvalidate) {
             this.cache.delete(key);

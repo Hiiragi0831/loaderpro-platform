@@ -2,7 +2,6 @@
 import { useField, useForm } from "vee-validate";
 import { ref } from "vue";
 import { loginSchema } from "~/schema/loginSchema";
-import IconLogo from "~/components/icons/IconLogo.vue";
 
 definePageMeta({
   layout: "empty",

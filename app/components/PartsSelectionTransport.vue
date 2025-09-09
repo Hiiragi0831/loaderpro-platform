@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useField, useForm } from "vee-validate";
 import type { FileUploadUploaderEvent } from "primevue/fileupload";
-import { partsSelectionTransport } from "~/schema/partsSelectionTransport";
+import { useField, useForm } from "vee-validate";
+import { computed } from "vue";
 import { useApi } from "~/composables/useApi";
+import { partsSelectionTransport } from "~/schema/partsSelectionTransport";
 
-const emit = defineEmits<{
-  (e: "select", id: number): void;
-}>();
+const emit = defineEmits<(e: "select", id: number) => void>();
 
 const brandStore = useBrandStore();
 const brands = computed(() => brandStore.brand);
@@ -22,21 +20,15 @@ const { handleSubmit, errors, handleReset } = useForm({
 
 const { value: transport_brand } = useField("transport_brand");
 const { value: transport_model } = useField<string>("transport_model");
-const { value: transport_year_production } = useField<string>(
-  "transport_year_production",
-);
+const { value: transport_year_production } = useField<string>("transport_year_production");
 const { value: transport_prefix } = useField<string>("transport_prefix");
-const { value: transport_serial_number } = useField<string>(
-  "transport_serial_number",
-);
+const { value: transport_serial_number } = useField<string>("transport_serial_number");
 
 const { value: engine_brand } = useField<string>("engine_brand");
 const { value: engine_model } = useField<string>("engine_model");
 const { value: engine_voltage } = useField<string>("engine_voltage");
 const { value: engine_fuel_type } = useField<string>("engine_fuel_type");
-const { value: engine_serial_number } = useField<string>(
-  "engine_serial_number",
-);
+const { value: engine_serial_number } = useField<string>("engine_serial_number");
 
 const { value: mast_brand } = useField<string>("mast_brand");
 const { value: mast_model } = useField<string>("mast_model");
