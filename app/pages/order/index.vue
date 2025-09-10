@@ -19,6 +19,7 @@ const filters = ref();
 const sortField = ref();
 const sortOrder = ref();
 const loading = ref(false);
+const expandLoading = ref<Record<string, boolean>>({}); // Состояние загрузки для каждого заказа
 
 const qualities = ref(["В обработке", "Счет отправлен", "Счет оплачен", "В пути", "Отгружен", "Отменен"]);
 
@@ -93,6 +94,48 @@ const loadData = async () => {
   }
 };
 
+// загрузка деталей заказа (товаров) по его ID
+const loadOrderDetails = async (orderData: any) => {
+  const orderId = orderData.id || orderData.num_orders;
+
+  // Устанавливаем состояние загрузки для конкретного заказа
+  expandLoading.value[orderId] = true;
+
+  try {
+    // Отправляем запрос на получение детальной информации о заказе
+    const response = await orderStore.fetchDetails(orderId);
+
+    // Обновляем данные заказа с полученными товарами
+    const orderIndex = dataItems.value.findIndex((item: any) =>
+      (item.id || item.num_orders) === orderId
+    );
+
+    if (orderIndex !== -1) {
+      // Предполагаем, что ответ содержит поле items с товарами
+      dataItems.value[orderIndex].items = response.items || response.data?.items || [];
+    }
+
+    console.log(`Загружены товары для заказа ${orderId}:`, response);
+  } catch (error) {
+    console.error(`Ошибка загрузки деталей заказа ${orderId}:`, error);
+    // Можно показать toast уведомление об ошибке
+  } finally {
+    expandLoading.value[orderId] = false;
+  }
+};
+
+// Обработчик раскрытия строки
+const onRowExpand = async (event: any) => {
+  const orderData = event.data;
+
+  // Проверяем, есть ли уже загруженные данные
+  if (!orderData.items || orderData.items.length === 0) {
+    await loadOrderDetails(orderData);
+  }
+};
+
+
+
 const onSort = (event: DataTableSortEvent) => {
   sortField.value = event.sortField;
   sortOrder.value = event.sortOrder;
@@ -126,13 +169,6 @@ watchDebounced(
   },
   { debounce: 500, maxWait: 1000 },
 );
-
-// Функция для добавления одного месяца к дате
-const addOneMonthToDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  date.setMonth(date.getMonth() + 1);
-  return date.toISOString().slice(0, 19).replace("T", " ");
-};
 
 onMounted(() => {
   loadData();
@@ -171,6 +207,7 @@ onMounted(() => {
               @page="onPage"
               @filter="onFilter"
               @sort="onSort"
+              @row-expand="onRowExpand"
             >
               <template #header>
                 <div class="flex justify-between">
@@ -333,16 +370,26 @@ onMounted(() => {
                     {{ useFormatter().formatNumber(slotProps.data.num_orders) }}
                   </p>
 
-                  <!-- Добавим отладочную информацию -->
+                  <!-- Показываем индикатор загрузки для конкретного заказа -->
                   <div
-                    v-if="
-                    !slotProps.data.items || slotProps.data.items.length === 0
-                  "
+                    v-if="expandLoading[slotProps.data.id || slotProps.data.num_orders]"
+                    class="text-center py-4"
+                  >
+                    <ProgressSpinner style="width: 30px; height: 30px" />
+                    <p class="text-gray-500 mt-2">Загрузка товаров...</p>
+                  </div>
+
+                  <!-- Показываем сообщение если нет товаров -->
+                  <div
+                    v-else-if="
+                      !slotProps.data.items || slotProps.data.items.length === 0
+                    "
                     class="text-center py-4 text-gray-500"
                   >
                     Нет позиций для отображения
                   </div>
 
+                  <!-- Показываем таблицу с товарами -->
                   <DataTable
                     v-else
                     :value="slotProps.data.items"

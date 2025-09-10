@@ -185,6 +185,23 @@ export function baseTableStore<T, P extends BaseParams>(
       },
 
       /**
+       * метод для получения всех данных по Id
+       * @param paramsId - Параметры запроса
+       * @returns Promise с данными в формате BaseResponse
+       */
+      async fetchDetails(paramsId: string | number) {
+        try {
+          const response = await $fetch(`${useApi().apiUrl}/${endpoint}/${paramsId}`, {
+            method: "GET",
+          });
+          return response;
+        } catch (error) {
+          console.error("Ошибка загрузки детальных данных:", error);
+          throw error;
+        }
+      },
+
+      /**
        * Обновляет существующую запись через PATCH запрос
        * После успешного обновления инвалидирует весь кэш
        * @param id - Идентификатор записи для обновления
