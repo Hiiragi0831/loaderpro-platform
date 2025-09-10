@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useField, useForm } from "vee-validate";
 import { computed } from "vue";
+import IconLogo from "~/components/icons/IconLogo.vue";
 import { useApi } from "~/composables/useApi";
 import { querySchema } from "~/schema/querySchema";
 

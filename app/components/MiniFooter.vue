@@ -1,5 +1,11 @@
 <script setup lang="ts">
-
+import IconBank from "~/components/icons/IconBank.vue";
+import IconCreditCard from "~/components/icons/IconCreditCard.vue";
+import IconLogo from "~/components/icons/IconLogo.vue";
+import IconSocialRutube from "~/components/icons/IconSocialRutube.vue";
+import IconSocialTelegram from "~/components/icons/IconSocialTelegram.vue";
+import IconSocialVk from "~/components/icons/IconSocialVk.vue";
+import IconSocialYoutube from "~/components/icons/IconSocialYoutube.vue";
 </script>
 
 <template>
@@ -33,24 +39,21 @@
               target="_blank"
               class="text-white w-24 h-24"
             >
-              <IconSocialVk
-              />
+              <IconSocialVk />
             </a>
             <a
               href="https://www.youtube.com/@loaderpro"
               target="_blank"
               class="text-white w-24 h-24"
             >
-              <IconSocialYoutube
-              />
+              <IconSocialYoutube />
             </a>
             <a
               href="https://rutube.ru/channel/34721255/"
               target="_blank"
               class="text-white w-24 h-24"
             >
-              <IconSocialRutube
-              />
+              <IconSocialRutube />
             </a>
           </div>
         </div>

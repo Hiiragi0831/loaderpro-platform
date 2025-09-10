@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useField, useForm } from "vee-validate";
 import { ref } from "vue";
+import IconLogo from "~/components/icons/IconLogo.vue";
 import { loginSchema } from "~/schema/loginSchema";
 
 definePageMeta({
