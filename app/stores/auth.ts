@@ -4,9 +4,8 @@ import { useApi } from "~/composables/useApi";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: {
-      name: "",
+      firstname: "",
       company: "",
-      email: "",
       token: "",
       loginAt: "",
     },
@@ -22,22 +21,22 @@ export const useAuthStore = defineStore("auth", {
     async signUp(email: string, password: string) {
       this.loader = true;
       this.message = null;
+      const b64 = btoa(`${email}:${password}`);
       try {
         const res = await fetch(`${useApi().apiUrl}/auth`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          method: "GET",
+          headers: { "Authorization": `Basic ${b64}` },
         });
         const data = await res.json();
-        if (res.ok && data.data && data.token) {
-          this.user = { ...data.data, token: data.token, loginAt: Date.now() };
+        if (res.ok && data && data.token) {
+          this.user = { ...data, token: data.token, loginAt: Date.now() };
           localStorage.setItem("user", JSON.stringify(this.user));
           await useBrandStore().getBrands();
           this.isAuthenticated = true;
           this.message = {
             type: "success",
             title: "Вы успешно вошли в аккаунт",
-            text: "Здравствуйте, " + this.user.name + "!",
+            text: "Здравствуйте, " + this.user.firstname + "!",
           };
           await useRouter().push({ name: "home" });
         } else if (res.status === 401) {
@@ -114,7 +113,7 @@ export const useAuthStore = defineStore("auth", {
         title: messageParams?.title || "Выход из системы",
         text: messageParams?.text || "Вы успешно вышли из аккаунта",
       };
-      this.user = { name: "", email: "", token: "", loginAt: "", company: "" };
+      this.user = { firstname: "", token: "", loginAt: "", company: "" };
       this.isAuthenticated = false;
       useBrandStore().loaded = false;
       localStorage.clear();
