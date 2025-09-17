@@ -14,6 +14,7 @@ const currentPage = ref(1); // номер страницы (1-based)
 const rows = ref(10); // размер страницы
 const totalRecords = ref(0); // общее кол-во записей (для пагинации)
 const first = computed(() => (currentPage.value - 1) * rows.value); // offset для DataTable
+const expandLoading = ref<Record<string, boolean>>({}); // Состояние загрузки для каждого заказа
 
 const filters = ref();
 const sortField = ref();
@@ -87,6 +88,43 @@ const loadData = async () => {
     console.log("Первый элемент items:", dataItems.value[0]?.items);
   } finally {
     loading.value = false;
+  }
+};
+
+const loadDetails = async (data: any) => {
+  const detailId = data.id || data.num;
+
+  // Устанавливаем состояние загрузки для конкретного заказа
+  expandLoading.value[detailId] = true;
+
+  try {
+    // Отправляем запрос на получение детальной информации о заказе
+    const response = await queryHistoryStore.fetchDetails(detailId);
+
+    // Обновляем данные заказа с полученными товарами
+    const idx = dataItems.value.findIndex((item: any) => (item.id || item.num_orders) === detailId);
+
+    if (idx !== -1) {
+      // Предполагаем, что ответ содержит поле items с товарами
+      dataItems.value[idx].items = response.items || response.data?.items || [];
+    }
+
+    console.log(`Загружены товары для заказа ${detailId}:`, response);
+  } catch (error) {
+    console.error(`Ошибка загрузки деталей заказа ${detailId}:`, error);
+    // Можно показать toast уведомление об ошибке
+  } finally {
+    expandLoading.value[detailId] = false;
+  }
+};
+
+// Обработчик раскрытия строки
+const onRowExpand = async (event: any) => {
+  const data = event.data;
+
+  // Проверяем, есть ли уже загруженные данные
+  if (!data.items || data.items.length === 0) {
+    await loadDetails(data);
   }
 };
 
@@ -167,6 +205,7 @@ onMounted(() => {
             @page="onPage"
             @filter="onFilter"
             @sort="onSort"
+            @row-expand="onRowExpand"
           >
             <template #header>
               <div class="flex justify-between">
@@ -187,14 +226,14 @@ onMounted(() => {
               </div>
             </template>
             <Column expander class="w-20" />
-            <Column field="num_orders" header="Номер запроса" class="w-1/4">
+            <Column field="num" header="Номер запроса" class="w-1/4">
               <template #body="{ data }">
                 <Button v-slot="slotProps" as-child variant="text">
                   <NuxtLink
                     :class="slotProps.class"
-                    :to="{ name: 'query-id', params: { id: data.num_orders } }"
+                    :to="{ name: 'query-id', params: { id: data.num } }"
                   >
-                    {{ useFormatter().formatNumber(data.num_orders) }}
+                    {{ useFormatter().formatNumber(data.num) }}
                   </NuxtLink>
                 </Button>
               </template>
@@ -278,16 +317,26 @@ onMounted(() => {
                   {{ useFormatter().formatNumber(slotProps.data.num_orders) }}
                 </p>
 
-                <!-- Добавим отладочную информацию -->
+                <!-- Показываем индикатор загрузки для конкретного заказа -->
                 <div
-                  v-if="
-                    !slotProps.data.items || slotProps.data.items.length === 0
-                  "
+                  v-if="expandLoading[slotProps.data.id || slotProps.data.num_orders]"
+                  class="text-center py-4"
+                >
+                  <ProgressSpinner style="width: 30px; height: 30px" />
+                  <p class="text-gray-500 mt-2">Загрузка товаров...</p>
+                </div>
+
+                <!-- Показываем сообщение если нет товаров -->
+                <div
+                  v-else-if="
+                      !slotProps.data.items || slotProps.data.items.length === 0
+                    "
                   class="text-center py-4 text-gray-500"
                 >
                   Нет позиций для отображения
                 </div>
 
+                <!-- Показываем таблицу с товарами -->
                 <DataTable
                   v-else
                   :value="slotProps.data.items"

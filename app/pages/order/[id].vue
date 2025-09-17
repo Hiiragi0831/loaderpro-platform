@@ -109,6 +109,7 @@ const testData = {
             <DataTable
               :value="testData.products"
               class="rounded-2xl overflow-hidden shadow-lg bg-white"
+              table-class="-mb-2"
             >
               <Column header="Изображение" class="w-100">
                 <template #body="slotProps">

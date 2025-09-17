@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useApi } from "~/composables/useApi";
+import { useAuthStore } from "~/stores/auth";
 
 /**
  * Базовые параметры для запросов к API
@@ -147,6 +148,7 @@ export function baseTableStore<T, P extends BaseParams>(
         const mergedParams = { ...defaultParams, ...params } as P;
         const cacheKey = this.generateCacheKey(mergedParams);
         const cachedEntry = this.cache.get(cacheKey);
+        const token = JSON.parse(<string>localStorage.getItem("user")).token;
 
         // Возвращаем данные из кэша, если они актуальны
         if (cachedEntry && this.isCacheValid(cachedEntry)) {
@@ -160,6 +162,7 @@ export function baseTableStore<T, P extends BaseParams>(
           const urlParams = this.buildUrlParams(mergedParams);
           const res = await fetch(`${useApi().apiUrl}/${endpoint}?${urlParams}`, {
             method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
           });
 
           // Обрабатываем ошибки HTTP
@@ -190,9 +193,18 @@ export function baseTableStore<T, P extends BaseParams>(
        * @returns Promise с данными в формате BaseResponse
        */
       async fetchDetails(paramsId: string | number) {
+        const userStr = localStorage.getItem("user");
+
+        if (!userStr) {
+          // console.error("Пользователь не найден в localStorage");
+          return;
+        }
+
+        const user = JSON.parse(userStr);
         try {
           const response = await $fetch(`${useApi().apiUrl}/${endpoint}/${paramsId}`, {
             method: "GET",
+            headers: { Authorization: `Bearer ${user.token}` },
           });
           return response;
         } catch (error) {

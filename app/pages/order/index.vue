@@ -96,7 +96,7 @@ const loadData = async () => {
 
 // загрузка деталей заказа (товаров) по его ID
 const loadOrderDetails = async (orderData: any) => {
-  const orderId = orderData.id || orderData.num_orders;
+  const orderId = orderData.id || orderData.num;
 
   // Устанавливаем состояние загрузки для конкретного заказа
   expandLoading.value[orderId] = true;
@@ -106,9 +106,7 @@ const loadOrderDetails = async (orderData: any) => {
     const response = await orderStore.fetchDetails(orderId);
 
     // Обновляем данные заказа с полученными товарами
-    const orderIndex = dataItems.value.findIndex((item: any) =>
-      (item.id || item.num_orders) === orderId
-    );
+    const orderIndex = dataItems.value.findIndex((item: any) => (item.id || item.num) === orderId);
 
     if (orderIndex !== -1) {
       // Предполагаем, что ответ содержит поле items с товарами
@@ -133,8 +131,6 @@ const onRowExpand = async (event: any) => {
     await loadOrderDetails(orderData);
   }
 };
-
-
 
 const onSort = (event: DataTableSortEvent) => {
   sortField.value = event.sortField;
@@ -228,14 +224,14 @@ onMounted(() => {
                 </div>
               </template>
               <Column expander class="w-20" />
-              <Column field="num_orders" header="Номер запроса" class="w-1/6">
+              <Column field="num" header="Номер запроса" class="w-1/6">
                 <template #body="{ data }">
                   <Button v-slot="slotProps" as-child variant="text">
                     <NuxtLink
                       :class="slotProps.class"
-                      :to="{ name: 'order-id', params: { id: data.num_orders } }"
+                      :to="{ name: 'order-id', params: { id: data.num } }"
                     >
-                      {{ useFormatter().formatNumber(data.num_orders) }}
+                      {{ useFormatter().formatNumber(data.num) }}
                     </NuxtLink>
                   </Button>
                 </template>
@@ -367,12 +363,12 @@ onMounted(() => {
                 <div class="p-6">
                   <p class="text-lg font-semibold mb-4">
                     Позиции запроса №
-                    {{ useFormatter().formatNumber(slotProps.data.num_orders) }}
+                    {{ useFormatter().formatNumber(slotProps.data.num) }}
                   </p>
 
                   <!-- Показываем индикатор загрузки для конкретного заказа -->
                   <div
-                    v-if="expandLoading[slotProps.data.id || slotProps.data.num_orders]"
+                    v-if="expandLoading[slotProps.data.id || slotProps.data.num]"
                     class="text-center py-4"
                   >
                     <ProgressSpinner style="width: 30px; height: 30px" />
