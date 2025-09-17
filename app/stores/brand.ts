@@ -36,14 +36,14 @@ export const useBrandStore = defineStore("brand", {
       // console.log("Пользователь в localStorage:", !!userStr);
 
       if (!userStr) {
-        // console.error("User not found in localStorage");
+        // console.error("Пользователь не найден в localStorage");
         return;
       }
 
       const user = JSON.parse(userStr);
       // console.log("Загружаем бренды с сервера...");
 
-      const res = await fetch(`${useApi().apiUrl}/brand`, {
+      const res = await fetch(`${useApi().apiUrl}/brands`, {
         method: "GET",
         headers: { Authorization: `Bearer ${user.token}` },
       });
