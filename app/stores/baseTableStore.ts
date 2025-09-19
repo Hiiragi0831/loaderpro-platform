@@ -1,6 +1,5 @@
-import { defineStore } from "pinia";
-import { useApi } from "~/composables/useApi";
-import { useAuthStore } from "~/stores/auth";
+import {defineStore} from "pinia";
+import {useApi} from "~/composables/useApi";
 
 /**
  * Базовые параметры для запросов к API
@@ -202,11 +201,11 @@ export function baseTableStore<T, P extends BaseParams>(
 
         const user = JSON.parse(userStr);
         try {
-          const response = await $fetch(`${useApi().apiUrl}/${endpoint}/${paramsId}`, {
+          const response = await fetch(`${useApi().apiUrl}/${endpoint}/${paramsId}`, {
             method: "GET",
             headers: { Authorization: `Bearer ${user.token}` },
           });
-          return response;
+          return await response.json();
         } catch (error) {
           console.error("Ошибка загрузки детальных данных:", error);
           throw error;
