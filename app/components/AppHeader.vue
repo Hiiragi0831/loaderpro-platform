@@ -178,11 +178,11 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="flex flex-col gap-10">
             <div class="flex gap-10 items-center">
               <i class="pi pi-user color-primary-500" />
-              <p>{{ userStore.user.name }}</p>
+              <p>{{ userStore.user.firstname }}</p>
             </div>
             <div class="text-sm">{{ userStore.user.company }}</div>
           </div>
-          <i class="pi pi-chevron-down" />
+          <i class="pi pi-chevron-down mt-4" />
         </div>
       </div>
     </div>

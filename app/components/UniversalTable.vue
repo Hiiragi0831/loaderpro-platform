@@ -35,7 +35,13 @@ const props = defineProps<{
   config: TableConfig;
 }>();
 
-// Проверка корректности конфигурации
+/**
+ * Проверяет корректность переданной конфигурации таблицы
+ * Валидирует обязательные поля и структуру данных
+ * @param config - конфигурация таблицы для проверки
+ * @throws Error - если конфигурация некорректна
+ * @returns void
+ */
 const validateConfig = (config: TableConfig) => {
   if (!config.title?.trim()) {
     console.warn('BaseTable: Заголовок таблицы не указан');
@@ -97,7 +103,12 @@ const sortOrder = ref();
 const loading = ref(false);
 const error = ref<string | null>(null);
 
-// Инициализация фильтров с проверками
+/**
+ * Инициализирует фильтры таблицы на основе конфигурации колонок.
+ * Создает объект фильтров с правильными типами соответствия для каждой колонки.
+ * Добавляет дефолтные фильтры из конфигурации, если они есть.
+ * @returns void
+ */
 const initFilters = () => {
   try {
     const initialFilters: Record<string, any> = {
@@ -130,7 +141,13 @@ const initFilters = () => {
 // Инициализируем фильтры сразу
 initFilters();
 
-// Загрузка данных с обработкой ошибок
+/**
+ * Загружает данные для таблицы с сервера.
+ * Обрабатывает параметры пагинации, сортировки и фильтрации.
+ * Обновляет состояние таблицы после получения данных.
+ * Обрабатывает ошибки загрузки.
+ * @returns Promise<void>
+ */
 const loadData = async () => {
   if (loading.value) return; // Предотвращаем множественные одновременные запросы
 
@@ -215,7 +232,14 @@ const loadData = async () => {
   }
 };
 
-// Загрузка деталей с проверками
+/**
+ * Загружает детальную информацию для раскрытия строки.
+ * Получает дополнительные данные для конкретной записи по её ID.
+ * Обновляет данные в массиве элементов таблицы.
+ * Управляет состоянием загрузки для каждого элемента отдельно.
+ * @param data - объект данных строки, содержащий ID для загрузки деталей.
+ * @returns Promise<void>
+ */
 const loadDetails = async (data: any) => {
   if (!data || typeof data !== 'object') {
     console.error('Некорректные данные для загрузки деталей');
@@ -266,7 +290,12 @@ const loadDetails = async (data: any) => {
   }
 };
 
-// Обработчики событий с проверками
+/**
+ * Обработчик раскрытия строки таблицы.
+ * Проверяет возможность раскрытия и загружает детали, если они отсутствуют.
+ * @param event - событие раскрытия строки, содержащее данные строки.
+ * @returns Promise<void>
+ */
 const onRowExpand = async (event: any) => {
   console.log('onRowExpand вызван:', event);
 
@@ -287,7 +316,12 @@ const onRowExpand = async (event: any) => {
   }
 };
 
-
+/**
+ * Обработчик события сортировки таблицы.
+ * Обновляет параметры сортировки и перезагружает данные.
+ * @param event - событие сортировки с полем и направлением сортировки.
+ * @returns void
+ */
 const onSort = (event: DataTableSortEvent) => {
   if (!event || typeof event !== 'object') {
     console.error('Некорректные данные события сортировки');
@@ -299,6 +333,12 @@ const onSort = (event: DataTableSortEvent) => {
   loadData();
 };
 
+/**
+ * Обработчик события фильтрации таблицы.
+ * Обновляет фильтры, сбрасывает сортировку и пагинацию, перезагружает данные.
+ * @param event - событие фильтрации с новыми значениями фильтров.
+ * @returns void
+ */
 const onFilter = (event: DataTableFilterEvent) => {
   if (!event || typeof event !== 'object') {
     console.error('Некорректные данные события фильтрации');
@@ -312,6 +352,11 @@ const onFilter = (event: DataTableFilterEvent) => {
   loadData();
 };
 
+/**
+ * Очищает все фильтры таблицы и сбрасывает состояние к начальному.
+ * Переинициализирует фильтры, сбрасывает сортировку и пагинацию.
+ * @returns void
+ */
 const clearFilter = () => {
   try {
     initFilters();
@@ -324,6 +369,12 @@ const clearFilter = () => {
   }
 };
 
+/**
+ * Обработчик события изменения страницы пагинации.
+ * Обновляет текущую страницу и количество записей на странице, перезагружает данные.
+ * @param event - событие пагинации с номером страницы и количеством записей.
+ * @returns void
+ */
 const onPage = (event: DataTablePageEvent) => {
   if (!event || typeof event !== 'object') {
     console.error('Некорректные данные события пагинации');
@@ -340,7 +391,12 @@ const onPage = (event: DataTablePageEvent) => {
   }
 };
 
-// Утилиты с проверками
+/**
+ * Добавляет один месяц к переданной дате в строковом формате.
+ * Используется для расчета сдвига дат в отображении таблицы.
+ * @param dateString - дата в строковом формате для преобразования.
+ * @returns string - отформатированная дата со сдвигом или сообщение об ошибке.
+ */
 const addOneMonthToDate = (dateString: string): string => {
   if (!dateString || typeof dateString !== 'string') {
     return 'Некорректная дата';
@@ -360,6 +416,13 @@ const addOneMonthToDate = (dateString: string): string => {
   }
 };
 
+/**
+ * Рендерит содержимое ячейки таблицы в зависимости от типа шаблона колонки.
+ * Обрабатывает различные типы отображения: дата, дата со сдвигом, количество.
+ * @param data - объект данных строки
+ * @param column - конфигурация колонки с информацией о шаблоне отображения
+ * @returns string - отформатированное содержимое ячейки
+ */
 const renderCellContent = (data: any, column: TableColumn) => {
   if (!data || !column || !column.field) {
     return 'Нет данных';
