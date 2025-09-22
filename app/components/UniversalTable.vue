@@ -2,7 +2,7 @@
 import { FilterMatchMode } from "@primevue/core/api";
 import { watchDebounced } from "@vueuse/core";
 import type { DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent } from "primevue";
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { baseTableStore } from "~/stores/baseTableStore";
 
 interface TableColumn {
@@ -10,10 +10,10 @@ interface TableColumn {
   header: string;
   sortable?: boolean;
   filter?: boolean;
-  filterType?: 'text' | 'select' | 'date';
-  filterOptions?: string[];
+  filterType?: "text" | "select" | "date";
+  filterOptions?: { label: string; value: number }[];
   class?: string;
-  bodyTemplate?: 'link' | 'tag' | 'date' | 'dateOffset' | 'count' | 'default';
+  bodyTemplate?: "link" | "tag" | "date" | "dateOffset" | "count" | "default";
   linkRouteName?: string;
   linkParamField?: string;
 }
@@ -44,23 +44,23 @@ const props = defineProps<{
  */
 const validateConfig = (config: TableConfig) => {
   if (!config.title?.trim()) {
-    console.warn('BaseTable: Заголовок таблицы не указан');
+    console.warn("BaseTable: Заголовок таблицы не указан");
   }
 
   if (!config.storeName?.trim()) {
-    throw new Error('BaseTable: storeName обязательный параметр');
+    throw new Error("BaseTable: storeName обязательный параметр");
   }
 
   if (!config.endpoint?.trim()) {
-    throw new Error('BaseTable: endpoint обязательный параметр');
+    throw new Error("BaseTable: endpoint обязательный параметр");
   }
 
   if (!config.dataKey?.trim()) {
-    throw new Error('BaseTable: dataKey обязательный параметр');
+    throw new Error("BaseTable: dataKey обязательный параметр");
   }
 
   if (!Array.isArray(config.columns) || config.columns.length === 0) {
-    throw new Error('BaseTable: columns должен быть непустым массивом');
+    throw new Error("BaseTable: columns должен быть непустым массивом");
   }
 
   config.columns.forEach((column, index) => {
@@ -73,9 +73,9 @@ const validateConfig = (config: TableConfig) => {
 // Валидируем конфигурацию при инициализации
 try {
   validateConfig(props.config);
-  console.log('Конфигураця BaseTable:',props.config)
+  console.log("Конфигураця BaseTable:", props.config);
 } catch (error) {
-  console.error('Ошибка конфигурации BaseTable:', error);
+  console.error("Ошибка конфигурации BaseTable:", error);
   throw error;
 }
 
@@ -85,7 +85,7 @@ try {
   const useStore = baseTableStore(props.config.storeName, props.config.endpoint);
   store = useStore();
 } catch (error) {
-  console.error('Ошибка инициализации store:', error);
+  console.error("Ошибка инициализации store:", error);
   throw error;
 }
 
@@ -116,24 +116,24 @@ const initFilters = () => {
     };
 
     if (Array.isArray(props.config.columns)) {
-      props.config.columns.forEach(column => {
+      props.config.columns.forEach((column) => {
         if (column.filter && column.field) {
           initialFilters[column.field] = {
             value: null,
-            matchMode: column.filterType === 'date' ? FilterMatchMode.DATE_IS : FilterMatchMode.EQUALS
+            matchMode: column.filterType === "date" ? FilterMatchMode.DATE_IS : FilterMatchMode.EQUALS,
           };
         }
       });
     }
 
     // Добавляем дефолтные фильтры из конфига
-    if (props.config.defaultFilters && typeof props.config.defaultFilters === 'object') {
+    if (props.config.defaultFilters && typeof props.config.defaultFilters === "object") {
       Object.assign(initialFilters, props.config.defaultFilters);
     }
 
     filters.value = initialFilters;
   } catch (err) {
-    console.error('Ошибка инициализации фильтров:', err);
+    console.error("Ошибка инициализации фильтров:", err);
     filters.value = { global: { value: null, matchMode: FilterMatchMode.CONTAINS } };
   }
 };
@@ -162,12 +162,12 @@ const loadData = async () => {
 
     const filterParams: Record<string, unknown> = {};
 
-    if (filters.value && typeof filters.value === 'object') {
+    if (filters.value && typeof filters.value === "object") {
       Object.entries(filters.value).forEach(([key, filter]: [string, any]) => {
-        if (!filter || typeof filter !== 'object') return;
+        if (!filter || typeof filter !== "object") return;
 
         if (key === "global") {
-          if (filter.value && typeof filter.value === 'string' && filter.value.trim() !== "") {
+          if (filter.value && typeof filter.value === "string" && filter.value.trim() !== "") {
             filterParams.search = filter.value.trim();
           }
           return;
@@ -175,7 +175,7 @@ const loadData = async () => {
 
         if (filter.constraints && Array.isArray(filter.constraints)) {
           const activeConstraint = filter.constraints.find(
-              (c: any) => c?.value !== null && c?.value !== "" && c?.value !== undefined,
+            (c: any) => c?.value !== null && c?.value !== "" && c?.value !== undefined,
           );
           if (activeConstraint) {
             filterParams[key] = activeConstraint.value;
@@ -202,29 +202,28 @@ const loadData = async () => {
       ...filterParams,
     };
 
-    if (!store?.fetchData || typeof store.fetchData !== 'function') {
-      throw new Error('Store не содержит метод fetchData');
+    if (!store?.fetchData || typeof store.fetchData !== "function") {
+      throw new Error("Store не содержит метод fetchData");
     }
 
     const response = await store.fetchData(params);
 
     // Проверяем корректность ответа
-    if (!response || typeof response !== 'object') {
-      throw new Error('Некорректный формат ответа от сервера');
+    if (!response || typeof response !== "object") {
+      throw new Error("Некорректный формат ответа от сервера");
     }
 
     dataItems.value = Array.isArray(response.items) ? response.items : [];
 
-    if (response.meta && typeof response.meta === 'object' && typeof response.meta.total_items === 'number') {
+    if (response.meta && typeof response.meta === "object" && typeof response.meta.total_items === "number") {
       totalRecords.value = Math.max(0, response.meta.total_items);
     } else {
       totalRecords.value = dataItems.value.length;
-      console.warn('Отсутствуют метаданные о количестве записей');
+      console.warn("Отсутствуют метаданные о количестве записей");
     }
-
   } catch (err) {
-    console.error('Ошибка загрузки данных:', err);
-    error.value = err instanceof Error ? err.message : 'Произошла неизвестная ошибка при загрузке данных';
+    console.error("Ошибка загрузки данных:", err);
+    error.value = err instanceof Error ? err.message : "Произошла неизвестная ошибка при загрузке данных";
     dataItems.value = [];
     totalRecords.value = 0;
   } finally {
@@ -241,15 +240,15 @@ const loadData = async () => {
  * @returns Promise<void>
  */
 const loadDetails = async (data: any) => {
-  if (!data || typeof data !== 'object') {
-    console.error('Некорректные данные для загрузки деталей');
+  if (!data || typeof data !== "object") {
+    console.error("Некорректные данные для загрузки деталей");
     return;
   }
 
   const detailId = data.id;
 
   if (!detailId) {
-    console.error('Отсутствует идентификатор для загрузки деталей');
+    console.error("Отсутствует идентификатор для загрузки деталей");
     return;
   }
 
@@ -260,14 +259,14 @@ const loadDetails = async (data: any) => {
   expandLoading.value[detailId] = true;
 
   try {
-    if (!store?.fetchDetails || typeof store.fetchDetails !== 'function') {
-      throw new Error('Store не содержит метод fetchDetails');
+    if (!store?.fetchDetails || typeof store.fetchDetails !== "function") {
+      throw new Error("Store не содержит метод fetchDetails");
     }
 
     const response = await store.fetchDetails(detailId);
 
-    if (!response || typeof response !== 'object') {
-      throw new Error('Некорректный ответ при загрузке деталей');
+    if (!response || typeof response !== "object") {
+      throw new Error("Некорректный ответ при загрузке деталей");
     }
 
     const idx = dataItems.value.findIndex((item: any) => item?.id === detailId);
@@ -297,15 +296,15 @@ const loadDetails = async (data: any) => {
  * @returns Promise<void>
  */
 const onRowExpand = async (event: any) => {
-  console.log('onRowExpand вызван:', event);
+  console.log("onRowExpand вызван:", event);
 
   if (!props.config.expandable) {
-    console.log('Expandable отключен в конфигурации');
+    console.log("Expandable отключен в конфигурации");
     return;
   }
 
   if (!event?.data) {
-    console.error('Некорректные данные события раскрытия строки');
+    console.error("Некорректные данные события раскрытия строки");
     return;
   }
 
@@ -323,8 +322,8 @@ const onRowExpand = async (event: any) => {
  * @returns void
  */
 const onSort = (event: DataTableSortEvent) => {
-  if (!event || typeof event !== 'object') {
-    console.error('Некорректные данные события сортировки');
+  if (!event || typeof event !== "object") {
+    console.error("Некорректные данные события сортировки");
     return;
   }
 
@@ -340,8 +339,8 @@ const onSort = (event: DataTableSortEvent) => {
  * @returns void
  */
 const onFilter = (event: DataTableFilterEvent) => {
-  if (!event || typeof event !== 'object') {
-    console.error('Некорректные данные события фильтрации');
+  if (!event || typeof event !== "object") {
+    console.error("Некорректные данные события фильтрации");
     return;
   }
 
@@ -365,7 +364,7 @@ const clearFilter = () => {
     sortOrder.value = null;
     loadData();
   } catch (err) {
-    console.error('Ошибка очистки фильтров:', err);
+    console.error("Ошибка очистки фильтров:", err);
   }
 };
 
@@ -376,8 +375,8 @@ const clearFilter = () => {
  * @returns void
  */
 const onPage = (event: DataTablePageEvent) => {
-  if (!event || typeof event !== 'object') {
-    console.error('Некорректные данные события пагинации');
+  if (!event || typeof event !== "object") {
+    console.error("Некорректные данные события пагинации");
     return;
   }
 
@@ -398,21 +397,21 @@ const onPage = (event: DataTablePageEvent) => {
  * @returns string - отформатированная дата со сдвигом или сообщение об ошибке.
  */
 const addOneMonthToDate = (dateString: string): string => {
-  if (!dateString || typeof dateString !== 'string') {
-    return 'Некорректная дата';
+  if (!dateString || typeof dateString !== "string") {
+    return "Некорректная дата";
   }
 
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-      return 'Некорректная дата';
+      return "Некорректная дата";
     }
 
     date.setMonth(date.getMonth() + 1);
     return date.toISOString().slice(0, 19).replace("T", " ");
   } catch (err) {
-    console.error('Ошибка обработки даты:', err);
-    return 'Ошибка даты';
+    console.error("Ошибка обработки даты:", err);
+    return "Ошибка даты";
   }
 };
 
@@ -425,45 +424,48 @@ const addOneMonthToDate = (dateString: string): string => {
  */
 const renderCellContent = (data: any, column: TableColumn) => {
   if (!data || !column || !column.field) {
-    return 'Нет данных';
+    return "Нет данных";
   }
 
   const value = data[column.field];
 
   try {
     switch (column.bodyTemplate) {
-      case 'date':
-        if (!value) return 'Нет данных';
+      case "date":
+        if (!value) return "Нет данных";
         return useFormatter()?.formatDate ? useFormatter().formatDate(value) : value;
-      case 'dateOffset':
-        if (!value) return 'Нет данных';
-        return useFormatter()?.formatDate ? useFormatter().formatDate(addOneMonthToDate(value)) : addOneMonthToDate(value);
-      case 'count':
+      case "dateOffset":
+        if (!value) return "Нет данных";
+        return useFormatter()?.formatDate
+          ? useFormatter().formatDate(addOneMonthToDate(value))
+          : addOneMonthToDate(value);
+      case "count": {
         const count = Number(value);
-        return isNaN(count) ? 'Некорректное количество' : `${count} шт.`;
+        return isNaN(count) ? "Некорректное количество" : `${count} шт.`;
+      }
       default:
-        return value ?? 'Нет данных';
+        return value ?? "Нет данных";
     }
   } catch (err) {
-    console.error('Ошибка рендера содержимого ячейки:', err);
-    return 'Ошибка отображения';
+    console.error("Ошибка рендера содержимого ячейки:", err);
+    return "Ошибка отображения";
   }
 };
 
 // Watchers и lifecycle
 watchDebounced(
-    () => filters.value?.global?.value,
-    (newValue) => {
-      try {
-        if (filters.value?.global && (newValue === null || newValue === '' || typeof newValue === 'string')) {
-          currentPage.value = 1;
-          loadData();
-        }
-      } catch (err) {
-        console.error('Ошибка в watcher глобального фильтра:', err);
+  () => filters.value?.global?.value,
+  (newValue) => {
+    try {
+      if (filters.value?.global && (newValue === null || newValue === "" || typeof newValue === "string")) {
+        currentPage.value = 1;
+        loadData();
       }
-    },
-    { debounce: 500, maxWait: 1000 },
+    } catch (err) {
+      console.error("Ошибка в watcher глобального фильтра:", err);
+    }
+  },
+  { debounce: 500, maxWait: 1000 },
 );
 
 onMounted(() => {
@@ -597,15 +599,17 @@ onMounted(() => {
                 <template v-if="column.filter && column.filterType === 'select'" #filter="{ filterModel }">
                   <Select
                       v-model="filterModel.value"
-                      :options="column.filterOptions || []"
+                      :options="column.filterOptions"
+                      optionLabel="label"
+                      optionValue="value"
                       placeholder="Выберите значение"
                       class="w-full"
                       :disabled="loading"
                   >
                     <template #option="slotProps">
                       <Tag
-                          :value="slotProps.option"
-                          :class="`px-5 py-3 rounded-md font-semibold ${getSeverityBg ? getSeverityBg(slotProps.option) : 'bg-gray-200'}`"
+                          :value="slotProps.option.label"
+                          :class="`px-5 py-3 rounded-md font-semibold ${getSeverityBg ? getSeverityBg(slotProps.option.label) : 'bg-gray-200'}`"
                           :unstyled="true"
                       />
                     </template>
