@@ -2,7 +2,7 @@
 defineProps({
   image: {
     type: String,
-    default: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
+    default: "",
   },
   link: {
     type: String,
@@ -21,11 +21,13 @@ defineProps({
     :to="link"
   >
     <Image
+      v-if="image"
       :src="image"
-      alt="Image"
+      :alt="name"
       class="w-full h-250 p-20 mb-50"
       image-class="object-contain h-full w-full"
     />
+    <img v-if="!image" src="@/assets/images/no-photo.jpg" class="w-full h-250 p-20 mb-50 object-contain" :alt="name">
     <div
       class="flex flex-col w-full gap-15 z-2 p-20 backdrop-blur-xs bg-white/60 absolute -bottom-60 group-hover:bottom-0 transition-all"
     >

@@ -12,8 +12,6 @@ interface CatalogData {
     total_items: number
     total_pages: number
     current_page: number
-    per_page: number
-    remaining_count: number
   }
 }
 
@@ -23,7 +21,6 @@ const data = ref<CatalogData>({
     total_items: 0,
     total_pages: 0,
     current_page: 1,
-    remaining_count: 0
   }
 })
 const currentPage = ref(1)
@@ -52,7 +49,7 @@ const loadItems = async () => {
     if (res.ok) {
       data.value = await res.json();
     } else {
-      error.value = `Ошибка загрузки: ${res.statusText}`;
+      console.error(`Ошибка загрузки: ${res.statusText}`)
     }
   } finally {
     loading.value = false
