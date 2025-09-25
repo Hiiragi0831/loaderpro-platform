@@ -42,10 +42,10 @@ const queryHistoryTableConfig: TableConfig = {
       bodyTemplate: "date",
     },
     {
-      field: "create_time",
+      field: "valid_time",
       header: "Действителен до",
       class: "w-1/4",
-      bodyTemplate: "dateOffset",
+      bodyTemplate: "date",
     },
   ],
   expandTitle: "Товары в запросе №",

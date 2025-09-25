@@ -391,31 +391,6 @@ const onPage = (event: DataTablePageEvent) => {
 };
 
 /**
- * Добавляет один месяц к переданной дате в строковом формате.
- * Используется для расчета сдвига дат в отображении таблицы.
- * @param dateString - дата в строковом формате для преобразования.
- * @returns string - отформатированная дата со сдвигом или сообщение об ошибке.
- */
-const addOneMonthToDate = (dateString: string): string => {
-  if (!dateString || typeof dateString !== "string") {
-    return "Некорректная дата";
-  }
-
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return "Некорректная дата";
-    }
-
-    date.setMonth(date.getMonth() + 1);
-    return date.toISOString().slice(0, 19).replace("T", " ");
-  } catch (err) {
-    console.error("Ошибка обработки даты:", err);
-    return "Ошибка даты";
-  }
-};
-
-/**
  * Рендерит содержимое ячейки таблицы в зависимости от типа шаблона колонки.
  * Обрабатывает различные типы отображения: дата, дата со сдвигом, количество.
  * @param data - объект данных строки
@@ -434,11 +409,6 @@ const renderCellContent = (data: any, column: TableColumn) => {
       case "date":
         if (!value) return "Нет данных";
         return useFormatter()?.formatDate ? useFormatter().formatDate(value) : value;
-      case "dateOffset":
-        if (!value) return "Нет данных";
-        return useFormatter()?.formatDate
-          ? useFormatter().formatDate(addOneMonthToDate(value))
-          : addOneMonthToDate(value);
       case "count": {
         const count = Number(value);
         return isNaN(count) ? "Некорректное количество" : `${count} шт.`;
@@ -449,6 +419,17 @@ const renderCellContent = (data: any, column: TableColumn) => {
   } catch (err) {
     console.error("Ошибка рендера содержимого ячейки:", err);
     return "Ошибка отображения";
+  }
+};
+
+const refreshTable = async () => {
+  try {
+    if (store?.clearCache && typeof store.clearCache === "function") {
+      await store.clearCache();
+    }
+    await loadData();
+  } catch (err) {
+    console.error("Ошибка при обновлении таблицы:", err);
   }
 };
 
@@ -534,14 +515,23 @@ onMounted(() => {
                         :disabled="loading"
                     />
                   </IconField>
-                  <Button
-                      type="button"
-                      icon="pi pi-filter-slash"
-                      label="Очистить фильтры"
-                      variant="outlined"
-                      :disabled="loading"
-                      @click="clearFilter()"
-                  />
+                  <div class="flex gap-20">
+                    <Button
+                        icon="pi pi-refresh"
+                        label="Обновить таблицу"
+                        :disabled="loading"
+                        @click="refreshTable"
+                        class="ml-4"
+                    />
+                    <Button
+                        type="button"
+                        icon="pi pi-filter-slash"
+                        label="Очистить фильтры"
+                        variant="outlined"
+                        :disabled="loading"
+                        @click="clearFilter()"
+                    />
+                  </div>
                 </div>
               </template>
 
