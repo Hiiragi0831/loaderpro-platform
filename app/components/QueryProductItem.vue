@@ -93,10 +93,10 @@ const formatter = useFormatter();
           }}
         </template>
       </Column>
-      <Column field="timeDelivery" header="Срок поставки" class="w-200">
+      <Column field="time_delivery" header="Срок поставки" class="w-200">
         <template #body="{ data }">
-          <span :class="getSeverityText(data.timeDelivery)">
-            {{ data.timeDelivery }}
+          <span :class="getSeverityText(data.time_delivery)">
+            {{ data.time_delivery }}
           </span>
         </template>
       </Column>

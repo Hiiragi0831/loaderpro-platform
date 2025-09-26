@@ -50,9 +50,9 @@ const queryHistoryTableConfig: TableConfig = {
   ],
   expandTitle: "Товары в запросе №",
   expandColumns: [
-    { field: "name", header: "Название", class: "w-1/4" },
+    { field: "name", header: "Название", class: "w-1/4"},
     { field: "brand", header: "Бренд", class: "w-1/4" },
-    { field: "num_parts", header: "Артикул", class: "w-1/4" },
+    { field: "article", header: "Артикул", class: "w-1/4" },
     { field: "count", header: "Количество", class: "w-1/4", bodyTemplate: "count" },
   ],
 };

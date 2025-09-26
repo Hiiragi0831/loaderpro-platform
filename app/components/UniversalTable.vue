@@ -13,7 +13,7 @@ interface TableColumn {
   filterType?: "text" | "select" | "date";
   filterOptions?: { label: string; value: number }[];
   class?: string;
-  bodyTemplate?: "link" | "tag" | "date" | "dateOffset" | "count" | "default";
+  bodyTemplate?: "link" | "tag" | "date" | "dateOffset" | "count" | "default" | "name";
   linkRouteName?: string;
   linkParamField?: string;
 }
@@ -683,6 +683,9 @@ onMounted(() => {
                     >
                       <template v-if="expandColumn.bodyTemplate" #body="{ data }">
                         {{ renderCellContent(data, expandColumn) }}
+                      </template>
+                      <template v-else #body="{ data }">
+                        {{ data[expandColumn.field] || 'Нет данных' }}
                       </template>
                     </Column>
                   </DataTable>

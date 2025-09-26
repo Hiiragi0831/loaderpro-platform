@@ -61,9 +61,8 @@ onMounted(fetchQueryData);
             <p>
               Номер запроса: <b>{{ queryData.num }}</b>
             </p>
-            <p>Создан: <b>{{ useFormatter().formatDate(queryData.create_time)}}</b></p>
-
             <p>Статус: <b>{{ queryData.status }}</b></p>
+            <p>Создан: <b>{{ useFormatter().formatDate(queryData.create_time)}}</b></p>
             <p>Действителен до: <b>{{useFormatter().formatDate(addOneMonth(queryData.create_time))}}</b></p>
             <Button icon="pi pi-file-export" label="Экспортировать в файл" />
           </div>
