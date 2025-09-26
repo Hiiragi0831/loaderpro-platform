@@ -21,7 +21,7 @@ const orderTableConfig: TableConfig = {
       class: "w-1/6",
       bodyTemplate: "link",
       linkRouteName: "order-id",
-      linkParamField: "num",
+      linkParamField: "id",
     },
     {
       field: "status",

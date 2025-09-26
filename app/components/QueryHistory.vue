@@ -21,7 +21,7 @@ const queryHistoryTableConfig: TableConfig = {
       class: "w-1/4",
       bodyTemplate: "link",
       linkRouteName: "query-id",
-      linkParamField: "num",
+      linkParamField: "id",
     },
     {
       field: "status",

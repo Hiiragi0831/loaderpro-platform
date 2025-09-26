@@ -1,46 +1,39 @@
 <script setup lang="ts">
-defineProps({
-  image: {
-    type: String,
-    default: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
-  },
-  name: {
-    type: String,
-    default: "Название товаратоваратовара товара товара товара товара",
-  },
-  brand: {
-    type: String,
-    default: "Бренд",
-  },
-  article: {
-    type: String,
-    default: "123456789",
-  },
-  measurement: {
-    type: String,
-    default: "шт.",
-  },
-  count: {
-    type: Number,
-    default: 0,
-  },
-  weight: {
-    type: Number,
-    default: 0,
-  },
-  offers: {
-    type: Array,
-    default: () => [
-      {
-        id: 0,
-        price: 0,
-        count: 0,
-        timeDelivery: "В идентификации",
-        status: 0,
-      },
-    ],
-  },
-});
+interface Offer {
+  id: number
+  price: number
+  count: number
+  timeDelivery: string
+  status: number
+}
+
+interface ProductItem {
+  id: number
+  image: string
+  name: string
+  brand: string
+  article: string
+  measurement: string
+  count: number
+  weight: number
+  offers: Offer[]
+}
+
+const props = defineProps<{
+  item: ProductItem
+}>()
+
+// можно сразу развернуть
+const {
+  image,
+  name,
+  brand,
+  article,
+  measurement,
+  count,
+  weight,
+  offers,
+} = props.item
 const formatter = useFormatter();
 </script>
 
@@ -49,12 +42,14 @@ const formatter = useFormatter();
     class="flex rounded-2xl overflow-hidden bg-white shadow-lg p-30 gap-15 justify-between"
   >
     <Image
-      :src="image"
-      :alt="name"
-      class="w-250 h-250 rounded-2xl overflow-hidden"
-      image-class="object-contain h-full w-full"
-      preview
+        v-if="image"
+        :src="image"
+        :alt="name"
+        class="w-250 h-250 rounded-2xl overflow-hidden"
+        image-class="object-contain h-full w-full"
+        preview
     />
+    <img v-if="!image" src="@/assets/images/no-photo.jpg" class="w-250 h-250 rounded-2xl overflow-hidden object-contain" :alt="name">
     <div class="flex flex-col w-410">
       <p class="text-2xl font-medium">{{ name }}</p>
       <p class="text-lg">{{ brand }}</p>
