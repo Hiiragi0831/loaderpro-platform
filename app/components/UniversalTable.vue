@@ -13,7 +13,7 @@ interface TableColumn {
   filterType?: "text" | "select" | "date";
   filterOptions?: { label: string; value: number }[];
   class?: string;
-  bodyTemplate?: "link" | "tag" | "date" | "dateOffset" | "count" | "default" | "name";
+  bodyTemplate?: "link" | "tag" | "date" | "dateOffset" | "count" | "default" | "name" | "price";
   linkRouteName?: string;
   linkParamField?: string;
 }
@@ -409,6 +409,8 @@ const renderCellContent = (data: any, column: TableColumn) => {
       case "date":
         if (!value) return "Нет данных";
         return useFormatter()?.formatDate ? useFormatter().formatDate(value) : value;
+      case "price":
+          return useFormatter().formatMoney(value)
       case "count": {
         const count = Number(value);
         return isNaN(count) ? "Некорректное количество" : `${count} шт.`;
