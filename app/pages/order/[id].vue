@@ -1,97 +1,4 @@
 <script setup lang="ts">
-const formatter = useFormatter();
-const testData = {
-  total: 23453,
-  info: [
-    {
-      property: "Статус",
-      value: "В запросе",
-    },
-    {
-      property: "Дата создания",
-      value: "12.09.2025",
-    },
-    {
-      property: "Дата оплаты",
-      value: "12.09.2025",
-    },
-    {
-      property: "Дата поставки",
-      value: "12.09.2025",
-    },
-    {
-      property: "Дата отгрузки",
-      value: "12.09.2025",
-    },
-  ],
-  delivery: [
-    {
-      property: "Наименование компании",
-      value: 'ООО "Ромашка"',
-    },
-    {
-      property: "ИНН",
-      value: "12345667654",
-    },
-    {
-      property: "Получатель",
-      value: "Иванов Иван",
-    },
-    {
-      property: "Телефон",
-      value: "+7 (999) 999-99-99",
-    },
-    {
-      property: "Перевозчик",
-      value: "Деловые линии",
-    },
-    {
-      property: "Метод доставки",
-      value: "До клиента",
-    },
-    {
-      property: "Город доставки",
-      value: "Санкт-Петербург",
-    },
-    {
-      property: "Адрес доставки",
-      value: "ул. ЛенинаЛенина Ленина, д. 1, кв. 1",
-    },
-    {
-      property: "Приоритет отгрузки",
-      value: "Укомплектовать полностью",
-    },
-  ],
-  products: [
-    {
-      id: 0,
-      image: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
-      link: "#",
-      name: "Название товара 1 dfdfef wefwefg wefw ",
-      measurement: "шт.",
-      quality: "OEM",
-      weight: 2.2,
-      count: 2,
-      price: 2314,
-      article: "123456789",
-      brand: "OLD TRACPIECES (RG4)",
-    },
-    {
-      id: 1,
-      image: "https://image.loaderpro.ru/products/images/20808/ff43c6c6bfe7ef9b04a8086120f49cae.png",
-      link: "#",
-      name: "Название товара 2",
-      measurement: "шт.",
-      quality: "OEM",
-      weight: 2.2,
-      count: 4,
-      price: 3314,
-      article: "123456789",
-      brand: "OLD TRACPIECES (RG4)",
-    },
-  ],
-};
-
 interface User {
   id: number;
   firstname: string;
@@ -128,6 +35,7 @@ interface OrderData {
 const route = useRoute();
 const orderData = ref<OrderData>({} as OrderData);
 const isLoading = ref(true);
+const formatter = useFormatter();
 
 async function fetchData() {
   const token = JSON.parse(<string>localStorage.getItem("user")).token;

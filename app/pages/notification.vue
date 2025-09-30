@@ -28,6 +28,8 @@ const dataTest = [
     id: 4,
     data: "12.09.2025",
     title: "Заказ: 1520843432522",
+    type: "order",
+    type_id: 1520843432522,
     link: "/order/1520843432522",
     message: "Новый статус заказа: Отправлен",
     read: true,
